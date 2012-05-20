@@ -20,5 +20,18 @@ along with FreeDESK.  If not, see www.gnu.org/licenses
 For more information see www.purplepixie.org/freedesk/
 -------------------------------------------------------------- */
 
-
+/**
+ * Main FreeDESK class
+**/
+class FreeDESK
+{
+	/**
+	 * Major and Minor Version
+	**/
+	private var $majorVersion = 0.00;
+	/**
+	 * Patch Level
+	**/
+	private var $patchVersion = 0;
+}
 ?>
