@@ -2,9 +2,9 @@
 /* -------------------------------------------------------------
 This file is part of FreeDESK
 
-FreeDESL is (C) Copyright 2012 David Cutting
+FreeDESK is (C) Copyright 2012 David Cutting
 
-FreeDESL is free software: you can redistribute it and/or modify
+FreeDESK is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
