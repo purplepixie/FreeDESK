@@ -29,11 +29,11 @@ class MySQL extends DatabaseBase
 	/**
 	 * Pointer to the FreeDESK instance
 	**/
-	private var $DESK = null;
+	private $DESK = null;
 	/**
 	 * MySQL data connection
 	**/
-	private var $connection = null;
+	private $connection = null;
 
 	/**
 	 * Table prefix

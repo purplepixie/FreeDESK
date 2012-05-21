@@ -30,7 +30,7 @@ abstract class DatabaseBase
 	 * Constructor
 	 * @param object $freeDESK FreeDESK instance
 	**/
-	abstract function DatabaseBase(&$freekDESK);
+	//abstract function DatabaseBase(&$freekDESK);
 	
 	/**
 	 * Connect

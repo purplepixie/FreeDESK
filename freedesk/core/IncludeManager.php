@@ -24,25 +24,25 @@ For more information see www.purplepixie.org/freedesk/
  * Include class handles most php source file includes at runtime
 **/
 
-class Include
+class IncludeManager
 {
 	/**
 	 * Reference to FreeDESK class
 	**/
-	private var $DESK = null;
+	private $DESK = null;
 	/**
 	 * Base directory
 	**/
-	private var $baseDir = "./";
+	private $baseDir = "./";
 	
 	/**
 	 * Constructor
 	 * @param object $freeDESK freedesk main object
 	 * @param string $baseDir base directory
 	**/
-	function Include(&$freeDESK, $baseDir)
+	function IncludeManager(&$freeDESK, $baseDir)
 	{
-		$this->DESK = freeDESK;
+		$this->DESK = $freeDESK;
 		$this->baseDir = $baseDir;
 	}
 
@@ -56,8 +56,8 @@ class Include
 	{
 		if ($required)
 		{
-			require($this->baseDir.$filepath)
-				or die("Failed to open required file ".$filepath);
+			require($this->baseDir.$filepath);
+				//or die("Failed to open required file ".$filepath);
 		}
 		else if ($once)
 		{
@@ -103,6 +103,7 @@ class Include
 			$classname::$methodname();
 	}
 
+}
 
 
 
