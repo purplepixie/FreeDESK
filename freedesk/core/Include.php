@@ -46,5 +46,68 @@ class Include
 		$this->baseDir = $baseDir;
 	}
 
+	/**
+	 * Include a File
+	 * @param string $filepath Relative filepath from base dir
+	 * @param bool $required Is opened using require() rather than include() (default false)
+	 * @param bool $once Is opened using include_once() (default false)
+	**/
+	function IncludeFile($filepath, $required=false, $once=false)
+	{
+		if ($required)
+		{
+			require($this->baseDir.$filepath)
+				or die("Failed to open required file ".$filepath);
+		}
+		else if ($once)
+		{
+			include_once($this->baseDir.$filepath);
+		}
+		else
+		{
+			include($this->baseDir.$filepath);
+		}
+	}
+	
+	/**
+	 * Include a file and create a class instance, uses require to open file
+	 * @param string $filepath Path to file
+	 * @param string $classname Name of the class to create
+	 * @param bool $passdesk Pass the FreeDESK object to constructor (optional, default true)
+	 * @return object Newly created class
+	**/
+	function IncludeInstance($filepath, $classname, $passdesk=true)
+	{
+		$this->IncludeFile($filepath,true);
+		$c = null;
+		if ($passdesk)
+			$c=new $classname($this->DESK);
+		else
+			$c=new $classname();
+		return $c;
+	}
+	
+	/**
+	 * Include a file and execute a static method in that class, uses require to open
+	 * @param string $filepath Path to file
+	 * @param string $classname Name of class
+	 * @param string $methodname Name of method (optional, default Exec)
+	 * @param bool $passdesk Pass the FreeDESK object to the method (optional, default true)
+	**/
+	function IncludeExec($filepath, $classname, $methodname="Exec", $passdesk=true)
+	{
+		$this->IncludeFile($filepath,true);
+		if ($passdesk)
+			$classname::$methodname($this->DESK);
+		else
+			$classname::$methodname();
+	}
+
+
+
+
+
+
+
 
 ?>

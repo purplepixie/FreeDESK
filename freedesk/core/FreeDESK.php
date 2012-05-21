@@ -21,7 +21,7 @@ For more information see www.purplepixie.org/freedesk/
 -------------------------------------------------------------- */
 
 /**
- * Main FreeDESK class
+ * Main FreeDESK class contains all sub-classes
 **/
 class FreeDESK
 {
@@ -33,5 +33,76 @@ class FreeDESK
 	 * Patch Level
 	**/
 	private var $patchVersion = 0;
+	/**
+	 * Get the full compound version
+	 * @return string Compound version
+	**/
+	function Version()
+	{
+		return $majorVersion.".".$patchVersion;
+	}
+	
+	// Component Class Instances
+	
+	/**
+	 * Configuration Class
+	**/
+	var $Configuration = null;
+	
+	/**
+	 * Logging engine
+	**/
+	var $LoggingEngine = null;
+	
+	/**
+	 * Plugin Manager
+	**/
+	var $PluginManager = null;
+	
+	/**
+	 * Database
+	**/
+	var $Database = null;
+	
+	/**
+	 * Entity Manager
+	**/
+	var $EntityManager = null;
+	
+	/**
+	 * Data Dictionary
+	**/
+	var $DataDictionary = null;
+	
+	/**
+	 * Request Manager
+	**/
+	var $RequestManager = null;
+	
+	/**
+	 * Context Manager
+	**/
+	var $ContextManager = null;
+	
+	/**
+	 * Include System
+	**/
+	var $Include = null;
+	
+	// Methods and Processes in Main FreeDESK class
+	
+	/**
+	 * Constructor for FreeDESK
+	 * @param string $baseDir Base directory of the system (file root, can be relative)
+	**/
+	function FreeDESK($baseDir)
+	{
+		// First include and instantiate the include system for all further includes
+		require($baseDir."core/Include.php")
+			or die("Cannot open core/Include.php - fatal error");
+		$this->Include = new Include($this, $baseDir);
+		
+	}
+	
 }
 ?>
