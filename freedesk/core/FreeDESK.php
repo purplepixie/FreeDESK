@@ -50,6 +50,11 @@ class FreeDESK
 	var $Configuration = null;
 	
 	/**
+	 * Basic Configuration
+	**/
+	var $BaseConfig = null;
+	
+	/**
 	 * Logging engine
 	**/
 	var $LoggingEngine = null;
@@ -102,6 +107,8 @@ class FreeDESK
 			or die("Cannot open core/Include.php - fatal error");
 		$this->Include = new Include($this, $baseDir);
 		
+		// Now the basic configuration
+		$this->BaseConfig = $this->Include->IncludeInstance("config/Config.php","FreeDESK_Configuration",false);
 	}
 	
 }

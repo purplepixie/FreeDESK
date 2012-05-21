@@ -20,5 +20,16 @@ along with FreeDESK.  If not, see www.gnu.org/licenses
 For more information see www.purplepixie.org/freedesk/
 -------------------------------------------------------------- */
 
-
+/**
+ * Default/Main System Configuration
+**/
+class FreeDESK_Configuration
+{
+	var $db_System = "MySQL";
+	var $db_Server = "127.0.0.1";
+	var $db_Username = "freedesk";
+	var $db_Password = "freedesk";
+	var $db_Database = "freedesk";
+	var $db_Prefix = "fd_";
+}
 ?>

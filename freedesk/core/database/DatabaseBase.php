@@ -24,6 +24,44 @@ For more information see www.purplepixie.org/freedesk/
  * DatabaseBase is the abstract base class for database system implementations
 **/
 
-
+abstract class DatabaseBase
+{
+	/**
+	 * Constructor
+	 * @param object $freeDESK FreeDESK instance
+	**/
+	abstract method DatabaseBase(&$freekDESK);
+	
+	/**
+	 * Connect
+	 * @param string $server Database server
+	 * @param string $username Database username
+	 * @param string $password Database password
+	 * @param string $database Database name
+	 * @param string $prefix Database table prefix (optonal, default "")
+	**/
+	abstract method Connect($server, $username, $password, 
+		$database, $prefix="");
+	
+	/**
+	 * Disconnect
+	**/
+	abstract method Disconnect();
+	
+	/**
+	 * Return table name with correct prefix and escaping
+	 * @param string $table table un-prefixed
+	 * @return string table with prefix and escape
+	**/
+	abstract method Table($table);
+	
+	/**
+	 * Sanitise user-input using correct escaping
+	 * @param string $input user input
+	 * @return string Sanitised output
+	**/
+	abstract method Safe($input);
+	
+}
 
 ?>
