@@ -21,16 +21,33 @@ For more information see www.purplepixie.org/freedesk/
 -------------------------------------------------------------- */
 
 /**
- * DatabaseBase is the abstract base class for database system implementations
+ * MySQL concrete implementation of DatabaseBase
 **/
 
-abstract class DatabaseBase
+class MySQL extends DatabaseBase
 {
+	/**
+	 * Pointer to the FreeDESK instance
+	**/
+	private var $DESK = null;
+	/**
+	 * MySQL data connection
+	**/
+	private var $connection = null;
+
+	/**
+	 * Table prefix
+	**/
+	var $prefix = "";
+
 	/**
 	 * Constructor
 	 * @param object $freeDESK FreeDESK instance
 	**/
-	abstract function DatabaseBase(&$freekDESK);
+	function MySQL(&$freekDESK)
+	{
+		$this->DESK = $freeDESK;
+	}
 	
 	/**
 	 * Connect
@@ -41,27 +58,47 @@ abstract class DatabaseBase
 	 * @param string $prefix Database table prefix (optonal, default "")
 	 * @return bool Successful connection or not
 	**/
-	abstract function Connect($server, $username, $password, 
-		$database, $prefix="");
+	function Connect($server, $username, $password, 
+		$database, $prefix="")
+	{
+		$this->prefix = $prefix;
+	
+		$this->connection = mysql_connect($server, $username, $password);
+		if ($this->connection <= 0) return false;
+		
+		if (!mysql_select_db($database, $ths->connection))
+			return false;
+			
+		return true;
+	}
 	
 	/**
 	 * Disconnect
 	**/
-	abstract function Disconnect();
+	function Disconnect()
+	{
+		mysql_close($this->connection);
+	}
 	
 	/**
 	 * Return table name with correct prefix and escaping
 	 * @param string $table table un-prefixed
 	 * @return string table with prefix and escape
 	**/
-	abstract function Table($table);
+	function Table($table)
+	{
+		return "`".$this->prefix.$table."`";
+	}
 	
 	/**
 	 * Sanitise user-input using correct escaping
 	 * @param string $input user input
 	 * @return string Sanitised output
 	**/
-	abstract function Safe($input);
+	function Safe($input)
+	{
+		return mysql_real_escape($input, $this->connection);
+	}
 	
 	
 	/**
@@ -69,7 +106,10 @@ abstract class DatabaseBase
 	 * @param string $field The field name
 	 * @return string Escaped field
 	**/
-	abstract function Field($field);
+	function Field($field)
+	{
+		return "`".$field."`";
+	}
 	
 	/**
 	 * Escape and contain a field correctly
@@ -86,27 +126,39 @@ abstract class DatabaseBase
 	 * @param string $query SQL query
 	 * @return mixed Results of query
 	**/
-	abstract function Query($query);
+	function Query($query)
+	{
+		return mysql_query($query, $this->connection);
+	}
 	
 	/**
 	 * Number of rows affected by last query
 	 * @return int number of rows affected
 	**/
-	abstract function RowsAffected();
+	function RowsAffected()
+	{
+		return mysql_affected_rows($this->connection);
+	}
 	
 	/**
 	 * Number of rows in a result set
 	 * @param mixed $result Result set
 	 * @return int number of rows in the set
 	**/
-	abstract function NumRows(&$result);
+	function NumRows(&$result)
+	{
+		return mysql_num_rows($result);
+	}
 	
 	/**
 	 * Fetch next associated array from result set
 	 * @param mixed $result Result Set
 	 * @return array Assocative Array of Results
 	**/
-	abstract function FetchAssoc(&$result);
+	function FetchAssoc(&$result)
+	{
+		return mysql_fetch_assoc($result);
+	}
 }
 
 ?>
