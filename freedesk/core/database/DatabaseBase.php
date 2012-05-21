@@ -84,9 +84,10 @@ abstract class DatabaseBase
 	/**
 	 * Perform a query
 	 * @param string $query SQL query
+	 * @param bool $report Record any errors using LoggingEngine (optonal, default true)
 	 * @return mixed Results of query
 	**/
-	abstract function Query($query);
+	abstract function Query($query, $report=true);
 	
 	/**
 	 * Number of rows affected by last query
@@ -113,6 +114,33 @@ abstract class DatabaseBase
 	 * @param mixed $result Result Set
 	**/
 	abstract function Free(&$result);
+	
+	/**
+	 * Return an error flag
+	 * @return bool Experienced error on last command
+	**/
+	abstract function Error();
+	
+	/**
+	 * Last error code
+	 * @return int Error code
+	**/
+	abstract function ErrorCode();
+	
+	/**
+	 * Last error description
+	 * @return string Error description
+	**/
+	abstract function ErrorDescription();
+	
+	/**
+	 * Details of the last error
+	 * @return string Code and error description
+	**/
+	function LastError()
+	{
+		return $this->ErrorCode.": ".$this->ErrorDescription();
+	}
 }
 
 ?>

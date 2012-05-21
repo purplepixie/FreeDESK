@@ -124,11 +124,19 @@ class MySQL extends DatabaseBase
 	/**
 	 * Perform a query
 	 * @param string $query SQL query
+	 * @param bool $report Record any errors using LoggingEngine (optonal, default true)
 	 * @return mixed Results of query
 	**/
-	function Query($query)
+	function Query($query, $report=true)
 	{
-		return mysql_query($query, $this->connection);
+		$result=mysql_query($query, $this->connection);
+		
+		if ($report && $this->Error()) // has an error and to be reported
+		{
+			// REPORT ERROR HERE
+		}
+		
+		return $result;
 	}
 	
 	/**
@@ -167,6 +175,35 @@ class MySQL extends DatabaseBase
 	function Free(&$result)
 	{
 		mysql_free_result($result);
+	}
+	
+	/**
+	 * Return an error flag
+	 * @return bool Experienced error on last command
+	**/
+	function Error()
+	{
+		if (mysql_errno($this->connection)>0)
+			return true;
+		return false;
+	}
+	
+	/**
+	 * Last error code
+	 * @return int Error code
+	**/
+	function ErrorCode()
+	{
+		return mysql_errno($this->connection);
+	}
+	
+	/**
+	 * Last error description
+	 * @return string Error description
+	**/
+	function ErrorDescription()
+	{
+		return mysql_error($this->connection);
 	}
 }
 
