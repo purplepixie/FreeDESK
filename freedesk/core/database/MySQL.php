@@ -47,6 +47,9 @@ class MySQL extends DatabaseBase
 	function MySQL(&$freeDESK)
 	{
 		$this->DESK = $freeDESK;
+		
+		$this->DESK->PluginManager->Register(new Plugin(
+			"MySQL Database Engine","0.01","Core","DB" ));
 	}
 	
 	/**
@@ -97,7 +100,7 @@ class MySQL extends DatabaseBase
 	**/
 	function Safe($input)
 	{
-		return mysql_real_escape($input, $this->connection);
+		return mysql_real_escape_string($input, $this->connection);
 	}
 	
 	
@@ -133,7 +136,10 @@ class MySQL extends DatabaseBase
 		
 		if ($report && $this->Error()) // has an error and to be reported
 		{
-			// REPORT ERROR HERE
+			$err="Query Failed: ".$query;
+			$this->DESK->LoggingEngine->Log($err, "SQL", "Fail", 1);
+			$err="SQL Error: ".$this->LastError();
+			$this->DESK->LoggingEngine->Log($err, "SQL", "Error", 1);
 		}
 		
 		return $result;

@@ -34,12 +34,24 @@ class FreeDESK
 	**/
 	private $patchVersion = 0;
 	/**
+	 * Release level flag (a b or blank)
+	**/
+	private $releaseFlag = "a";
+	/**
 	 * Get the full compound version
 	 * @return string Compound version
 	**/
 	function Version()
 	{
-		return $majorVersion.".".$patchVersion;
+		return $this->majorVersion.".".$this->patchVersion;
+	}
+	/**
+	 * Get the full compound version with release level flag
+	 * @return string Full compound version with release flag
+	**/
+	function FullVersion()
+	{
+		return $this->Version().$this->releaseFlag;
 	}
 	
 	// Component Class Instances
@@ -110,6 +122,16 @@ class FreeDESK
 		// Now the basic configuration
 		$this->BaseConfig = $this->Include->IncludeInstance("config/Config.php","FreeDESK_Configuration",false);
 		
+		// Plugin Manager
+		$this->PluginManager = $this->Include->IncludeInstance("core/PluginManager.php","PluginManager");
+		
+		// Register Ourselves
+		$core = new Plugin();
+		$core->name="FreeDESK Core";
+		$core->version=$this->Version();
+		$core->type="Core";
+		$this->PluginManager->Register($core);
+		
 		// Database Engine
 		// First include the base class
 		$this->Include->IncludeFile("core/database/DatabaseBase.php");
@@ -119,6 +141,13 @@ class FreeDESK
 			
 		// Configuration Manager
 		$this->Configuration = $this->Include->IncludeInstance("core/Configuration.php","Configuration");
+		
+		// Logging Engine
+		$this->LoggingEngine = $this->Include->IncludeInstance("core/LoggingEngine.php", "LoggingEngine");
+		
+		// Data Dictionary
+		$this->DataDictionary = $this->Include->IncludeInstance("core/DataDictionary.php", "DataDictionary");
+		
 	}
 	
 	/**
@@ -133,6 +162,9 @@ class FreeDESK
 			return false;
 		// Load system configuration
 		$this->Configuration->Load();
+		// Logging Engine
+		$this->LoggingEngine->Start();
+		$this->LoggingEngine->Log("FreeDESK Startup ".$this->FullVersion(),"Core","Start",10);
 		
 		return true;
 	}

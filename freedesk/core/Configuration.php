@@ -40,10 +40,13 @@ class Configuration
 	function Configuration(&$freeDESK)
 	{
 		$this->DESK = $freeDESK;
+		$this->DESK->PluginManager->Register(new Plugin(
+			"System-Wide Configuration Engine","0.01","Core" ));
 	}
 	
 	/**
 	 * Load Configuration
+	 * @return bool Returns a true on success or a false on failure
 	**/
 	function Load()
 	{
@@ -53,7 +56,11 @@ class Configuration
 		{
 			$this->items[$i['sc_option']] = $i['sc_value'];
 		}
+		$error = $this->DESK->Database->Error();
 		$this->DESK->Database->Free($r);
+		
+		if (!$error) return true;
+		return false;
 	}
 	
 	/**
@@ -75,6 +82,7 @@ class Configuration
 	 * @param string $name Configuration option
 	 * @param string $value Option value
 	 * @param bool $persist Persistant (saved to database), optional default=true
+	 * @return bool Returns flag to show if successfully set (or database error)
 	**/
 	function Set($name, $value, $persist=true)
 	{
@@ -85,7 +93,9 @@ class Configuration
 			$q="SELECT * FROM ".$this->DESK->Database->Table("sysconfig")." WHERE ";
 			$q.=$this->DESK->Database->Field("sc_option")."=\"".$this->DESK->Database->Safe($name)."\"";
 			$r=$this->DESK->Database->Query($q);
-			if ($this->DESK->Database->NumRows($r)>0)
+			$count=$this->DESK->Database->NumRows($r);
+			$this->DESK->Database->Free($r);
+			if ($count>0)
 			{
 				// Already exists in database
 				$q="UPDATE ".$this->DESK->Database->Table("sysconfig")." SET ";
@@ -101,7 +111,9 @@ class Configuration
 				$q.="\"".$this->DESK->Database->Safe($value)."\")";
 			}
 			$this->DESK->Database->Query($q);
+			if ($this->DESK->Database->Error()) return false;
 		}
+		return true;
 	}
 	
 	/**
