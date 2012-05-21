@@ -116,6 +116,33 @@ class FreeDESK
 		// Now the concrete class
 		$this->Database = $this->Include->IncludeInstance("core/database/".$this->BaseConfig->db_System.".php",
 			$this->BaseConfig->db_System);
+			
+		// Configuration Manager
+		$this->Configuration = $this->Include->IncludeInstance("core/Configuration.php","Configuration");
+	}
+	
+	/**
+	 * Start the FreeDESK system, will connect to the database and load configuration
+	 * @return bool True on successful start otherwise false on failure
+	**/
+	function Start()
+	{
+		// Connect to the database
+		if (!$this->Database->Connect($this->BaseConfig->db_Server, $this->BaseConfig->db_Username,
+			$this->BaseConfig->db_Password, $this->BaseConfig->db_Database, $this->BaseConfig->db_Prefix))
+			return false;
+		// Load system configuration
+		$this->Configuration->Load();
+		
+		return true;
+	}
+	
+	/**
+	 * Stop the FreeDESK system - disconnect from the database
+	**/
+	function Stop()
+	{
+		//
 	}
 	
 }

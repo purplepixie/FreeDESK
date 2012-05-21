@@ -37,5 +37,41 @@ $desktest->DESK = $desk;
 $t->passed = true;
 $desktest->Add($t);
 
+$t = new DESKTest($type, $id++, "Start FreeDESK (including DB connect)");
+if ($desktest->DESK->Start())
+	$t->passed = true;
+else
+	$t->failed = true;
+$desktest->Add($t);
 
+$t = new DESKTest($type, $id++, "Check if system.live set");
+$srs="someRandomStrngOrOther";
+$sl = $desktest->DESK->Configuration->Get("system.live",$srs);
+if ($sl == $srs)
+{
+	$t->failed = true;
+	$t->text = "sc_option not set";
+}
+else if ($sl != 1)
+{
+	$t->warning = true;
+	$t->text = "sc_option set to sc_value '"+$sl+"'";
+}
+else
+	$t->passed=true;
+$desktest->Add($t);
+
+
+$t = new DESKTest($type, $id++, "Check default return in config");
+$srs="someRandomStringOfStuff";
+$srv="someRandomOptionValueNotSet";
+$r=$desktest->DESK->Configuration->Get($srv,$srs);
+if ($r == $srs)
+	$t->passed=true;
+else
+{
+	$t->failed=true;
+	$t->text="Failed to get correct default back from Configuration";
+}
+$desktest->Add($t);
 ?>

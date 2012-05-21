@@ -79,7 +79,7 @@ class DESKTester
 			echo "WARNINGS:\n";
 			foreach($this->warnlist as $warn)
 			{
-				echo $warn." : ".$this->tests[$warn]."\n";
+				echo $warn." : ".$this->tests[$warn]->desc." : ".$this->tests[$warn]->text."\n";
 			}
 			echo "\n";
 		}
@@ -89,7 +89,7 @@ class DESKTester
 			echo "FAILURES:\n";
 			foreach($this->faillist as $fail)
 			{
-				echo $fail." : ".$this->tests[$fail]."\n";
+				echo $fail." : ".$this->tests[$fail]->desc." : ".$this->tests[$fail]->text."\n";
 			}
 			echo "\n";
 		}

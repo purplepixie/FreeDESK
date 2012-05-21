@@ -30,6 +30,6 @@ class FreeDESK_Configuration
 	var $db_Username = "freedesk";
 	var $db_Password = "freedesk";
 	var $db_Database = "freedesk";
-	var $db_Prefix = "fd_";
+	var $db_Prefix = "";
 }
 ?>

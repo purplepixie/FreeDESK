@@ -44,7 +44,7 @@ class MySQL extends DatabaseBase
 	 * Constructor
 	 * @param object $freeDESK FreeDESK instance
 	**/
-	function MySQL(&$freekDESK)
+	function MySQL(&$freeDESK)
 	{
 		$this->DESK = $freeDESK;
 	}
@@ -66,7 +66,7 @@ class MySQL extends DatabaseBase
 		$this->connection = mysql_connect($server, $username, $password);
 		if ($this->connection <= 0) return false;
 		
-		if (!mysql_select_db($database, $ths->connection))
+		if (!mysql_select_db($database, $this->connection))
 			return false;
 			
 		return true;
@@ -158,6 +158,15 @@ class MySQL extends DatabaseBase
 	function FetchAssoc(&$result)
 	{
 		return mysql_fetch_assoc($result);
+	}
+	
+	/**
+	 * Free a result set
+	 * @param mixed $result Result Set
+	**/
+	function Free(&$result)
+	{
+		mysql_free_result($result);
 	}
 }
 

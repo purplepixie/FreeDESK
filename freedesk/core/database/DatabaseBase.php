@@ -107,6 +107,12 @@ abstract class DatabaseBase
 	 * @return array Assocative Array of Results
 	**/
 	abstract function FetchAssoc(&$result);
+	
+	/**
+	 * Free a result set
+	 * @param mixed $result Result Set
+	**/
+	abstract function Free(&$result);
 }
 
 ?>
