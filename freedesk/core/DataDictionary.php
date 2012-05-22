@@ -21,6 +21,52 @@ For more information see www.purplepixie.org/freedesk/
 -------------------------------------------------------------- */
 
 /**
+ * Data Dictionary Types of Field
+**/
+abstract class DD_FieldType
+{
+	/**
+	 * Integer
+	**/
+	const Int = 0;
+	/**
+	 * Unsigned Int
+	**/
+	const UnsignedInt = 1;
+	/**
+	 * Char
+	**/
+	const Char = 2;
+	/**
+	 * Float
+	**/
+	const Float = 3;
+	/**
+	 * Datetime
+	**/
+	const DateTime = 4;
+}
+
+/**
+ * Data Dictionary Types of Relationship
+**/
+abstract class DD_RelationshipType
+{
+	/**
+	 * One to One
+	**/
+	const OTO = 0;
+	/**
+	 * One to Many
+	**/
+	const OTM = 2;
+	/**
+	 * Many to Many
+	**/
+	const MTM = 3;
+}
+
+/**
  * Data Dictionary Table class holds information about a table
 **/
 class DD_Table
@@ -45,6 +91,18 @@ class DD_Table
 	{
 		$fields[$field->field] = $field;
 	}
+	/**
+	 * Get a field or return boolean false if not found
+	 * @param string $field Name of field
+	 * @return mixed False on fail or DD_Field of field
+	**/
+	function GetField($field)
+	{
+		if (isset($this->fields[$field])
+			return $this->fields[$field];
+		else
+			return false;
+	}
 }
 
 /**
@@ -65,6 +123,10 @@ class DD_Field
 	**/
 	var $type = "";
 	/**
+	 * Size (length for char/text or range for int)
+	**/
+	var $size = 0;
+	/**
 	 * Searchable (bool)
 	**/
 	var $searchable = false;
@@ -76,6 +138,57 @@ class DD_Field
 	 * Display in standard results flag (bool)
 	**/
 	var $display = true;
+	/**
+	 * Is a foreign key flag (bool)
+	**/
+	var $foreignkey = false;
+	/**
+	 * Binding for foreign key - entity
+	**/
+	var $foreignentity = "";
+	/**
+	 * Binding for foreign key - field
+	**/
+	var $foreignfield = "";
+}
+
+/**
+ * Data Dictionary Relationship class holds information about inter-entity relationships
+**/
+class DD_Relationship
+{
+	/**
+	 * Relationship type (1t1, 1tm, m2m)
+	**/
+	var $type = "";
+	/**
+	 * First entity
+	**/
+	var $firstentity = "";
+	/**
+	 * First field
+	**/
+	var $firstfield = "";
+	/**
+	 * Second entity
+	**/
+	var $secondentity = "";
+	/**
+	 * Second field
+	**/
+	var $secondfield = "";
+	/**
+	 * Link Table (for m2m)
+	**/
+	var $linktable = "";
+	/**
+	 * Link table first field (blank uses same name as firstfield)
+	**/
+	var $linkfirst = "";
+	/**
+	 * Link table second field (blank uses same name as secondfield)
+	**/
+	var $linksecond = "";
 }
 
 /**
@@ -91,6 +204,10 @@ class DataDictionary
 	 * Tables
 	**/
 	var $Tables = array();
+	/**
+	 * Relationships
+	**/
+	var $Relationships = array();
 	
 	/**
 	 * Constructor
@@ -105,9 +222,32 @@ class DataDictionary
 	 * Add a table
 	 * @param mixed $table Table of type DD_Table
 	**/
-	function Add($table)
+	function AddTable($table)
 	{
 		$ths->Tables[$table->entity] = $table;
+	}
+	
+	/**
+	 * Add a relationship
+	 * @param mixed $relationship Data of type DD_Relationship
+	**/
+	function AddRelationship($relationship)
+	{
+		$this->Relationships[] = $relationship;
+	}
+	
+	/**
+	 * Add an item - uses RTTI to discover if a table or a relationship
+	 * @param mixed $data Data (of type DD_Table or DD_Relationship)
+	**/
+	function Add($data)
+	{
+		$class = get_class($data);
+		if ($class == "DD_Table")
+			$this->AddTable($data);
+		else if ($class == "DD_Relationship")
+			$this->AddRelationship($data);
+		// Otherwise we have no idea...
 	}
 }
 

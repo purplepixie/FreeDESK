@@ -147,6 +147,7 @@ class FreeDESK
 		
 		// Data Dictionary
 		$this->DataDictionary = $this->Include->IncludeInstance("core/DataDictionary.php", "DataDictionary");
+		$this->Include->IncludeExec("config/DD.php","FreeDESK_DD");
 		
 	}
 	
