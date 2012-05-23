@@ -139,7 +139,7 @@ abstract class DatabaseBase
 	**/
 	function LastError()
 	{
-		return $this->ErrorCode.": ".$this->ErrorDescription();
+		return $this->ErrorCode().": ".$this->ErrorDescription();
 	}
 }
 

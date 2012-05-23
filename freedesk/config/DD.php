@@ -212,9 +212,9 @@ static function Exec(&$DESK)
 	$f->size=254;
 	$f->searchable=true;
 	$f->display=true;
-	$f->foreignkey=true;
-	$f->foreignentity="user";
-	$f->foreignfield="username";
+	$f->foreignkey=true; 		// n.b. also FK for customer but user just linked internally
+	$f->foreignentity="user"; 	// not that it matters as this isn't handled through entity model
+	$f->foreignfield="username";// but will create OTM link as a DD_Relationship
 	$session->Add($f);
 	
 	$f = new DD_Field();

@@ -137,9 +137,9 @@ class MySQL extends DatabaseBase
 		if ($report && $this->Error()) // has an error and to be reported
 		{
 			$err="Query Failed: ".$query;
+			$error="SQL Error: ".$this->LastError();
 			$this->DESK->LoggingEngine->Log($err, "SQL", "Fail", 1);
-			$err="SQL Error: ".$this->LastError();
-			$this->DESK->LoggingEngine->Log($err, "SQL", "Error", 1);
+			$this->DESK->LoggingEngine->Log($error, "SQL", "Error", 1);
 		}
 		
 		return $result;

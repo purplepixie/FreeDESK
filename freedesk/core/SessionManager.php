@@ -134,7 +134,32 @@ class SessionManager
 	**/
 	function Check($sid)
 	{
-		//
+		$expiry = $this->DESK->Configuration->Get("session.expire","15");
+		
+		// Select session from DB
+		$q="SELECT * FROM ".$this->DESK->Database->Table("session")." WHERE ".$this->DESK->Database->Field("session_id")."=";
+		$q.="\"".$this->DESK->Database->Safe($sid)."\" AND ".$this->DESK->Database->Field("expires_dt").">NOW() LIMIT 0,1";
+		
+		$r=$this->DESK->Database->Query($q);
+		$sess=$this->DESK->Database->FetchAssoc($r);
+		$this->DESK->Database->Free($r);
+		if ($sess) // If session found
+		{
+			// Load session data
+			$session = new Session();
+			$session->sid = $sid;
+			$session->type = $sess['sessiontype'];
+			$session->username = $sess['username'];
+			
+			// And update expiry
+			$q="UPDATE ".$this->DESK->Database->Table("session")." SET ".$this->DESK->Database->Field("updated_dt")."=NOW(),";
+			$q.=$this->DESK->Database->Field("expires_dt")."=DATE_ADD(NOW(), INTERVAL ".$this->DESK->Database->Safe($expiry)." MINUTE) ";
+			$q.="WHERE ".$this->DESK->Database->Field("session_id")."=\"".$this->DESK->Database->Safe($sid)."\"";
+			$this->DESK->Database->Query($q);
+			
+			return $session;
+		}
+		return false;
 	}
 }
 

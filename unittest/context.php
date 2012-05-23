@@ -32,7 +32,23 @@ else
 	$t->passed=false;
 $desktest->Add($t);
 
-$t = new DESKTest($type, $id++, "Fail Open User Context");
+$t = new DESKTest($type, $id++, "Check User Context");
+$sid=$desktest->DESK->ContextManager->Session->sid;
+if ($desktest->DESK->ContextManager->Open(ContextType::User, $sid))
+	$t->passed=true;
+else
+	$t->passed=false;
+$desktest->Add($t);
+
+$t = new DESKTest($type, $id++, "Close Context");
+$desktest->DESK->ContextManager->Close();
+if (!$desktest->DESK->ContextManager->IsOpen())
+	$t->passed=true;
+else
+	$t->passed=false;
+$desktest->Add($t);
+
+$t = new DESKTest($type, $id++, "Fail to Open User Context");
 if ($desktest->DESK->ContextManager->Open(ContextType::User, "", "admin", "wrongPassword"))
 	$t->passed=false;
 else

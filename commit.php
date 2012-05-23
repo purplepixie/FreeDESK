@@ -54,12 +54,6 @@ function writeSQL($file, $contents, $fdsql=false)
 
 $handle = fopen("php://stdin", "r");
 
-echo "SQL Dump (Y/n)? ";
-$sql = fgets($handle,1024);
-if (strtoupper($sql) != "N")
-	$sqldump=true;
-else
-	$sqldump=false;
 
 echo "Commit Message: ";
 $msg = fgets($handle,1024);
@@ -70,6 +64,22 @@ if (strtoupper($push) != "N")
 	$pushgit=true;
 else
 	$pushgit=false;
+
+
+echo "SQL Dump (Y/n)? ";
+$sql = fgets($handle,1024);
+if (strtoupper($sql) != "N")
+	$sqldump=true;
+else
+	$sqldump=false;
+	
+	
+echo "Dropbox (Y/n)? ";
+$dbox = fgets($handle,1024);
+if (strtoupper($dbox) != "N")
+	$dropbox=true;
+else
+	$dropbox=false;
 
 if ($sqldump)
 {
@@ -108,5 +118,11 @@ system("git commit -a -m \"".$msg."\"");
 
 if ($pushgit)
 	system("git push -u origin master");
+
+if ($dropbox)
+{
+	system("mkdir ~/Dropbox/FreeDESK");
+	system("cp -Rf * ~/Dropbox/FreeDESK/");
+}
 
 ?>

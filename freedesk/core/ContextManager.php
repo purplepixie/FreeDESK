@@ -92,6 +92,25 @@ class ContextManager
 	}
 	
 	/**
+	 * Check if context is open
+	 * @return bool open flag
+	**/
+	function IsOpen()
+	{
+		return $this->open;
+	}
+	
+	/**
+	 * Get the current type of open context
+	**/
+	function GetType()
+	{
+		if (!$this->open)
+			return ContextType::None;	// should be that if closed but to be safe
+		return $this->type;
+	}
+	
+	/**
 	 * Check if has permission
 	 * @param string $perm Permission type requested
 	 * @return bool flag indicating if context has permission
@@ -115,12 +134,12 @@ class ContextManager
 	/**
 	 * Open a context
 	 * @param mixed $type Context type (from ContextType consts)
-	 * @param string $session Session ID if existing session (optional)
+	 * @param string $sid Session ID if existing session (optional)
 	 * @param string $username Username (optional)
 	 * @param string $password Password (optional)
 	 * @return bool returns true if successful or false on failure
 	**/
-	function Open($type, $session="", $username="", $password="")
+	function Open($type, $sid="", $username="", $password="")
 	{
 		if ($type == ContextType::System)
 		{
@@ -130,7 +149,7 @@ class ContextManager
 		}
 		else if ($type == ContextType::User)
 		{
-			if ($session=="")
+			if ($sid=="")
 			{
 				$session=$this->SessionManager->Create($type, $username, $password);
 				if (!$session) // session creation failed
@@ -149,7 +168,20 @@ class ContextManager
 			}
 			else // pre-existing session
 			{
-				//
+				$session=$this->SessionManager->Check($sid);
+				if (!$session)
+				{
+					$this->DESK->LoggingEngine->Log("Session Check Failed for SID ".$sid, "Context", "Fail", 9);
+					return false;
+				}
+				else
+				{
+					$this->DESK->LoggingEngine->Log("Session Check for User ".$session->username, "Context", "Check", 9);
+					$this->type = $type;
+					$this->open = true;
+					$this->Session=$session;
+					return true;
+				}
 			}
 		}
 		else if ($type == ContextType::Customer)
@@ -159,6 +191,15 @@ class ContextManager
 		return false;
 	}
 	
+	/**
+	 * Close the open context
+	**/
+	function Close()
+	{
+		$this->Session = null;
+		$this->type = ContextType::None;
+		$this->open = false;
+	}
 	
 	
 }
