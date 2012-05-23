@@ -125,6 +125,140 @@ static function Exec(&$DESK)
 	
 	$DESK->DataDictionary->AddTable($sysconfig);
 	
+	// User Data
+	$user = new DD_Table();
+	$user->name="Users";
+	$user->entity="user";
+	
+	$f = new DD_Field();
+	$f->name="Username";
+	$f->field="username";
+	$f->type=DD_FieldType::Char;
+	$f->size=254;
+	$f->searchable=true;
+	$f->display=true;
+	$f->keyfield=true;
+	$user->Add($f);
+	
+	$f = new DD_Field();
+	$f->name="Password";
+	$f->field="password";
+	$f->type=DD_FieldType::Char;
+	$f->size=254;
+	$f->searchable=false;
+	$f->display=false;
+	$user->Add($f);
+	
+	$f = new DD_Field();
+	$f->name="Real Name";
+	$f->field="realname";
+	$f->type=DD_FieldType::Char;
+	$f->size=254;
+	$f->searchable=true;
+	$f->display=true;
+	$user->Add($f);
+	
+	$f = new DD_Field();
+	$f->name="Email";
+	$f->field="email";
+	$f->type=DD_FieldType::Char;
+	$f->size=254;
+	$f->searchable=true;
+	$f->display=true;
+	$user->Add($f);
+	
+	$f = new DD_Field();
+	$f->name="Auth Type";
+	$f->field="authtype";
+	$f->type=DD_FieldType::Char;
+	$f->size=254;
+	$f->searchable=false;
+	$f->display=false;
+	$user->Add($f);
+	
+	for ($i=0; $i<10; ++$i)
+	{
+		$f = new DD_Field();
+		$f->name="Spare Field ".$i;
+		$f->field="sparefield".$i;
+		$f->type=DD_FieldType::Char;
+		$f->size=254;
+		$f->searchable=true;
+		$f->display=true;
+		$user->Add($f);
+	}
+	
+	$DESK->DataDictionary->AddTable($user);
+	
+	// Session
+	$session = new DD_Table();
+	$session->name="Session";
+	$session->entity="session";
+	
+	$f = new DD_Field();
+	$f->name="Session ID";
+	$f->field="session_id";
+	$f->type=DD_FieldType::Char;
+	$f->size=254;
+	$f->keyfield=true;
+	$f->seachable=true;
+	$f->display=true;
+	$session->Add($f);
+	
+	$f = new DD_Field();
+	$f->name="Username";
+	$f->field="username";
+	$f->type=DD_FieldType::Char;
+	$f->size=254;
+	$f->searchable=true;
+	$f->display=true;
+	$f->foreignkey=true;
+	$f->foreignentity="user";
+	$f->foreignfield="username";
+	$session->Add($f);
+	
+	$f = new DD_Field();
+	$f->name="Session Type";
+	$f->field="sessiontype";
+	$f->type=DD_FieldType::Int;
+	$f->searchable=false;
+	$f->display=false;
+	$session->Add($f);
+	
+	$f = new DD_Field();
+	$f->name="Created DateTime";
+	$f->field="created_dt";
+	$f->type=DD_FieldType::DateTime;
+	$f->searchable=true;
+	$f->display=true;
+	$session->Add($f);
+	
+	$f = new DD_Field();
+	$f->name="Updated DateTime";
+	$f->field="updated_dt";
+	$f->type=DD_FieldType::DateTime;
+	$f->searchable=true;
+	$f->display=true;
+	$session->Add($f);
+	
+	$f = new DD_Field();
+	$f->name="Expires DateTime";
+	$f->field="expires_dt";
+	$f->type=DD_FieldType::DateTime;
+	$f->searchable=true;
+	$f->display=true;
+	$session->Add($f);
+	
+	$DESK->DataDictionary->AddTable($session);
+	
+	$sessionuser = new DD_Relationship();
+	$sessionuser->type=DD_RelationshipType::OTM;
+	$sessionuser->firstentity = "user";
+	$sessionuser->firstfield = "username";
+	$sessionuser->secondentity = "session";
+	$sessionuser->secondfield = "username";
+	
+	$DESK->DataDictionary->AddRelationship($sessionuser);
 }
 
 }

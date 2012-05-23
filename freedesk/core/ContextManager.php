@@ -69,6 +69,16 @@ class ContextManager
 	var $Session = null;
 	
 	/**
+	 * Permission Manager
+	**/
+	private $PermissionManager = null;
+	
+	/**
+	 * Session Manager
+	**/
+	private $SessionManager = null;
+	
+	/**
 	 * Constructor
 	 * @param mixed $freeDESK FreeDESK instance
 	**/
@@ -77,6 +87,8 @@ class ContextManager
 		$this->DESK = &$freeDESK;
 		$this->DESK->PluginManager->Register(new Plugin(
 			"Context Manager", "0.01", "Core" ));
+		// Load the SessionManager
+		$this->SessionManager = $this->DESK->Include->IncludeInstance("core/SessionManager.php","SessionManager");
 	}
 	
 	/**
@@ -118,7 +130,27 @@ class ContextManager
 		}
 		else if ($type == ContextType::User)
 		{
-			//
+			if ($session=="")
+			{
+				$session=$this->SessionManager->Create($type, $username, $password);
+				if (!$session) // session creation failed
+				{
+					$this->DESK->LoggingEngine->Log("Session Creation Failed for User ".$username, "Context", "Fail", 4);
+					return false;
+				}
+				else
+				{
+					$this->DESK->LoggingEngine->Log("Session Created for User ".$username, "Context", "Open", 9);
+					$this->type = $type;
+					$this->open = true;
+					$this->Session=$session;
+					return true;
+				}
+			}
+			else // pre-existing session
+			{
+				//
+			}
 		}
 		else if ($type == ContextType::Customer)
 		{

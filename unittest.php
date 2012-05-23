@@ -106,8 +106,9 @@ class DESKTester
 $desktest = new DESKTester();
 
 require("unittest/core.php");
+require("unittest/context.php");
 		
-print_r($desktest->DESK->PluginManager->GetAll());
+//print_r($desktest->DESK->PluginManager->GetAll());
 		
 $desktest->Summary();
 		

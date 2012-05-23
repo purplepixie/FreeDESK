@@ -124,6 +124,8 @@ class FreeDESK
 		
 		// Plugin Manager
 		$this->PluginManager = $this->Include->IncludeInstance("core/PluginManager.php","PluginManager");
+		// And the PIM Base
+		$this->Include->IncludeFile("core/FreeDESK_PIM.php");
 		
 		// Register Ourselves
 		$core = new Plugin();
@@ -151,6 +153,13 @@ class FreeDESK
 		
 		// Context Manager
 		$this->ContextManager = $this->Include->IncludeInstance("core/ContextManager.php", "ContextManager");
+		
+		// Authentication Methods
+		// The core files
+		$this->Include->IncludeFile("core/auth/AuthMethodBase.php");
+		$this->Include->IncludeFile("core/auth/AuthenticationFactory.php");
+		// Inbuilt Methods
+		$this->Include->IncludeExec("core/auth/AuthMethodStandard.php","AuthMethodStandard");
 		
 	}
 	
