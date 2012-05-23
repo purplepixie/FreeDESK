@@ -42,7 +42,7 @@ class IncludeManager
 	**/
 	function IncludeManager(&$freeDESK, $baseDir)
 	{
-		$this->DESK = $freeDESK;
+		$this->DESK = &$freeDESK;
 		$this->baseDir = $baseDir;
 	}
 

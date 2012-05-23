@@ -215,7 +215,7 @@ class DataDictionary
 	**/
 	function DataDictionary(&$freeDESK)
 	{
-		$this->DESK = $freeDESK;
+		$this->DESK = &$freeDESK;
 		$this->DESK->PluginManager->Register(new Plugin(
 			"Data Dictionary", "0.01", "Core" ));
 	}

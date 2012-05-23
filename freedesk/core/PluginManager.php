@@ -84,7 +84,7 @@ class PluginManager
 	**/
 	function PluginManager(&$freeDESK)
 	{
-		$this->DESK = $freeDESK;
+		$this->DESK = &$freeDESK;
 	}
 	
 	/**

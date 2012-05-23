@@ -36,7 +36,7 @@ class LogMethodDB extends LogMethodBase
 	**/
 	function LogMethodDB(&$freeDESK)
 	{
-		$this->DESK = $freeDESK;
+		$this->DESK = &$freeDESK;
 		$this->DESK->PluginManager->Register(new Plugin(
 			"Core Database Logging", "0.01", "Log", "Database", "LogMethodDB" ));
 	}

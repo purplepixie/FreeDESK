@@ -107,6 +107,7 @@ $desktest = new DESKTester();
 
 require("unittest/core.php");
 		
+print_r($desktest->DESK->PluginManager->GetAll());
 		
 $desktest->Summary();
 		

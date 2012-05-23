@@ -46,7 +46,7 @@ class MySQL extends DatabaseBase
 	**/
 	function MySQL(&$freeDESK)
 	{
-		$this->DESK = $freeDESK;
+		$this->DESK = &$freeDESK;
 		
 		$this->DESK->PluginManager->Register(new Plugin(
 			"MySQL Database Engine","0.01","Core","DB" ));

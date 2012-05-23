@@ -178,7 +178,7 @@ class FreeDESK
 	**/
 	function Stop()
 	{
-		//
+		$this->Database->Disconnect();
 	}
 	
 }

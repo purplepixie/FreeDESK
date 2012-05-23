@@ -74,7 +74,7 @@ class ContextManager
 	**/
 	function ContextManager(&$freeDESK)
 	{
-		$this->DESK = $freeDESK;
+		$this->DESK = &$freeDESK;
 		$this->DESK->PluginManager->Register(new Plugin(
 			"Context Manager", "0.01", "Core" ));
 	}

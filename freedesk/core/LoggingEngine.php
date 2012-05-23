@@ -48,7 +48,7 @@ class LoggingEngine
 	**/
 	function LoggingEngine(&$freeDESK)
 	{
-		$this->DESK=$freeDESK;
+		$this->DESK=&$freeDESK;
 		$this->DESK->Include->IncludeFile("core/LogMethodBase.php");
 		$this->DESK->PluginManager->Register(new Plugin(
 			"Logging Engine", "0.01", "Core" ));

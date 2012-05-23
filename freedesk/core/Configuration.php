@@ -39,7 +39,7 @@ class Configuration
 	**/
 	function Configuration(&$freeDESK)
 	{
-		$this->DESK = $freeDESK;
+		$this->DESK = &$freeDESK;
 		$this->DESK->PluginManager->Register(new Plugin(
 			"System-Wide Configuration Engine","0.01","Core" ));
 	}
