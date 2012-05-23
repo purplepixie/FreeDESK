@@ -132,8 +132,7 @@ if ($pushgit)
 
 if ($dropbox)
 {
-	system("mkdir ~/Dropbox/FreeDESK");
-	system("cp -Rf * ~/Dropbox/FreeDESK/");
+	system("cp -Rf ../FreeDESK ~/Dropbox/");
 }
 
 ?>
