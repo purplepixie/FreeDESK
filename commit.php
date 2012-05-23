@@ -60,15 +60,15 @@ $msg = fgets($handle,1024);
 
 echo "Push to GITHUB (Y/n)? ";
 $push = fgets($handle,1024);
-if (strtoupper($push) != "N")
-	$pushgit=true;
-else
+if (strtoupper($push[0]) == "N")
 	$pushgit=false;
+else
+	$pushgit=true;
 
 
 echo "SQL Dump (Y/n)? ";
 $sql = fgets($handle,1024);
-if (strtoupper($sql) != "N")
+if (strtoupper($sql[0]) != "N")
 	$sqldump=true;
 else
 	$sqldump=false;
@@ -76,10 +76,20 @@ else
 	
 echo "Dropbox (Y/n)? ";
 $dbox = fgets($handle,1024);
-if (strtoupper($dbox) != "N")
+if (strtoupper($dbox[0]) != "N")
 	$dropbox=true;
 else
 	$dropbox=false;
+
+fclose($handle);
+
+/*
+if ($pushgit) echo "push\n";
+if ($sqldump) echo "sql\n";
+if ($dropbox) echo "dropbox\n";
+*/
+
+
 
 if ($sqldump)
 {
@@ -113,6 +123,7 @@ if ($sqldump)
 	writeSQL("freedesk/sql/schema.fdsql",$schema,true);
 	writeSQL("freedesk/sql/upgrade.fdsql",$myrug,true);
 }
+
 
 system("git commit -a -m \"".$msg."\"");
 
