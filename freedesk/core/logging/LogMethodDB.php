@@ -52,10 +52,10 @@ class LogMethodDB extends LogMethodBase
 	{
 		if (strlen($event)>254)
 			$event=substr($event,0,251)."...";
-		$q="INSERT INTO ".$this->DESK->Database->Table("syslog")."(";
+		$q="INSERT INTO ".$this->DESK->Database->Table("syslog")."(".$this->DESK->Database->Field("event_dt").",";
 		$q.=$this->DESK->Database->Field("event").",".$this->DESK->Database->Field("event_class").",";
 		$q.=$this->DESK->Database->Field("event_type").",".$this->DESK->Database->Field("event_level").") ";
-		$q.="VALUES(\"".$this->DESK->Database->Safe($event)."\",\"".$this->DESK->Database->Safe($class)."\",";
+		$q.="VALUES(NOW(),\"".$this->DESK->Database->Safe($event)."\",\"".$this->DESK->Database->Safe($class)."\",";
 		$q.="\"".$this->DESK->Database->Safe($type)."\",".$this->DESK->Database->Safe($level).")";
 		
 		

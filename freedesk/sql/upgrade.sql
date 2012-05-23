@@ -14,6 +14,8 @@ ALTER TABLE `sysconfig` ADD `sc_value` varchar(254) NOT NULL;
 ALTER TABLE `syslog` CHANGE `event_id` `event_id` bigint(20) unsigned NOT NULL auto_increment;
 ALTER TABLE `syslog` ADD `event_id` bigint(20) unsigned NOT NULL auto_increment;
 ALTER TABLE `syslog` ADD PRIMARY KEY( `event_id` );
+ALTER TABLE `syslog` CHANGE `event_dt` `event_dt` datetime NOT NULL;
+ALTER TABLE `syslog` ADD `event_dt` datetime NOT NULL;
 ALTER TABLE `syslog` CHANGE `event` `event` varchar(254) NOT NULL;
 ALTER TABLE `syslog` ADD `event` varchar(254) NOT NULL;
 ALTER TABLE `syslog` CHANGE `event_class` `event_class` varchar(128) NOT NULL;

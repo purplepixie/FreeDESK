@@ -24,6 +24,10 @@ For more information see www.purplepixie.org/freedesk/
 // RATHER USE A PLUGIN MODULE OR OTHER USER-SCRIPT TO ADD DD
 // DATA!
 
+// Of course you are free to change this file - this is open-source
+// after all but if you do not only will it be overwritten but you
+// could well break your install... You have been warned!
+
 /**
  * FreeDESK Main Core Data Dictionary Definitions - do not edit as will be overwritten on upgrade
 **/
@@ -49,6 +53,14 @@ static function Exec(&$DESK)
 	$event_id->keyfield = true;
 	$event_id->display = true;
 	$syslog->Add($event_id);
+	
+	$event_dt = new DD_Field();
+	$event_dt->name = "Event DateTime";
+	$event_dt->field = "event_dt";
+	$event_dt->type = DD_FieldType::DateTime;
+	$event_dt->searchable = true;
+	$event_dt->display = true;
+	$syslog->Add($event_dt);
 	
 	$event = new DD_Field();
 	$event->name="Event";

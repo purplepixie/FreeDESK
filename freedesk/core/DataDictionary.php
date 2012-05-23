@@ -98,7 +98,7 @@ class DD_Table
 	**/
 	function GetField($field)
 	{
-		if (isset($this->fields[$field])
+		if (isset($this->fields[$field]))
 			return $this->fields[$field];
 		else
 			return false;
@@ -216,6 +216,8 @@ class DataDictionary
 	function DataDictionary(&$freeDESK)
 	{
 		$this->DESK = $freeDESK;
+		$this->DESK->PluginManager->Register(new Plugin(
+			"Data Dictionary", "0.01", "Core" ));
 	}
 	
 	/**

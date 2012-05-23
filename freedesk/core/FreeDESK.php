@@ -28,7 +28,7 @@ class FreeDESK
 	/**
 	 * Major and Minor Version
 	**/
-	private $majorVersion = 0.00;
+	private $majorVersion = "0.00";
 	/**
 	 * Patch Level
 	**/
@@ -147,7 +147,10 @@ class FreeDESK
 		
 		// Data Dictionary
 		$this->DataDictionary = $this->Include->IncludeInstance("core/DataDictionary.php", "DataDictionary");
-		$this->Include->IncludeExec("config/DD.php","FreeDESK_DD");
+		$this->Include->IncludeExec("config/DD.php","FreeDESK_DD"); // Core DD
+		
+		// Context Manager
+		$this->ContextManager = $this->Include->IncludeInstance("core/ContextManager.php", "ContextManager");
 		
 	}
 	
