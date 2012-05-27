@@ -134,6 +134,9 @@ class FreeDESK
 		$core->type="Core";
 		$this->PluginManager->Register($core);
 		
+		// XML Creator
+		$this->Include->IncludeExec("core/XML.php","xmlCreate");
+		
 		// Database Engine
 		// First include the base class
 		$this->Include->IncludeFile("core/database/DatabaseBase.php");
@@ -160,6 +163,12 @@ class FreeDESK
 		$this->Include->IncludeFile("core/auth/AuthenticationFactory.php");
 		// Inbuilt Methods
 		$this->Include->IncludeExec("core/auth/AuthMethodStandard.php","AuthMethodStandard");
+		
+		// Entity Classes
+		$this->Include->IncludeFile("core/entity/EntityBase.php");
+		$this->Include->IncludeFile("core/entity/EntityList.php");
+		$this->Include->IncludeExec("core/entity/Entity.php","Entity");
+		
 		
 	}
 	
