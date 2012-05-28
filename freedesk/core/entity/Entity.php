@@ -33,7 +33,7 @@ class Entity extends EntityBase
 static function Exec(&$desk)
 {
 	$desk->PluginManager->Register(new Plugin(
-		"Standard Entity", "0.01", "Entity", "" ));
+		"Standard Entity", "0.01", "Entity", "", "Entity" ));
 }
 
 /**

@@ -84,6 +84,10 @@ class DD_Table
 	**/
 	var $fields = array();
 	/**
+	 * Entity class - for EntityFactory use
+	**/
+	var $class = "";
+	/**
 	 * Add a field to the table
 	 * @param mixed $field Field data of type DD_Field
 	**/
@@ -102,6 +106,18 @@ class DD_Table
 			return $this->fields[$field];
 		else
 			return false;
+	}
+	
+	/**
+	 * Set a field value
+	 * @param string $field Field name
+	 * @param string $item Item/member name
+	 * @param mixed $value Value to set item to
+	**/
+	function SetVal($field, $item, $value)
+	{
+		if (isset($fields[$field]))
+			$fields[$field]->$item = $value;
 	}
 }
 
@@ -150,6 +166,10 @@ class DD_Field
 	 * Binding for foreign key - field
 	**/
 	var $foreignfield = "";
+	/**
+	 * Is read-only
+	**/
+	var $readonly = false;
 }
 
 /**
@@ -226,7 +246,56 @@ class DataDictionary
 	**/
 	function AddTable($table)
 	{
-		$ths->Tables[$table->entity] = $table;
+		$this->Tables[$table->entity] = $table;
+	}
+	
+	/**
+	 * Get a table
+	 * @param string $table Entity name
+	 * @return mixed DD_Table if set otherwise bool false
+	**/
+	function GetTable($table)
+	{
+		if (isset($this->Tables[$table]))
+			return $this->Tables[$table];
+		else
+			return false;
+	}
+	
+	/**
+	 * Add TO a table (add a field to an existing table)
+	 * @param string $table Table entity
+	 * @param mixed $field Field (of form DD_Field)
+	**/
+	function AddToTable($table, $field)
+	{
+		if (isset($this->Tables[$table]))
+			$this->Tables[$table]->Add($field);
+	}
+	
+	/**
+	 * Set a field value in a table
+	 * @param string $table Table entity
+	 * @param string $field Field name
+	 * @param string $item Item to set
+	 * @param mixed $value Value to set item to
+	**/
+	function SetFieldVal($table, $field, $item, $value)
+	{
+		if (isset($this->Tables[$table]))
+			$this->Tables[$table]->SetVal($field, $item, $value);
+	}
+	
+	/**
+	 * Set a table value
+	 * @param string $table Table entity
+	 * @param string $item Item to set
+	 * @param mixed $value Value to set item to
+	**/
+	function SetTableVal($table, $item, $value)
+	{
+		if (isset($this->Tables[$table]))
+			$this->Tables[$table]->$item = $value;
 	}
 	
 	/**
