@@ -31,5 +31,6 @@ class FreeDESK_Configuration
 	var $db_Password = "freedesk";
 	var $db_Database = "freedesk";
 	var $db_Prefix = "";
+	var $pwd_Hash = "";
 }
 ?>

@@ -47,6 +47,7 @@ class AuthMethodStandard extends AuthMethodBase
 	
 		if ($type == ContextType::User)
 		{
+			$password=$this->DESK->BaseConfig->pwd_Hash.$password; // add the hash to the password
 			$q="SELECT * FROM ".$this->DESK->Database->Table("user")." WHERE ";
 			$q.=$this->DESK->Database->Field("username")."=\"".$this->DESK->Database->Safe($username)."\" AND ";
 			$q.=$this->DESK->Database->Field("password")."=MD5(\"".$this->DESK->Database->Safe($password)."\") ";
@@ -63,6 +64,20 @@ class AuthMethodStandard extends AuthMethodBase
 		// TODO: Customer Authentication
 		
 		return $valid;
+	}
+	
+	/**
+	 * Set a standard user password - note no security here and that this is NOT a AutoMethodBase overrided function
+	 * @param string $username Username
+	 * @param string $password Password
+	**/
+	function SetPassword($username, $password)
+	{
+		$password=$this->DESK->BaseConfig->pwd_Hash.$password;
+		$q="UPDATE ".$this->DESK->Database->Table("user")." SET ";
+		$q.=$this->DESK->Database->Field("password")."=\"".$this->DESK->Database->Safe($password)."\" ";
+		$q.="WHERE ".$this->DESK->Database->Field("username")."=\"".$this->DESK->Database->Safe($username)."\"";
+		$this->DESK->Database->Query($q);
 	}
 	
 	/**

@@ -54,6 +54,12 @@ class FreeDESK
 		return $this->Version().$this->releaseFlag;
 	}
 	
+	
+	/**
+	 * Base Directory
+	**/
+	var $BaseDir = "";
+	
 	// Component Class Instances
 	
 	/**
@@ -106,6 +112,11 @@ class FreeDESK
 	**/
 	var $Include = null;
 	
+	/**
+	 * Skin
+	**/
+	var $Skin = null;
+	
 	// Methods and Processes in Main FreeDESK class
 	
 	/**
@@ -114,6 +125,7 @@ class FreeDESK
 	**/
 	function FreeDESK($baseDir)
 	{
+		$this->BaseDir = $baseDir;
 		// First include and instantiate the include system for all further includes
 		require($baseDir."core/IncludeManager.php");
 			//or die("Cannot open core/IncludeManager.php - fatal error");
@@ -170,7 +182,8 @@ class FreeDESK
 		$this->Include->IncludeExec("core/entity/Entity.php","Entity");
 		$this->Include->IncludeExec("core/entity/EntityFactory.php", "EntityFactory");
 		
-		
+		// Skin
+		$this->Skin = $this->Include->IncludeInstance("core/Skin.php","Skin");
 	}
 	
 	/**
