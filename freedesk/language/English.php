@@ -21,17 +21,23 @@ For more information see www.purplepixie.org/freedesk/
 -------------------------------------------------------------- */
 
 /**
- * Main index (web interface) file
+ * FreeDESK English Class - this is the base set of language elements
 **/
-ob_start();
-include("core/FreeDESK.php");
-$DESK = new FreeDESK("./");
-ob_end_clean();
+class FDL_English
+{
+/**
+ * Load Language Elements
+ * @param array &$i Items array (reference)
+**/
+static function English(&$i)
+{
+$i['welcome'] = "Welcome to FreeDESK";
+$i['login'] = "Login to FreeDESK";
+$i['username'] = "Username";
+$i['password'] = "Password";
+$i['login_fail'] = "Login Failed";
 
-$data=array("title"=>"Welcome to FreeDESK");
-$DESK->Skin->IncludeFile("header.php",$data);
+}
 
-$DESK->Skin->IncludeFile("login.php");
-
-$DESK->Skin->IncludeFile("footer.php");
+}
 ?>

@@ -21,17 +21,51 @@ For more information see www.purplepixie.org/freedesk/
 -------------------------------------------------------------- */
 
 /**
- * Main index (web interface) file
+ * Error Codes
 **/
-ob_start();
-include("core/FreeDESK.php");
-$DESK = new FreeDESK("./");
-ob_end_clean();
+class ErrorCode
+{
+	const FailedLogin = 101;
+	const SessionExpired = 102;
+}
 
-$data=array("title"=>"Welcome to FreeDESK");
-$DESK->Skin->IncludeFile("header.php",$data);
-
-$DESK->Skin->IncludeFile("login.php");
-
-$DESK->Skin->IncludeFile("footer.php");
+/**
+ * FreeDESK Error
+**/
+class FreeDESK_Error
+{
+	/**
+	 * Code
+	**/
+	var $Code = 0;
+	/**
+	 * Text
+	**/
+	var $Text = "";
+	/**
+	 * Constructor
+	 * @param int $code Error Code (ErrorCode::)
+	 * @param string $text Text (optional, default "")
+	**/
+	function FreeDESK_Error($code, $text="")
+	{
+		$this->Code=$code;
+		$this->Text=$text;
+	}
+	/**
+	 * Get Error as XML
+	 * @param bool $header Put on XML header (optional, default false)
+	 * @return string XML data
+	**/
+	function XML($header=false)
+	{
+		$xml = new xmlCreate();
+		$data=array("code"=>$this->Code);
+		$xml->startElement("error",$data);
+		$xml->charElement("code",$this->Code);
+		$xml->charElement("text",$this->Text,0,false,true);
+		$xml->endElement("error");
+		return $xml->getXML($header);
+	}
+}
 ?>

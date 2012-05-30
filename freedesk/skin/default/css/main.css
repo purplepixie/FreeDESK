@@ -75,3 +75,46 @@ div.footer a
 {
 	color: white;
 }
+
+div.login_form
+{
+	margin-left: auto;
+	margin-right: auto;
+	width: 30em;
+	margin-top: 3em;
+	margin-bottom: 3em;
+}
+
+div.login_header
+{
+	background: black;
+	-moz-border-radius-topleft: 1em;
+	-webkit-border-top-left-radius: 1em;
+	-moz-border-radius-topright: 1em;
+	-webkit-border-top-right-radius: 1em;
+	border-top-left-radius: 1em;
+	border-top-right-radius: 1em;
+	padding: 0.5em;
+	color: white;
+	font-weight: bold;
+}
+
+div.login_content
+{
+	padding: 1em;
+	border-left: 2px solid black;
+	border-right: 2px solid black;
+}
+
+div.login_footer
+{
+	background: black;
+	-moz-border-radius-bottomleft: 1em;
+	-webkit-border-bottom-left-radius: 1em;
+	-moz-border-radius-bottomright: 1em;
+	-webkit-border-bottom-right-radius: 1em;
+	border-bottom-left-radius: 1em;
+	border-bottom-right-radius: 1em;
+	padding: 0.5em;
+}
+

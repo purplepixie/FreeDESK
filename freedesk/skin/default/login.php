@@ -19,19 +19,14 @@ along with FreeDESK.  If not, see www.gnu.org/licenses
 
 For more information see www.purplepixie.org/freedesk/
 -------------------------------------------------------------- */
-
-/**
- * Main index (web interface) file
-**/
-ob_start();
-include("core/FreeDESK.php");
-$DESK = new FreeDESK("./");
-ob_end_clean();
-
-$data=array("title"=>"Welcome to FreeDESK");
-$DESK->Skin->IncludeFile("header.php",$data);
-
-$DESK->Skin->IncludeFile("login.php");
-
-$DESK->Skin->IncludeFile("footer.php");
 ?>
+<div id="login_form" class="login_form">
+<div id="login_header" class="login_header">
+<?php echo $DESK->Lang->Get("login"); ?>
+</div>
+<div id="login_content" class="login_content">
+Blah
+</div>
+<div id="login_footer" class="login_footer"></div>
+</div>
+

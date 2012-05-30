@@ -131,6 +131,27 @@ class Skin
 		return file_get_contents($filename);
 	}
 	
+	/**
+	 * Common Header Items
+	 * @return string Header items in HTML
+	**/
+	function CommonHeader()
+	{
+		$out="\n<script type=\"text/javascript\" src=\"js/ajax.js\"></script>\n";
+		
+		return $out;
+	}
+	
+	/**
+	 * Common Footer Items (pre end of HTML)
+	 * @return string Footer items in HTML
+	**/
+	function CommonFooter()
+	{
+		$out = "";
+		return $out;
+	}
+	
 }
 ?>
 	

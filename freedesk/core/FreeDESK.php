@@ -117,6 +117,11 @@ class FreeDESK
 	**/
 	var $Skin = null;
 	
+	/**
+	 * Language
+	**/
+	var $Lang = null;
+	
 	// Methods and Processes in Main FreeDESK class
 	
 	/**
@@ -130,6 +135,9 @@ class FreeDESK
 		require($baseDir."core/IncludeManager.php");
 			//or die("Cannot open core/IncludeManager.php - fatal error");
 		$this->Include = new IncludeManager($this, $baseDir);
+		
+		// Error Containers
+		$this->Include->IncludeFile("core/Error.php");
 		
 		// Now the basic configuration
 		$this->BaseConfig = $this->Include->IncludeInstance("config/Config.php","FreeDESK_Configuration",false);
@@ -184,6 +192,9 @@ class FreeDESK
 		
 		// Skin
 		$this->Skin = $this->Include->IncludeInstance("core/Skin.php","Skin");
+		
+		// Language
+		$this->Lang = $this->Include->IncludeInstance("core/Language.php", "Language");
 	}
 	
 	/**

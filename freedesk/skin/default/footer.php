@@ -33,6 +33,9 @@ For more information see www.purplepixie.org/freedesk/
 </div>
 
 </div>
+<?php
+echo $DESK->Skin->CommonFooter();
+?>
 </body>
 </html>
 

@@ -36,7 +36,7 @@ echo "<title>".$title."</title>\n";
 
 echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"".$DESK->Skin->GetWebLocation("css/main.css")."\" />\n";
 
-
+echo $DESK->Skin->CommonHeader();
 ?>
 </head>
 <body>
