@@ -20,19 +20,32 @@ along with FreeDESK.  If not, see www.gnu.org/licenses
 For more information see www.purplepixie.org/freedesk/
 -------------------------------------------------------------- */
 
-/**
- * Main index (web interface) file
-**/
 ob_start();
 include("core/FreeDESK.php");
 $DESK = new FreeDESK("./");
 ob_end_clean();
 
-$data=array("title"=>"Welcome to FreeDESK");
-$DESK->Skin->IncludeFile("header.php",$data);
+if (!isset($_REQUEST['mode']))
+{
+	$error = new FreeDESK_Error(ErrorCode::UnknownMode, "Unknown Mode");
+	echo $error->XML(true);
+	exit();
+}
 
+if ($_REQUEST['mode']=="login")
+{
+	// TODO: Other Login Modes
+	if ($DESK->ContextManager->Open(ContextType::User, "", $_REQUEST['username'], $_REQUEST['password']))
+	{
+		echo $DESK->ContextManager->Session->XML(true);
+		exit();
+	}
+	else // Login failed
+	{
+		$error = new FreeDESK_Error(ErrorCode::FailedLogin, "Login Failed");
+		echo $error->XML(true);
+		exit();
+	}
+}
 
-$DESK->Skin->IncludeFile("login.php"); // DEBUG:,array("errorflag"=>1));
-
-$DESK->Skin->IncludeFile("footer.php");
 ?>

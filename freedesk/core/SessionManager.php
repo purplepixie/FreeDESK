@@ -54,6 +54,19 @@ class Session
 		}
 		return $this->sid;
 	}
+	/**
+	 * Return XML Description of the Session
+	 * @param bool $header Return XML header (optional, default false)
+	 * @return string XML Data
+	**/
+	function XML($header=false)
+	{
+		$xml = new xmlCreate();
+		$xml->startElement("session");
+		$xml->charElement("type",$this->type);
+		$xml->charElement("sid",$this->sid);
+		$xml->charElement("username",$this->username);
+	}
 }
 
 /**

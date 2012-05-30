@@ -47,6 +47,7 @@ class Language
 	function Language(&$freeDESK)
 	{
 		$this->DESK = &$freeDESK;
+		$this->default = $this->DESK->Configuration->Get("language.default","English");
 		$this->Load($this->default, true);
 	}
 	

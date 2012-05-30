@@ -29,7 +29,13 @@ For more information see www.purplepixie.org/freedesk/
 </div>
 
 <div id="footer" class="footer">
-<a href="http://freedesk.purplepixie.org/">FreeDESK</a> &copy; Copyright 2012 <a href="http://www.purplepixie.org/dave/">David Cutting</a>, all rights reserved
+<?php
+if ($DESK->ContextManager->IsOpen())
+	$vers=" ".$DESK->FullVersion()." ";
+else
+	$vers="";
+?>
+<a href="http://freedesk.purplepixie.org/">FreeDESK</a> <?php echo $vers; ?>&copy; Copyright 2012 <a href="http://www.purplepixie.org/dave/">David Cutting</a>, all rights reserved
 </div>
 
 </div>

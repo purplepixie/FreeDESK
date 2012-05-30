@@ -27,6 +27,8 @@ class ErrorCode
 {
 	const FailedLogin = 101;
 	const SessionExpired = 102;
+	
+	const UnknownMode = 201;
 }
 
 /**

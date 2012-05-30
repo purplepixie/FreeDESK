@@ -26,18 +26,18 @@ function ServerRequest()
 {
 	this.callback = ""; // callback function
 	this.url = ""; // URL
-	this.additional = array(); // Additional data
+	this.additional = new Array(); // Additional data
 	this.xmlhttp = false; // XML HTTP Request Object
 	
 	this.makeXmlHttp = function()
 	{
-		if (window.XMLHttpRequest) // all good browsers
+		if (window.XMLHttpRequest) // all good browsers and indeed IE nowadays
 		{
 			this.xmlhttp = new XMLHttpRequest;
 			if (this.xmlhttp.overrideMimeType)
 				this.xmlhttp.overrideMimeType("text/xml");
 		}
-		else if (window.ActiveXObject) // Satan's Browser
+		else if (window.ActiveXObject) // Satan's Browser (old IE or Exploiter 7+ with XMLHttp Disabled)
 		{
 			try
 			{
@@ -54,6 +54,10 @@ function ServerRequest()
 					// No Microsoft WHAT HAVE YOU DONE??!?
 				}
 			}
+		}
+		else
+		{
+			// Dear lord are we running in lynx ??!?
 		}
 		
 		if (!this.xmlhttp)
@@ -90,4 +94,5 @@ function ServerRequest()
 		this.xmlhttp.send();
 	}
 	
+}
 

@@ -104,6 +104,7 @@ div.login_content
 	padding: 1em;
 	border-left: 2px solid black;
 	border-right: 2px solid black;
+	clear: both;
 }
 
 div.login_footer
@@ -116,5 +117,32 @@ div.login_footer
 	border-bottom-left-radius: 1em;
 	border-bottom-right-radius: 1em;
 	padding: 0.5em;
+	
+}
+
+div.login_title
+{
+	width: 40%;
+	float: left;
+	/* text-align: right;
+	padding-right: 2em; */
+	clear: both;
+}
+
+div.login_field
+{
+	width: 58%;
+	float: left;
+}
+
+div.login_button
+{
+	text-align: center;
+}
+
+div.error
+{
+	color: red;
+	font-weight: bold;
 }
 
