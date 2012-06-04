@@ -137,7 +137,9 @@ class Skin
 	**/
 	function CommonHeader()
 	{
-		$out="\n<script type=\"text/javascript\" src=\"js/ajax.js\"></script>\n";
+		$out="\n<script type=\"text/javascript\" src=\"js/freedesk.js\"></script>\n";
+		$out.="<script type=\"text/javascript\" src=\"js/ajax.js\"></script>\n";
+		
 		
 		return $out;
 	}

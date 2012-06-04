@@ -1,4 +1,3 @@
-<?php 
 /* -------------------------------------------------------------
 This file is part of FreeDESK
 
@@ -19,21 +18,35 @@ along with FreeDESK.  If not, see www.gnu.org/licenses
 
 For more information see www.purplepixie.org/freedesk/
 -------------------------------------------------------------- */
-?>
-<div id="login_form" class="login_form">
-<div id="login_header" class="login_header">
-<?php echo $DESK->Lang->Get("login"); ?>
-</div>
-<div id="login_content" class="login_content">
-<div class="login_title"><?php echo $DESK->Lang->Get("username"); ?></div>
-<div class="login_field"><input type="text" name="username" size="15" id="login_username" /></div>
-<br />
-<div class="login_title"><?php echo $DESK->Lang->Get("password"); ?></div>
-<div class="login_field"><input type="password" name="password" size="15" id="login_password" /></div>
-<br /><br />
-<div class="login_button"><input type="submit" value="<?php echo $DESK->Lang->Get("login"); ?>" onclick="DESK.login_click()" /></div>
-<div id="login_message"></div>
-</div>
-<div id="login_footer" class="login_footer"></div>
-</div>
-<div id="screen_backdrop" class="screen_backdrop"></div>
+
+/**
+ * The main FreeDESK JavaScript client-side code
+**/
+
+function FreeDESK()
+{
+	this.sid = ""; // Session ID
+
+	this.login_action = function(responseXML)
+	{
+		//alert(responseXML);
+		var txt = document.createTextNode(responseXML);
+		document.getElementById("login_content").appendChild(txt);
+	}
+
+	this.login_click=function()
+	{
+		var req = new ServerRequest();
+		req.url = "api.php?mode=login&type=user&username="
+			+document.getElementById("login_username").value
+			+"&password="
+			+document.getElementById("login_password").value;
+		req.callback = login_action;
+		req.Get();
+	}
+
+
+}
+
+var DESK = new FreeDESK();
+

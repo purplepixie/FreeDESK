@@ -23,16 +23,44 @@ For more information see www.purplepixie.org/freedesk/
 /**
  * Main index (web interface) file
 **/
+
+// First check for the existance of setup.php and go there if it exists
+if (file_exists("setup.php"))
+{
+	header("Location: setup.php");
+	exit();
+}
+
+// Output buffer on and start FreeDESK then discard startup whitespace-spam
 ob_start();
 include("core/FreeDESK.php");
 $DESK = new FreeDESK("./");
 ob_end_clean();
 
+
+
 $data=array("title"=>"Welcome to FreeDESK");
 $DESK->Skin->IncludeFile("header.php",$data);
-
-
+/*
+echo "<div class=\"spacer\"><br /></div>\n";
+echo "<div class=\"spacer\"><br /></div>\n";
+echo "<div class=\"spacer\"><br /></div>\n";
+echo "<div class=\"spacer\"><br /></div>\n";
+echo "<div class=\"spacer\"><br /></div>\n";
+echo "<div class=\"spacer\"><br /></div>\n";
+echo "<div class=\"spacer\"><br /></div>\n";
+echo "<div class=\"spacer\"><br /></div>\n";
+echo "<div class=\"spacer\"><br /></div>\n";
+echo "<div class=\"spacer\"><br /></div>\n";
+*/
 $DESK->Skin->IncludeFile("login.php"); // DEBUG:,array("errorflag"=>1));
+
+?>
+<script type="text/javascript">
+document.getElementById("login_form").style.display = 'block';
+document.getElementById('screen_backdrop').style.display = 'block';
+</script>
+<?php
 
 $DESK->Skin->IncludeFile("footer.php");
 ?>
