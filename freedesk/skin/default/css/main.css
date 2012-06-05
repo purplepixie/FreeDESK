@@ -36,6 +36,8 @@ div.pageframe
 	-moz-border-radius: 1.5em;
 	-webkit-border-radius: 1.5em;
 	border-radius: 1.5em;
+	border-left: solid 2px black;
+	border-right: solid 2px black;
 }
 
 div.header
@@ -54,8 +56,9 @@ div.header
 div.content
 {
 	padding: 1em;
-	border-left: 2px solid black;
-	border-right: 2px solid black;
+	margin: 0;
+	/*border-left: 2px solid black;
+	border-right: 2px solid black;*/
 }
 
 div.footer
@@ -92,9 +95,13 @@ div.screen_backdrop
 div.login_form
 {
 	display: none;
-	position: relative;
+	position: absolute;
+	/*
 	margin-left: auto;
 	margin-right: auto;
+	*/
+	top: 2em;
+	left: 10em;
 	width: 30em;
 	margin-top: 4em;
 	margin-bottom: 3em;
@@ -167,5 +174,15 @@ div.error
 div#spacer
 {
 	height: 2em;
+}
+
+div#mainpage
+{
+	display: block;
+}
+
+div#subpage
+{
+	display: none;
 }
 

@@ -66,6 +66,8 @@ class Session
 		$xml->charElement("type",$this->type);
 		$xml->charElement("sid",$this->sid);
 		$xml->charElement("username",$this->username);
+		$xml->endElement("session");
+		return $xml->getXML($header);
 	}
 }
 

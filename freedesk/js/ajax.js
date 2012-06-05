@@ -28,13 +28,15 @@ function ServerRequest()
 	this.url = ""; // URL
 	this.additional = new Array(); // Additional data
 	this.xmlhttp = false; // XML HTTP Request Object
+	this.xmlrequest = true; // Is it an XML Request?
+	this.async = true; // Is it asynchronous (not yet implemented)
 	
 	this.makeXmlHttp = function()
 	{
 		if (window.XMLHttpRequest) // all good browsers and indeed IE nowadays
 		{
 			this.xmlhttp = new XMLHttpRequest;
-			if (this.xmlhttp.overrideMimeType)
+			if (this.xmlrequest && this.xmlhttp.overrideMimeType)
 				this.xmlhttp.overrideMimeType("text/xml");
 		}
 		else if (window.ActiveXObject) // Satan's Browser (old IE or Exploiter 7+ with XMLHttp Disabled)
@@ -70,24 +72,77 @@ function ServerRequest()
 			this.makeXmlHttp();
 		this.xmlhttp.open('GET', this.url, true);
 		this.xmlhttp.ajax = this;
-		this.xmlhttp.onreadystatechange = function()
+		if (this.xmlrequest)
 		{
-			if (this.readyState == 4)
+			this.xmlhttp.onreadystatechange = function()
 			{
-				if (this.status == 200)
+				if (this.readyState == 4)
 				{
-					if (this.responseXML)
+					if (this.status == 200)
 					{
-						this.ajax.callback( this.responseXML, this.ajax.additional );
+						if (this.responseXML)
+						{
+							if (window.DOMParser)
+							{
+								//var tmpParser = new DOMParser();
+								//var xml = tmpParser.parseFromString(responseXML, "text/xml");
+								//this.ajax.callback( xml, this.ajax.additional );
+								this.ajax.callback(this.responseXML, this.ajax.additional );
+							
+							}
+							else if (window.ActiveXObject)
+							{
+							/*
+								var xml = new ActiveXObject("Microsoft.XMLDOM");
+								alert("one");
+								xml.async = "false";
+								alert("two");
+								xml.loadXML(this.responseXML);
+								alert("three");
+								this.ajax.callback( xml, this.ajax.additional );
+							*/
+								//alert(this.responseXML.getElementsByTagName("error")[0].childNodes[0].nodeValue);
+								this.ajax.callback(this.responseXML, this.ajax.additional);
+							}
+							else
+							{
+								this.ajax.callback(this.responseXML, this.ajax.additional );
+							}
+						}
+						else
+						{
+							alert("AJAX XML Error: Invalid or Null\nBody:\n"+this.responseXML);
+						}
 					}
 					else
 					{
-						alert("AJAX XML Error: Invalid or Null\nBody:\n"+this.responseText);
+						alert("AJAX Server Code: "+this.status+"\nURL: "+this.ajax.url);
 					}
 				}
-				else
+			}
+		}
+		else
+		{
+			// HTML Request
+			this.xmlhttp.onreadystatechange = function()
+			{
+				if (this.readyState == 4)
 				{
-					alert("AJAX Server Code: "+this.status+"\nURL: "+this.ajax.url);
+					if (this.status == 200)
+					{
+						if (this.responseText)
+						{
+							this.ajax.callback(this.responseText, this.ajax.additional);
+						}
+						else
+						{
+							alert("AJAX Text Error: Invalid or Null Body\nBody:\n"+this.responseText);
+						}
+					}
+					else
+					{
+						alert("AJAX Server Code: "+this.status+"\nURL: "+this.ajax.url);
+					}
 				}
 			}
 		}

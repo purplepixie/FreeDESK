@@ -36,4 +36,4 @@ For more information see www.purplepixie.org/freedesk/
 </div>
 <div id="login_footer" class="login_footer"></div>
 </div>
-<div id="screen_backdrop" class="screen_backdrop"></div>
+

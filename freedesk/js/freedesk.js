@@ -27,11 +27,31 @@ function FreeDESK()
 {
 	this.sid = ""; // Session ID
 
+
+	// Login Support
 	this.login_action = function(responseXML)
 	{
 		//alert(responseXML);
-		var txt = document.createTextNode(responseXML);
-		document.getElementById("login_content").appendChild(txt);
+		//var txt = document.createTextNode(responseXML);
+		//document.getElementById("login_content").appendChild(txt);
+		if (DESK.isError(responseXML))
+		{
+			DESK.show_login(DESK.getError(responseXML));
+		}
+		else
+		{
+			var newsid = responseXML.getElementsByTagName("sid")[0].childNodes[0].nodeValue;
+			if (DESK.sid == "") // no current session so reload to index
+			{
+				var loc = "./?sid="+newsid;
+				window.location = loc;
+			}
+			else
+			{
+				hide_login();
+				// Any other actions?
+			}
+		}
 	}
 
 	this.login_click=function()
@@ -41,11 +61,97 @@ function FreeDESK()
 			+document.getElementById("login_username").value
 			+"&password="
 			+document.getElementById("login_password").value;
-		req.callback = login_action;
+		req.callback = DESK.login_action;
 		req.Get();
 	}
+	
+	this.show_login=function(errormsg)
+	{
+		this.backdrop(true);
+		var txt = "";
+		if (errormsg !== undefined)
+			txt=errormsg;
+		document.getElementById("login_message").innerHTML = txt;
+		document.getElementById("login_form").style.display = "block";
+	}
+	
+	this.hide_login=function()
+	{
+		document.getElementById("login_message").style.display = "none";
+		this.backdrop(false);
+	}
 
-
+	// Show/Hide Backdrop
+	this.backdrop = function(set)
+	{
+		var bd = document.getElementById("screen_backdrop");
+		if (set === undefined) // toggle
+		{
+			if (bd.style.display == "block")
+				set = false;
+			else
+				set = true;
+		}
+		
+		if (set)
+			bd.style.display = "block";
+		else
+			bd.style.display = "none";
+	}
+	
+	// Check for errors
+	this.isError = function(xml)
+	{
+		//alert(xml);
+		//alert(xml.documentElement);
+		//alert(xml.documentElement.tagName);
+		//alert(xml.getElementsByTagName("error")[0].childNodes[0].nodeValue);
+		if (xml.documentElement.tagName == "error")
+		//if (xml.getElementsByTagName("error").length > 0)
+			return true;
+		return false;
+	}
+	
+	this.getError = function(xml)
+	{
+		var out = xml.getElementsByTagName("code")[0].childNodes[0].nodeValue;
+		out += ": ";
+		out += xml.getElementsByTagName("text")[0].childNodes[0].nodeValue;
+		return out;
+	}
+	
+	// Display main or sub page (true for main, false for sub)
+	this.displayMain = function(disp)
+	{
+		if (disp)
+		{
+			document.getElementById("subpage").style.display="none";
+			document.getElementById("mainpage").style.display="block";
+		}
+		else
+		{
+			document.getElementById("mainpage").style.display="none";
+			document.getElementById("subpage").style.display="block";
+		}
+	}
+	
+	// Load sub-pages
+	this.displaySubpage = function(text)
+	{
+		document.getElementById("subpage").innerHTML = text;
+		DESK.displayMain(false);
+	}
+	
+	this.loadSubpage = function(page)
+	{
+		var sr = new ServerRequest();
+		sr.xmlrequest=false;
+		sr.url = "page.php?page="+page+"&sid="+this.sid;
+		sr.callback = DESK.displaySubpage;
+		sr.Get();
+	}
+		
+	
 }
 
 var DESK = new FreeDESK();

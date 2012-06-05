@@ -132,26 +132,46 @@ class Skin
 	}
 	
 	/**
-	 * Common Header Items
-	 * @return string Header items in HTML
+	 * Common Header Items Display
 	**/
 	function CommonHeader()
 	{
-		$out="\n<script type=\"text/javascript\" src=\"js/freedesk.js\"></script>\n";
-		$out.="<script type=\"text/javascript\" src=\"js/ajax.js\"></script>\n";
+		echo "\n<script type=\"text/javascript\" src=\"js/freedesk.js\"></script>\n";
+		echo "<script type=\"text/javascript\" src=\"js/ajax.js\"></script>\n";
+		/*
+		echo "<script type=\"text/javascript\">\n";
+		echo file_get_contents("js/freedesk.js");
+		echo "\n";
+		echo file_get_contents("js/ajax.js");
+		echo "\n</script>\n";
+		*/
+		if ($this->DESK->ContextManager->IsOpen())
+		{
+			echo "<script type=\"text/javascript\">\n";
+			echo "DESK.sid = \"".$this->DESK->ContextManager->Session->sid."\";\n";
+			echo "</script>\n";
+		}
 		
-		
-		return $out;
+		echo $out;
 	}
 	
 	/**
-	 * Common Footer Items (pre end of HTML)
-	 * @return string Footer items in HTML
+	 * Common Footer Items (pre end of HTML) display
 	**/
 	function CommonFooter()
 	{
 		$out = "";
-		return $out;
+		echo $out;
+	}
+	
+	/**
+	 * Common body items (just after the body tag) display
+	**/
+	function CommonBody()
+	{
+		echo "\n";
+		$this->IncludeFile("login.php");
+		echo "<div id=\"screen_backdrop\" class=\"screen_backdrop\"></div>\n";
 	}
 	
 }

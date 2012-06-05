@@ -1,0 +1,89 @@
+/* -------------------------------------------------------------
+This file is part of FreeDESK
+
+FreeDESK is (C) Copyright 2012 David Cutting
+
+FreeDESK is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+FreeDESK is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with FreeDESK.  If not, see www.gnu.org/licenses
+
+For more information see www.purplepixie.org/freedesk/
+-------------------------------------------------------------- */
+
+div#page_menu
+{
+	background-color: #303030;
+	width: 100%;
+	height: 2em;
+	padding: 0;
+	margin: 0;
+}
+
+ul#menu, ul#menu ul
+{
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	line-height: 1;
+}
+
+#menu a
+{
+	display: block;
+	width: 10em;
+	color: white;
+	text-decoration: none;
+	font-size: 10pt;
+	font-weight: bold;
+}
+
+#menu a:hover
+{
+	color: red;
+}
+
+#menu li
+{
+	float: left;
+	width: 8em;
+	background-color: #303030;
+	list-style: none;
+	padding: 0.5em;
+	position: relative;
+	text-align: center;
+}
+
+#menu li ul
+{
+	position: absolute;
+	width: 10em;
+	left: -999em;
+	height: auto;
+}
+
+#menu li ul li
+{
+	width: 10em;
+	border-bottom: solid 1px #a0a0a0;
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+	background-color: #303030;
+	opacity: 0.9;
+}
+
+/* No suckerfish for the moment - let's see how IE handles it without, no 6 support but who cares? */
+#menu li:hover ul /*, #menu li:sfhover ul */
+{
+	top: 1.6em;
+	left: 0;
+}
+

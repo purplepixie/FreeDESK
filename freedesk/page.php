@@ -20,34 +20,24 @@ along with FreeDESK.  If not, see www.gnu.org/licenses
 For more information see www.purplepixie.org/freedesk/
 -------------------------------------------------------------- */
 
+/**
+ * Display HTML page components
+**/
+
+
+// Output buffer on and start FreeDESK then discard startup whitespace-spam
 ob_start();
 include("core/FreeDESK.php");
 $DESK = new FreeDESK("./");
 $DESK->Start();
 ob_end_clean();
 
-if (!isset($_REQUEST['mode']))
+
+if ( (!isset($_REQUEST['sid'])) || (!$DESK->ContextManager->Open(ContextType::User, $_REQUEST['sid'])) )
 {
-	$error = new FreeDESK_Error(ErrorCode::UnknownMode, "Unknown Mode");
-	echo $error->XML(true);
+	echo $DESK->Lang->Get("login.expire");
 	exit();
 }
 
-if ($_REQUEST['mode']=="login")
-{
-	//echo $_REQUEST['username'].$_REQUEST['password'];
-	// TODO: Other Login Modes
-	if ($DESK->ContextManager->Open(ContextType::User, "", $_REQUEST['username'], $_REQUEST['password']))
-	{
-		echo $DESK->ContextManager->Session->XML(true);
-		exit();
-	}
-	else // Login failed
-	{
-		$error = new FreeDESK_Error(ErrorCode::FailedLogin, "Login Failed");
-		echo $error->XML(true);
-		exit();
-	}
-}
-
+$DESK->Include->IncludeFile("pages/debug.php");
 ?>

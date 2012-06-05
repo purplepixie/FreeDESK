@@ -19,35 +19,16 @@ along with FreeDESK.  If not, see www.gnu.org/licenses
 
 For more information see www.purplepixie.org/freedesk/
 -------------------------------------------------------------- */
-
-ob_start();
-include("core/FreeDESK.php");
-$DESK = new FreeDESK("./");
-$DESK->Start();
-ob_end_clean();
-
-if (!isset($_REQUEST['mode']))
-{
-	$error = new FreeDESK_Error(ErrorCode::UnknownMode, "Unknown Mode");
-	echo $error->XML(true);
-	exit();
-}
-
-if ($_REQUEST['mode']=="login")
-{
-	//echo $_REQUEST['username'].$_REQUEST['password'];
-	// TODO: Other Login Modes
-	if ($DESK->ContextManager->Open(ContextType::User, "", $_REQUEST['username'], $_REQUEST['password']))
-	{
-		echo $DESK->ContextManager->Session->XML(true);
-		exit();
-	}
-	else // Login failed
-	{
-		$error = new FreeDESK_Error(ErrorCode::FailedLogin, "Login Failed");
-		echo $error->XML(true);
-		exit();
-	}
-}
-
 ?>
+<div id="page_menu" class="page_menu">
+<ul id="menu">
+ <li><a href="#" onclick="DESK.displayMain(true);">Home</a></li>
+ <li><a href="#">Pages</a>
+ <ul>
+  <li><a href="#" onclick="DESK.loadSubpage('debug');">Debug</a></li>
+  <li><a href="#">A.N.Other</a></li>
+  </ul></li>
+</ul>
+</div>
+<br />
+

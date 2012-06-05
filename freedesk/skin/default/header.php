@@ -35,11 +35,15 @@ else $title="FreeDESK";
 echo "<title>".$title."</title>\n";
 
 echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"".$DESK->Skin->GetWebLocation("css/main.css")."\" />\n";
+echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"".$DESK->Skin->GetWebLocation("css/menu.css")."\" />\n";
 
-echo $DESK->Skin->CommonHeader();
+$DESK->Skin->CommonHeader();
 ?>
 </head>
 <body>
+<?php
+$DESK->Skin->CommonBody();
+?>
 <div class="pageframe" id="pageframe">
 
 <div class="header" id="header">
@@ -49,5 +53,9 @@ echo "<img src=\"".$DESK->Skin->GetWebLocation("images/logo-white-120.png")."\" 
 ?>
 </a>
 </div>
+
+<?php
+$DESK->Skin->IncludeFile("menu.php");
+?>
 
 <div class="content" id="content">

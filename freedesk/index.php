@@ -35,32 +35,43 @@ if (file_exists("setup.php"))
 ob_start();
 include("core/FreeDESK.php");
 $DESK = new FreeDESK("./");
+$DESK->Start();
 ob_end_clean();
 
 
+if (!isset($_REQUEST['sid']))
+{
+	$data=array("title"=>$DESK->Lang->Get("welcome"));
+	$DESK->Skin->IncludeFile("header.php",$data);
 
-$data=array("title"=>"Welcome to FreeDESK");
+	for ($i=0; $i<12; ++$i)
+		echo "<div class=\"spacer\"><br /></div>\n";
+	?>
+	<script type="text/javascript">
+	DESK.show_login();
+	</script>
+	<?php
+	$DESK->Skin->IncludeFile("footer.php");
+	exit();
+}
+
+// So we have a SID - check if it authenticates
+if (!$DESK->ContextManager->Open(ContextType::User, $_REQUEST['sid']))
+{
+	header("Location: ./"); // login page redirect on failure
+	exit();
+}
+
+// So we're authenticated let's view the main page
+$data=array("title"=>"FreeDESK");
 $DESK->Skin->IncludeFile("header.php",$data);
-/*
-echo "<div class=\"spacer\"><br /></div>\n";
-echo "<div class=\"spacer\"><br /></div>\n";
-echo "<div class=\"spacer\"><br /></div>\n";
-echo "<div class=\"spacer\"><br /></div>\n";
-echo "<div class=\"spacer\"><br /></div>\n";
-echo "<div class=\"spacer\"><br /></div>\n";
-echo "<div class=\"spacer\"><br /></div>\n";
-echo "<div class=\"spacer\"><br /></div>\n";
-echo "<div class=\"spacer\"><br /></div>\n";
-echo "<div class=\"spacer\"><br /></div>\n";
-*/
-$DESK->Skin->IncludeFile("login.php"); // DEBUG:,array("errorflag"=>1));
 
-?>
-<script type="text/javascript">
-document.getElementById("login_form").style.display = 'block';
-document.getElementById('screen_backdrop').style.display = 'block';
-</script>
-<?php
+echo "<div id=\"mainpage\">\n";
+$DESK->Include->IncludeFile("pages/main.php");
+echo "</div>\n";
+echo "<div id=\"subpage\"></div>\n";
 
 $DESK->Skin->IncludeFile("footer.php");
+
+
 ?>

@@ -40,7 +40,7 @@ else
 
 </div>
 <?php
-echo $DESK->Skin->CommonFooter();
+$DESK->Skin->CommonFooter();
 ?>
 </body>
 </html>
