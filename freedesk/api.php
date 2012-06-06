@@ -26,6 +26,8 @@ $DESK = new FreeDESK("./");
 $DESK->Start();
 ob_end_clean();
 
+header("Content-type: text/xml");
+
 if (!isset($_REQUEST['mode']))
 {
 	$error = new FreeDESK_Error(ErrorCode::UnknownMode, "Unknown Mode");
