@@ -300,7 +300,7 @@ $DESK->Start();
 if (isset($_REQUEST['admin_password']) && ($_REQUEST['admin_password'] != ""))
 {
 	echo "Setting admin password... ";
-	$amb=new AuthMethodBase($DESK);
+	$amb=new AuthMethodStandard($DESK);
 	$amb->SetPassword("admin",$_REQUEST['admin_password']);
 	echo "Done<br /><br />";
 }

@@ -75,7 +75,7 @@ class AuthMethodStandard extends AuthMethodBase
 	{
 		$password=$this->DESK->BaseConfig->pwd_Hash.$password;
 		$q="UPDATE ".$this->DESK->Database->Table("user")." SET ";
-		$q.=$this->DESK->Database->Field("password")."=\"".$this->DESK->Database->Safe($password)."\" ";
+		$q.=$this->DESK->Database->Field("password")."=MD5(\"".$this->DESK->Database->Safe($password)."\") ";
 		$q.="WHERE ".$this->DESK->Database->Field("username")."=\"".$this->DESK->Database->Safe($username)."\"";
 		$this->DESK->Database->Query($q);
 	}
