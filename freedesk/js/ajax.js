@@ -30,6 +30,7 @@ function ServerRequest()
 	this.xmlhttp = false; // XML HTTP Request Object
 	this.xmlrequest = true; // Is it an XML Request?
 	this.async = true; // Is it asynchronous (not yet implemented)
+	this.randomise = true; // Set a random string to query to avoid caching
 	
 	this.makeXmlHttp = function()
 	{
@@ -66,11 +67,35 @@ function ServerRequest()
 			alert("Error: Cannot Create XMLHTTP Object");
 	}
 	
+	this.randomString = function(len)
+	{
+		if (len == undefined)
+			len = 32;
+		var chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+		var randomstring = "";
+		for (var i=0; i<len; ++i)
+		{
+			var randchar = Math.floor(Math.random() * chars.length);
+			randomstring += chars.substring(randchar, randchar+1);
+		}
+		return randomstring;
+	}
+	
 	this.Get = function()
 	{
 		if (!this.xmlhttp)
 			this.makeXmlHttp();
-		this.xmlhttp.open('GET', this.url, true);
+			
+		var myurl = this.url;
+		if (this.randomise)
+		{
+			if (myurl.indexOf("?") == -1)
+				myurl += "?nocache="+this.randomString();
+			else
+				myurl += "&nocache="+this.randomString();
+		}
+		
+		this.xmlhttp.open('GET', myurl, true);
 		this.xmlhttp.ajax = this;
 		if (this.xmlrequest)
 		{

@@ -33,9 +33,14 @@ static function English(&$i)
 {
 $i['welcome'] = "Welcome to FreeDESK";
 $i['login'] = "Login to FreeDESK";
+$i['login_cancel'] = "Cancel Login";
 $i['username'] = "Username";
 $i['password'] = "Password";
 $i['login_fail'] = "Login Failed";
+
+$i['select_portal'] = "Select your interface from the following";
+$i['select_analyst'] = "I am an analyst";
+$i['select_customer'] = "I am a customer";
 
 }
 

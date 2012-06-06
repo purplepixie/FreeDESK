@@ -44,7 +44,7 @@ function FreeDESK()
 			if (DESK.sid == "") // no current session so reload to index
 			{
 				var loc = "./?sid="+newsid;
-				window.location = loc;
+				window.location.href = loc;
 			}
 			else
 			{
@@ -77,6 +77,7 @@ function FreeDESK()
 	
 	this.hide_login=function()
 	{
+		document.getElementById("login_form").style.display = "none";
 		document.getElementById("login_message").style.display = "none";
 		this.backdrop(false);
 	}

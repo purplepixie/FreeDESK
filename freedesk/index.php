@@ -44,13 +44,12 @@ if (!isset($_REQUEST['sid']))
 	$data=array("title"=>$DESK->Lang->Get("welcome"));
 	$DESK->Skin->IncludeFile("header.php",$data);
 
-	for ($i=0; $i<12; ++$i)
-		echo "<div class=\"spacer\"><br /></div>\n";
-	?>
-	<script type="text/javascript">
-	DESK.show_login();
-	</script>
-	<?php
+	echo "<h3>".$DESK->Lang->Get("select_portal").":</h3>\n";
+	
+	echo "<a href=\"#\" onclick=\"DESK.show_login();\">".$DESK->Lang->Get("select_analyst")."</a><br /><br />\n";
+	echo "<a href=\"customer/\">".$DESK->Lang->Get("select_customer")."</a><br /><br />\n";
+
+	
 	$DESK->Skin->IncludeFile("footer.php");
 	exit();
 }

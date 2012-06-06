@@ -27,6 +27,8 @@ For more information see www.purplepixie.org/freedesk/
  <ul>
   <li><a href="#" onclick="DESK.loadSubpage('debug');">Debug</a></li>
   <li><a href="#">A.N.Other</a></li>
+  <li><a href="#">A.N.Other</a></li>
+  <li><a href="#">A.N.Other</a></li>
   </ul></li>
 </ul>
 </div>

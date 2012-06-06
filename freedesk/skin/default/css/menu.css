@@ -78,6 +78,7 @@ ul#menu, ul#menu ul
 	padding-bottom: 0.5em;
 	background-color: #303030;
 	opacity: 0.9;
+	filter: alpha(opacity = 90);
 }
 
 /* No suckerfish for the moment - let's see how IE handles it without, no 6 support but who cares? */
@@ -85,5 +86,6 @@ ul#menu, ul#menu ul
 {
 	top: 1.6em;
 	left: 0;
+	z-index: 50;
 }
 

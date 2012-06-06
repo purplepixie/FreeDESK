@@ -31,7 +31,8 @@ For more information see www.purplepixie.org/freedesk/
 <div class="login_title"><?php echo $DESK->Lang->Get("password"); ?></div>
 <div class="login_field"><input type="password" name="password" size="15" id="login_password" /></div>
 <br /><br />
-<div class="login_button"><input type="submit" value="<?php echo $DESK->Lang->Get("login"); ?>" onclick="DESK.login_click()" /></div>
+<div class="login_button"><input type="submit" value="<?php echo $DESK->Lang->Get("login"); ?>" onclick="DESK.login_click()" /><br />
+<a href="#" onclick="DESK.hide_login();"><?php echo $DESK->Lang->Get("login_cancel"); ?></a></div>
 <div id="login_message"></div>
 </div>
 <div id="login_footer" class="login_footer"></div>

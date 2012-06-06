@@ -19,6 +19,7 @@ along with FreeDESK.  If not, see www.gnu.org/licenses
 For more information see www.purplepixie.org/freedesk/
 -------------------------------------------------------------- */
 
+/* Body of the document - default for everything */
 body
 {
 	font-family: Verdana, Arial, sans-serif;
@@ -26,6 +27,7 @@ body
 	background-color: white;
 }
 
+/* The main frame holding all page content on standard pages */
 div.pageframe
 {
 	width: 100%;
@@ -40,6 +42,7 @@ div.pageframe
 	border-right: solid 2px black;
 }
 
+/* The header with the logo etc */
 div.header
 {
 	background: black;
@@ -53,14 +56,16 @@ div.header
 	padding-left: 1.0em;
 }
 
+/* The content of the standard page */
 div.content
 {
-	padding: 1em;
+	padding: 0em 1em 1em 1em;
 	margin: 0;
 	/*border-left: 2px solid black;
 	border-right: 2px solid black;*/
 }
 
+/* Standard page footer */
 div.footer
 {
 	background: black;
@@ -72,13 +77,17 @@ div.footer
 	border-bottom-right-radius: 1em;
 	padding: 0.5em;
 	color: white;
+	clear: both;
+	margin-top: 1em;
 }
 
+/* Link in the footer */
 div.footer a
 {
 	color: white;
 }
 
+/* A screen backdrop - obscures everything for popup forms e.g. login form */
 div.screen_backdrop
 {
 	display: none;
@@ -88,10 +97,12 @@ div.screen_backdrop
 	width: 100%;
 	height: 100%;
 	opacity: 0.7;
+	filter: alpha(opacity = 70);
 	background-color: white;
 	z-index: 100;
 }
 
+/* The login form */
 div.login_form
 {
 	display: none;
@@ -110,6 +121,7 @@ div.login_form
 	z-index: 110;
 }
 
+/* Header to the login form */
 div.login_header
 {
 	background-color: black;
@@ -124,6 +136,7 @@ div.login_header
 	font-weight: bold;
 }
 
+/* Content of the login form */
 div.login_content
 {
 	padding: 1em;
@@ -132,6 +145,7 @@ div.login_content
 	clear: both;
 }
 
+/* Footer of the login form */
 div.login_footer
 {
 	background-color: black;
@@ -145,6 +159,7 @@ div.login_footer
 	
 }
 
+/* Title of the login form */
 div.login_title
 {
 	width: 40%;
@@ -154,35 +169,93 @@ div.login_title
 	clear: both;
 }
 
+/* Field description for the login form */
 div.login_field
 {
 	width: 58%;
 	float: left;
 }
 
+/* Button on the login form */
 div.login_button
 {
 	text-align: center;
 }
 
+/* An error message */
 div.error
 {
 	color: red;
 	font-weight: bold;
 }
 
+/* A whitespace spacer element */
 div#spacer
 {
 	height: 2em;
 }
 
+/* The main page element within the system */
 div#mainpage
 {
 	display: block;
+	position: relative;
+	/* border: solid 1px red; */
+	
 }
 
+/* A subpage element within the system */
 div#subpage
 {
 	display: none;
 }
 
+/* The left column (groups and analysts) of the main page */
+div#mainleft
+{
+	/*
+	width: 10em;
+	position: absolute;
+	top: 0;
+	left: 0;
+	border-right: solid 1px black;
+	padding-right: 0.5em;
+	overflow: auto;
+	margin-bottom: 1em;
+	*/
+}
+
+table#maintable
+{
+	border: none;
+}
+
+table#maintable td
+{
+	text-align: left;
+	vertical-align: top;
+}
+
+td#mainleft
+{
+	width: 10em;
+	border-right: solid 1px #a0a0a0;
+	padding-right: 0.5em;
+	margin-right: 0.5em;
+}
+
+/* The right hand content column for the main page */
+div#mainright
+{
+	/*
+	position: relative;
+	top: 0;
+	left: 11em;
+	*/
+	margin-left: 0.5em;
+}
+
+td#mainright
+{
+	margin-left: 0.5em;
+}
