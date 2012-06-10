@@ -68,10 +68,6 @@ class ContextManager
 	**/
 	var $Session = null;
 	
-	/**
-	 * Permission Manager
-	**/
-	private $PermissionManager = null;
 	
 	/**
 	 * Session Manager
@@ -124,7 +120,9 @@ class ContextManager
 		else if ($this->type == ContextType::System)
 			return true; // system context - all permissions
 		else if ($this->type == ContextType::User)
-			return true; // TO BE IMPLEMENTED WITH PermissionManager
+		{
+			return $this->DESK->PermissionManager->UserPermission($perm, $this->Session->username);
+		}
 		else if ($this->type == ContextType::Customer)
 			return true; // TO BE IMPLEMENTED WITH PermissionManager
 		else

@@ -108,6 +108,11 @@ class FreeDESK
 	var $ContextManager = null;
 	
 	/**
+	 * Permission Manager
+	**/
+	var $PermissionManager = null;
+	
+	/**
 	 * Include System
 	**/
 	var $Include = null;
@@ -176,6 +181,9 @@ class FreeDESK
 		
 		// Context Manager
 		$this->ContextManager = $this->Include->IncludeInstance("core/ContextManager.php", "ContextManager");
+		
+		// Permission Manager
+		$this->PermissionManager = $this->Include->IncludeInstance("core/PermissionManager.php", "PermissionManager");
 		
 		// Authentication Methods
 		// The core files
