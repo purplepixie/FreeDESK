@@ -16,6 +16,36 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `permgroup`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `%%$%%permgroup` (
+  `permgroupid` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `groupname` varchar(254) NOT NULL,
+  PRIMARY KEY (`permgroupid`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `permissions`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `%%$%%permissions` (
+  `permissionid` bigint(20) NOT NULL AUTO_INCREMENT,
+  `permissiontype` varchar(16) NOT NULL,
+  `permission` varchar(254) NOT NULL,
+  `usergroupid` varchar(254) NOT NULL,
+  `allowed` tinyint(4) NOT NULL,
+  PRIMARY KEY (`permissionid`),
+  KEY `permissiontype` (`permissiontype`,`permission`,`usergroupid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `session`
 --
 
@@ -60,7 +90,35 @@ CREATE TABLE `%%$%%syslog` (
   `event_type` varchar(128) NOT NULL,
   `event_level` int(11) NOT NULL,
   PRIMARY KEY (`event_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=736 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=743 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `team`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `%%$%%team` (
+  `teamid` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `teamname` varchar(254) NOT NULL,
+  PRIMARY KEY (`teamid`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `teamuserlink`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `%%$%%teamuserlink` (
+  `linkid` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `teamid` bigint(20) unsigned NOT NULL,
+  `username` varchar(254) NOT NULL,
+  PRIMARY KEY (`linkid`),
+  KEY `teamid` (`teamid`,`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -74,6 +132,7 @@ CREATE TABLE `%%$%%user` (
   `password` varchar(254) NOT NULL,
   `realname` varchar(254) NOT NULL,
   `email` varchar(254) NOT NULL,
+  `permgroup` bigint(20) unsigned NOT NULL,
   `authtype` varchar(254) NOT NULL,
   `sparefield0` varchar(254) NOT NULL,
   `sparefield1` varchar(254) NOT NULL,
@@ -98,4 +157,4 @@ CREATE TABLE `%%$%%user` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-06-06 17:58:31
+-- Dump completed on 2012-06-10 20:25:52

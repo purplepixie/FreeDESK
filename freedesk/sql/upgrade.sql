@@ -1,6 +1,29 @@
 -- FreeDESK SQL Upgrade Script -- PurplePixie Systems/David Cutting
 -- 
 -- SHOW TABLES
+-- Table: permgroup
+-- DESCRIBE permgroup
+ALTER TABLE `permgroup` CHANGE `permgroupid` `permgroupid` bigint(20) unsigned NOT NULL auto_increment;
+ALTER TABLE `permgroup` ADD `permgroupid` bigint(20) unsigned NOT NULL auto_increment;
+ALTER TABLE `permgroup` ADD PRIMARY KEY( `permgroupid` );
+ALTER TABLE `permgroup` CHANGE `groupname` `groupname` varchar(254) NOT NULL;
+ALTER TABLE `permgroup` ADD `groupname` varchar(254) NOT NULL;
+-- 
+-- Table: permissions
+-- DESCRIBE permissions
+ALTER TABLE `permissions` CHANGE `permissionid` `permissionid` bigint(20) NOT NULL auto_increment;
+ALTER TABLE `permissions` ADD `permissionid` bigint(20) NOT NULL auto_increment;
+ALTER TABLE `permissions` ADD PRIMARY KEY( `permissionid` );
+ALTER TABLE `permissions` CHANGE `permissiontype` `permissiontype` varchar(16) NOT NULL;
+ALTER TABLE `permissions` ADD `permissiontype` varchar(16) NOT NULL;
+CREATE INDEX `permissiontype` ON `permissions` ( `permissiontype` );
+ALTER TABLE `permissions` CHANGE `permission` `permission` varchar(254) NOT NULL;
+ALTER TABLE `permissions` ADD `permission` varchar(254) NOT NULL;
+ALTER TABLE `permissions` CHANGE `usergroupid` `usergroupid` varchar(254) NOT NULL;
+ALTER TABLE `permissions` ADD `usergroupid` varchar(254) NOT NULL;
+ALTER TABLE `permissions` CHANGE `allowed` `allowed` tinyint(4) NOT NULL;
+ALTER TABLE `permissions` ADD `allowed` tinyint(4) NOT NULL;
+-- 
 -- Table: session
 -- DESCRIBE session
 ALTER TABLE `session` CHANGE `session_id` `session_id` varchar(254) NOT NULL;
@@ -41,6 +64,25 @@ ALTER TABLE `syslog` ADD `event_type` varchar(128) NOT NULL;
 ALTER TABLE `syslog` CHANGE `event_level` `event_level` int(11) NOT NULL;
 ALTER TABLE `syslog` ADD `event_level` int(11) NOT NULL;
 -- 
+-- Table: team
+-- DESCRIBE team
+ALTER TABLE `team` CHANGE `teamid` `teamid` bigint(20) unsigned NOT NULL auto_increment;
+ALTER TABLE `team` ADD `teamid` bigint(20) unsigned NOT NULL auto_increment;
+ALTER TABLE `team` ADD PRIMARY KEY( `teamid` );
+ALTER TABLE `team` CHANGE `teamname` `teamname` varchar(254) NOT NULL;
+ALTER TABLE `team` ADD `teamname` varchar(254) NOT NULL;
+-- 
+-- Table: teamuserlink
+-- DESCRIBE teamuserlink
+ALTER TABLE `teamuserlink` CHANGE `linkid` `linkid` bigint(20) unsigned NOT NULL auto_increment;
+ALTER TABLE `teamuserlink` ADD `linkid` bigint(20) unsigned NOT NULL auto_increment;
+ALTER TABLE `teamuserlink` ADD PRIMARY KEY( `linkid` );
+ALTER TABLE `teamuserlink` CHANGE `teamid` `teamid` bigint(20) unsigned NOT NULL;
+ALTER TABLE `teamuserlink` ADD `teamid` bigint(20) unsigned NOT NULL;
+CREATE INDEX `teamid` ON `teamuserlink` ( `teamid` );
+ALTER TABLE `teamuserlink` CHANGE `username` `username` varchar(254) NOT NULL;
+ALTER TABLE `teamuserlink` ADD `username` varchar(254) NOT NULL;
+-- 
 -- Table: user
 -- DESCRIBE user
 ALTER TABLE `user` CHANGE `username` `username` varchar(254) NOT NULL;
@@ -52,6 +94,8 @@ ALTER TABLE `user` CHANGE `realname` `realname` varchar(254) NOT NULL;
 ALTER TABLE `user` ADD `realname` varchar(254) NOT NULL;
 ALTER TABLE `user` CHANGE `email` `email` varchar(254) NOT NULL;
 ALTER TABLE `user` ADD `email` varchar(254) NOT NULL;
+ALTER TABLE `user` CHANGE `permgroup` `permgroup` bigint(20) unsigned NOT NULL;
+ALTER TABLE `user` ADD `permgroup` bigint(20) unsigned NOT NULL;
 ALTER TABLE `user` CHANGE `authtype` `authtype` varchar(254) NOT NULL;
 ALTER TABLE `user` ADD `authtype` varchar(254) NOT NULL;
 ALTER TABLE `user` CHANGE `sparefield0` `sparefield0` varchar(254) NOT NULL;
