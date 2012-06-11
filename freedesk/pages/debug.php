@@ -25,10 +25,27 @@ For more information see www.purplepixie.org/freedesk/
 **/
 global $DESK;
 echo "<div id=\"debug_info\">\n";
-echo "FreeDESK Version: ".$DESK->FullVersion()." <br />\n";
+echo "<h3>FreeDESK Version: ".$DESK->FullVersion()." </h3><br />\n";
+
+echo "<b>Sub-Components</b><br /><br />";
+echo "<table>";
+echo "<tr><th>Module Name</th><th>Version</th><th>Type / Sub-Type</th></tr>";
+$plugs=$DESK->PluginManager->GetAll();
+foreach($plugs as $plug)
+{
+	echo "<tr><td>".$plug->name."</td>";
+	echo "<td>".$plug->version."</td>";
+	echo "<td>".$plug->type." ";
+	if ($plug->subtype != "")
+		echo "/ ".$plug->subtype;
+	echo "</td>";
+	echo "</tr>";
+}
+echo "</table>\n";
+
 echo "</div>\n";
-?>
-<script type="text/javascript">
-document.getElementById("debug_info").innerHTML += "blah";
-</script>
+
+//<script type="text/javascript">
+//document.getElementById("debug_info").innerHTML += "blah";
+//</script>
 

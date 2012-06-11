@@ -259,3 +259,31 @@ td#mainright
 {
 	margin-left: 0.5em;
 }
+
+ul.leftpane
+{
+	list-style: none;
+	position: relative;
+	left: -3em;
+	font-size: 10pt;
+	/* font-weight: bold; */
+}
+
+ul.leftpane li
+{
+	padding-bottom: 1em;
+}
+
+ul.leftpane_sub
+{
+	list-style: none;
+	position: relative;
+	left: -2.5em;
+	font-weight: none;
+}
+
+ul.leftpane_sub li
+{
+	padding-bottom: 0;
+	font-weight: none;
+}
