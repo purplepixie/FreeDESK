@@ -56,7 +56,7 @@ while ($row=mysql_fetch_array($r))
 
 	//$output.= "DROP INDEX FROM ".$table."\n";
 	
-	$tq="DESCRIBE ".$table;
+	$tq="DESCRIBE `".$table."`";
 	c($tq);
 	echo $tq."\n";
 	$tr=mysql_query($tq);

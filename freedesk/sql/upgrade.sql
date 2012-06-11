@@ -2,7 +2,7 @@
 -- 
 -- SHOW TABLES
 -- Table: permgroup
--- DESCRIBE permgroup
+-- DESCRIBE `permgroup`
 ALTER TABLE `permgroup` CHANGE `permgroupid` `permgroupid` bigint(20) unsigned NOT NULL auto_increment;
 ALTER TABLE `permgroup` ADD `permgroupid` bigint(20) unsigned NOT NULL auto_increment;
 ALTER TABLE `permgroup` ADD PRIMARY KEY( `permgroupid` );
@@ -10,7 +10,7 @@ ALTER TABLE `permgroup` CHANGE `groupname` `groupname` varchar(254) NOT NULL;
 ALTER TABLE `permgroup` ADD `groupname` varchar(254) NOT NULL;
 -- 
 -- Table: permissions
--- DESCRIBE permissions
+-- DESCRIBE `permissions`
 ALTER TABLE `permissions` CHANGE `permissionid` `permissionid` bigint(20) NOT NULL auto_increment;
 ALTER TABLE `permissions` ADD `permissionid` bigint(20) NOT NULL auto_increment;
 ALTER TABLE `permissions` ADD PRIMARY KEY( `permissionid` );
@@ -25,7 +25,7 @@ ALTER TABLE `permissions` CHANGE `allowed` `allowed` tinyint(4) NOT NULL;
 ALTER TABLE `permissions` ADD `allowed` tinyint(4) NOT NULL;
 -- 
 -- Table: request
--- DESCRIBE request
+-- DESCRIBE `request`
 ALTER TABLE `request` CHANGE `requestid` `requestid` bigint(20) NOT NULL auto_increment;
 ALTER TABLE `request` ADD `requestid` bigint(20) NOT NULL auto_increment;
 ALTER TABLE `request` ADD PRIMARY KEY( `requestid` );
@@ -44,7 +44,7 @@ ALTER TABLE `request` CHANGE `status` `status` int(11) NOT NULL;
 ALTER TABLE `request` ADD `status` int(11) NOT NULL;
 -- 
 -- Table: requestclass
--- DESCRIBE requestclass
+-- DESCRIBE `requestclass`
 ALTER TABLE `requestclass` CHANGE `classid` `classid` int(10) unsigned NOT NULL auto_increment;
 ALTER TABLE `requestclass` ADD `classid` int(10) unsigned NOT NULL auto_increment;
 ALTER TABLE `requestclass` ADD PRIMARY KEY( `classid` );
@@ -54,7 +54,7 @@ ALTER TABLE `requestclass` CHANGE `classclass` `classclass` varchar(254) NOT NUL
 ALTER TABLE `requestclass` ADD `classclass` varchar(254) NOT NULL;
 -- 
 -- Table: session
--- DESCRIBE session
+-- DESCRIBE `session`
 ALTER TABLE `session` CHANGE `session_id` `session_id` varchar(254) NOT NULL;
 ALTER TABLE `session` ADD `session_id` varchar(254) NOT NULL;
 ALTER TABLE `session` ADD PRIMARY KEY( `session_id` );
@@ -70,7 +70,7 @@ ALTER TABLE `session` CHANGE `expires_dt` `expires_dt` datetime NOT NULL;
 ALTER TABLE `session` ADD `expires_dt` datetime NOT NULL;
 -- 
 -- Table: status
--- DESCRIBE status
+-- DESCRIBE `status`
 ALTER TABLE `status` CHANGE `status` `status` int(11) NOT NULL;
 ALTER TABLE `status` ADD `status` int(11) NOT NULL;
 ALTER TABLE `status` ADD PRIMARY KEY( `status` );
@@ -78,7 +78,7 @@ ALTER TABLE `status` CHANGE `description` `description` varchar(254) NOT NULL;
 ALTER TABLE `status` ADD `description` varchar(254) NOT NULL;
 -- 
 -- Table: sysconfig
--- DESCRIBE sysconfig
+-- DESCRIBE `sysconfig`
 ALTER TABLE `sysconfig` CHANGE `sc_option` `sc_option` varchar(254) NOT NULL;
 ALTER TABLE `sysconfig` ADD `sc_option` varchar(254) NOT NULL;
 ALTER TABLE `sysconfig` ADD PRIMARY KEY( `sc_option` );
@@ -86,7 +86,7 @@ ALTER TABLE `sysconfig` CHANGE `sc_value` `sc_value` varchar(254) NOT NULL;
 ALTER TABLE `sysconfig` ADD `sc_value` varchar(254) NOT NULL;
 -- 
 -- Table: syslog
--- DESCRIBE syslog
+-- DESCRIBE `syslog`
 ALTER TABLE `syslog` CHANGE `event_id` `event_id` bigint(20) unsigned NOT NULL auto_increment;
 ALTER TABLE `syslog` ADD `event_id` bigint(20) unsigned NOT NULL auto_increment;
 ALTER TABLE `syslog` ADD PRIMARY KEY( `event_id` );
@@ -102,7 +102,7 @@ ALTER TABLE `syslog` CHANGE `event_level` `event_level` int(11) NOT NULL;
 ALTER TABLE `syslog` ADD `event_level` int(11) NOT NULL;
 -- 
 -- Table: team
--- DESCRIBE team
+-- DESCRIBE `team`
 ALTER TABLE `team` CHANGE `teamid` `teamid` bigint(20) unsigned NOT NULL auto_increment;
 ALTER TABLE `team` ADD `teamid` bigint(20) unsigned NOT NULL auto_increment;
 ALTER TABLE `team` ADD PRIMARY KEY( `teamid` );
@@ -110,7 +110,7 @@ ALTER TABLE `team` CHANGE `teamname` `teamname` varchar(254) NOT NULL;
 ALTER TABLE `team` ADD `teamname` varchar(254) NOT NULL;
 -- 
 -- Table: teamuserlink
--- DESCRIBE teamuserlink
+-- DESCRIBE `teamuserlink`
 ALTER TABLE `teamuserlink` CHANGE `linkid` `linkid` bigint(20) unsigned NOT NULL auto_increment;
 ALTER TABLE `teamuserlink` ADD `linkid` bigint(20) unsigned NOT NULL auto_increment;
 ALTER TABLE `teamuserlink` ADD PRIMARY KEY( `linkid` );
@@ -121,10 +121,24 @@ ALTER TABLE `teamuserlink` CHANGE `username` `username` varchar(254) NOT NULL;
 ALTER TABLE `teamuserlink` ADD `username` varchar(254) NOT NULL;
 -- 
 -- Table: update
--- DESCRIBE update
+-- DESCRIBE `update`
+ALTER TABLE `update` CHANGE `updateid` `updateid` bigint(20) unsigned NOT NULL auto_increment;
+ALTER TABLE `update` ADD `updateid` bigint(20) unsigned NOT NULL auto_increment;
+ALTER TABLE `update` ADD PRIMARY KEY( `updateid` );
+ALTER TABLE `update` CHANGE `requestid` `requestid` bigint(20) unsigned NOT NULL;
+ALTER TABLE `update` ADD `requestid` bigint(20) unsigned NOT NULL;
+CREATE INDEX `requestid` ON `update` ( `requestid` );
+ALTER TABLE `update` CHANGE `update` `update` text NOT NULL;
+ALTER TABLE `update` ADD `update` text NOT NULL;
+ALTER TABLE `update` CHANGE `public` `public` tinyint(4) NOT NULL;
+ALTER TABLE `update` ADD `public` tinyint(4) NOT NULL;
+ALTER TABLE `update` CHANGE `updateby` `updateby` varchar(254) NOT NULL;
+ALTER TABLE `update` ADD `updateby` varchar(254) NOT NULL;
+ALTER TABLE `update` CHANGE `updatedt` `updatedt` datetime NOT NULL;
+ALTER TABLE `update` ADD `updatedt` datetime NOT NULL;
 -- 
 -- Table: user
--- DESCRIBE user
+-- DESCRIBE `user`
 ALTER TABLE `user` CHANGE `username` `username` varchar(254) NOT NULL;
 ALTER TABLE `user` ADD `username` varchar(254) NOT NULL;
 ALTER TABLE `user` ADD PRIMARY KEY( `username` );
