@@ -38,8 +38,8 @@ ALTER TABLE `%%$%%request` CHANGE `assignuser` `assignuser` varchar(254) NOT NUL
 ALTER TABLE `%%$%%request` ADD `assignuser` varchar(254) NOT NULL;
 ALTER TABLE `%%$%%request` CHANGE `class` `class` int(11) NOT NULL;
 ALTER TABLE `%%$%%request` ADD `class` int(11) NOT NULL;
-ALTER TABLE `%%$%%request` CHANGE `openedt` `openedt` datetime NOT NULL;
-ALTER TABLE `%%$%%request` ADD `openedt` datetime NOT NULL;
+ALTER TABLE `%%$%%request` CHANGE `openeddt` `openeddt` datetime NOT NULL;
+ALTER TABLE `%%$%%request` ADD `openeddt` datetime NOT NULL;
 ALTER TABLE `%%$%%request` CHANGE `status` `status` int(11) NOT NULL;
 ALTER TABLE `%%$%%request` ADD `status` int(11) NOT NULL;
 -- 
@@ -68,6 +68,14 @@ ALTER TABLE `%%$%%session` CHANGE `updated_dt` `updated_dt` datetime NOT NULL;
 ALTER TABLE `%%$%%session` ADD `updated_dt` datetime NOT NULL;
 ALTER TABLE `%%$%%session` CHANGE `expires_dt` `expires_dt` datetime NOT NULL;
 ALTER TABLE `%%$%%session` ADD `expires_dt` datetime NOT NULL;
+-- 
+-- Table: status
+-- DESCRIBE status
+ALTER TABLE `%%$%%status` CHANGE `status` `status` int(11) NOT NULL;
+ALTER TABLE `%%$%%status` ADD `status` int(11) NOT NULL;
+ALTER TABLE `%%$%%status` ADD PRIMARY KEY( `status` );
+ALTER TABLE `%%$%%status` CHANGE `description` `description` varchar(254) NOT NULL;
+ALTER TABLE `%%$%%status` ADD `description` varchar(254) NOT NULL;
 -- 
 -- Table: sysconfig
 -- DESCRIBE sysconfig

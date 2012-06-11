@@ -57,11 +57,11 @@ CREATE TABLE `%%$%%request` (
   `assignteam` bigint(20) NOT NULL,
   `assignuser` varchar(254) NOT NULL,
   `class` int(11) NOT NULL,
-  `openedt` datetime NOT NULL,
+  `openeddt` datetime NOT NULL,
   `status` int(11) NOT NULL,
   PRIMARY KEY (`requestid`),
   KEY `customer` (`customer`,`assignteam`,`assignuser`,`status`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -96,6 +96,19 @@ CREATE TABLE `%%$%%session` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `status`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `%%$%%status` (
+  `status` int(11) NOT NULL,
+  `description` varchar(254) NOT NULL,
+  PRIMARY KEY (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `sysconfig`
 --
 
@@ -123,7 +136,7 @@ CREATE TABLE `%%$%%syslog` (
   `event_type` varchar(128) NOT NULL,
   `event_level` int(11) NOT NULL,
   PRIMARY KEY (`event_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=767 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=802 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -169,7 +182,7 @@ CREATE TABLE `%%$%%update` (
   `updatedt` datetime NOT NULL,
   PRIMARY KEY (`updateid`),
   KEY `requestid` (`requestid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -208,4 +221,4 @@ CREATE TABLE `%%$%%user` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-06-11 17:45:37
+-- Dump completed on 2012-06-11 19:51:40

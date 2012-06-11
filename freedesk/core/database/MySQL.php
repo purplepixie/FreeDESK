@@ -105,6 +105,17 @@ class MySQL extends DatabaseBase
 	
 	
 	/**
+	 * Sanitise user-input string and quote
+	 * @param string $input user input
+	 * @return string Sanitised quoted output
+	**/
+	function SafeQuote($input)
+	{
+		return "\"".$this->Safe($input)."\"";
+	}
+	
+	
+	/**
 	 * Contain a field correctly
 	 * @param string $field The field name
 	 * @return string Escaped field
@@ -210,6 +221,15 @@ class MySQL extends DatabaseBase
 	function ErrorDescription()
 	{
 		return mysql_error($this->connection);
+	}
+	
+	/**
+	 * The last inserted ID
+	 * @return mixed Last inserted ID
+	**/
+	function InsertID()
+	{
+		return mysql_insert_id($this->connection);
 	}
 }
 

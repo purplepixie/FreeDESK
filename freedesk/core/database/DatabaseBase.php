@@ -63,6 +63,14 @@ abstract class DatabaseBase
 	**/
 	abstract function Safe($input);
 	
+	/**
+	 * Sanitise user-input string and quote
+	 * @param string $input user input
+	 * @return string Sanitised quoted output
+	**/
+	abstract function SafeQuote($input);
+	
+	
 	
 	/**
 	 * Contain a field correctly
@@ -141,6 +149,13 @@ abstract class DatabaseBase
 	{
 		return $this->ErrorCode().": ".$this->ErrorDescription();
 	}
+	
+	/**
+	 * The last inserted ID
+	 * @return mixed Last inserted ID
+	**/
+	abstract function InsertID();
+	
 }
 
 ?>

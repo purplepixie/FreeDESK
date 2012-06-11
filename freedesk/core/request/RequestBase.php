@@ -31,6 +31,11 @@ abstract class RequestBase
 	protected $DESK = null;
 	
 	/**
+	 * Current Request ID
+	**/
+	protected $ID = 0;
+	
+	/**
 	 * Constructor
 	 * @param mixed &$freeDESK Current FreeDESK instance
 	**/
@@ -41,13 +46,15 @@ abstract class RequestBase
 	
 	/**
 	 * Create a request
+	 * @param int $customer Customer ID
 	 * @param string $update Initial Update
-	 * @param string $class Request Class
+	 * @param int $class Request Class
+	 * @param int $status Request status
 	 * @param int $group Request Group (optional, default 0)
 	 * @param string $assign Assigned user (optional, default "")
 	 * @return string Request ID
 	**/
-	abstract function Create($update, $class, $group=0, $assign="");
+	abstract function Create($customer, $update, $class, $status, $group=0, $assign="");
 	
 	/**
 	 * Update a request

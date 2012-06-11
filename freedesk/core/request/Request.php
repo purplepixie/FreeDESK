@@ -37,15 +37,38 @@ class Request extends RequestBase
 	
 	/**
 	 * Create a request
+	 * @param int $customer Customer ID
 	 * @param string $update Initial Update
-	 * @param string $class Request Class
+	 * @param int $class Request Class
+	 * @param int $status Initial request status
 	 * @param int $group Request Group (optional, default 0)
 	 * @param string $assign Assigned user (optional, default "")
 	 * @return string Request ID
 	**/
-	function Create($update, $class, $group=0, $assign="")
+	function Create($customer, $update, $class, $status, $group=0, $assign="")
 	{
-		//
+		$q="INSERT INTO ".$this->DESK->Database->Table("request");
+		$q.="(".$this->DESK->Database->Field("customer").",";
+		$q.=$this->DESK->Database->Field("assignteam").",";
+		$q.=$this->DESK->Database->Field("assignuser").",";
+		$q.=$this->DESK->Database->Field("class").",";
+		$q.=$this->DESK->Database->Field("openeddt").",";
+		$q.=$this->DESK->Database->Field("status").") ";
+		$q.="VALUES(";
+		$q.=$this->DESK->Database->Safe($customer).",";
+		$q.=$this->DESK->Database->Safe($group).",";
+		$q.=$this->DESK->Database->SafeQuote($assign).",";
+		$q.=$this->DESK->Database->SafeQuote($class).",";
+		$q.="NOW(),";
+		$q.=$this->DESK->Database->Safe($status).")";
+		
+		$this->DESK->Database->Query($q);
+		
+		$this->ID = $this->DESK->Database->InsertID();
+		
+		$this->Update($update, true);
+		
+		return $this->ID;
 	}
 	
 	/**
@@ -55,7 +78,27 @@ class Request extends RequestBase
 	**/
 	function Update($update, $public=false)
 	{
-		//
+		if ($this->ID <= 0)
+			return false;
+		
+		$q="INSERT INTO ".$this->DESK->Database->Table("update")."(";
+		$q.=$this->DESK->Database->Field("requestid").",";
+		$q.=$this->DESK->Database->Field("update").",";
+		$q.=$this->DESK->Database->Field("public").",";
+		$q.=$this->DESK->Database->Field("updateby").",";
+		$q.=$this->DESK->Database->Field("updatedt").") ";
+		$q.="VALUES(";
+		$q.=$this->DESK->Database->Safe($this->ID).",";
+		$q.=$this->DESK->Database->SafeQuote($update).",";
+		if ($public)
+			$p=1;
+		else
+			$p=0;
+		$q.=$p.",";
+		$q.="\"TODO\",";
+		$q.="NOW())";
+		
+		$this->DESK->Database->Query($q);
 	}
 	
 	/**
