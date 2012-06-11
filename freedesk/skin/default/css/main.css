@@ -27,6 +27,23 @@ body
 	background-color: white;
 }
 
+/* Links */
+a, a:visited
+{
+	color: blue;
+	text-decoration: none;
+}
+
+a:hover
+{
+	color: red;
+}
+
+a:active
+{
+	color: green;
+}
+
 /* The main frame holding all page content on standard pages */
 div.pageframe
 {
@@ -223,6 +240,7 @@ div#mainleft
 	overflow: auto;
 	margin-bottom: 1em;
 	*/
+	/* width: 100%; */
 }
 
 table#maintable
@@ -240,7 +258,7 @@ td#mainleft
 {
 	width: 10em;
 	border-right: solid 1px #a0a0a0;
-	padding-right: 0.5em;
+	/* padding-right: 0.5em; */
 	margin-right: 0.5em;
 }
 
@@ -266,12 +284,14 @@ ul.leftpane
 	position: relative;
 	left: -3em;
 	font-size: 10pt;
-	/* font-weight: bold; */
+	font-weight: bold;
+	overflow: auto;
 }
 
 ul.leftpane li
 {
 	padding-bottom: 1em;
+	white-space: nowrap;
 }
 
 ul.leftpane_sub
@@ -279,11 +299,10 @@ ul.leftpane_sub
 	list-style: none;
 	position: relative;
 	left: -2.5em;
-	font-weight: none;
+	font-weight: normal;
 }
 
 ul.leftpane_sub li
 {
 	padding-bottom: 0;
-	font-weight: none;
 }

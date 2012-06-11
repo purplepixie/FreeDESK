@@ -28,62 +28,37 @@ $DESK->Skin->IncludeFile("main_left_start.php");
 
 //
 
-$q="SELECT ".$DESK->Database->Field("username").",".$DESK->Database->Field("realname")." FROM ".$DESK->Database->Table("user");
-$r=$DESK->Database->Query($q);
-$users=array();
-while($row=$DESK->Database->FetchAssoc($r))
-{
-	$users[$row['username']] = $row['realname'];
-}
-$DESK->Database->Free($r);
 
-$q="SELECT * FROM ".$DESK->Database->Table("team");
-$r=$DESK->Database->Query($q);
-$team=array();
-while($row=$DESK->Database->FetchAssoc($r))
-{
-	$team[$row['teamid']]=$row['teamname'];
-}
 
-$q="SELECT * FROM ".$DESK->Database->Table("teamuserlink");
-$r=$DESK->Database->Query($q);
-$teamlink=array();
-while($row=$DESK->Database->FetchAssoc($r))
-{
-	if (isset($teamlink[$row['teamid']]))
-		$teamlink[$row['teamid']][]=$row['username'];
-	else
-		$teamlink[$row['teamid']]=array( $row['username'] );
-}
+$teamusers = $DESK->RequestManager->TeamUserList();
 
 echo "<ul class=\"leftpane\">\n";
-foreach($team as $teamid => $teamname)
+foreach($teamusers as $team)
 {
-	echo "<li><a href=\"#\">".$teamname."</a>";
-	if (isset($teamlink[$teamid]))
+	echo "<li>";
+	if ($team['view']) echo "<a href=\"#".$team['id']."\" onclick=\"DESK.mainPane(".$team['id'].")\">";
+	echo $team['name'];
+	if ($team['view']) echo "</a>";
+	if (is_array($team['items']) && (sizeof($team['items'])>0))
 	{
 		echo "\n<ul class=\"leftpane_sub\">\n";
-		foreach($teamlink[$teamid] as $username)
+		foreach($team['items'] as $member)
 		{
-			echo "<li><a href=\"#\">".$users[$username]."</a></li>\n";
+			echo "<li>";
+			if ($team['team'])
+				$t=$team['id'];
+			else
+				$t=0;
+			if ($member['view']) echo "<a href=\"#a-".$member['username']."\" onclick=\"DESK.mainPane(".$t.",'".$member['username']."')\">";
+			echo $member['realname'];
+			if ($member['view']) echo "</a>";
+			echo "</li>\n";
 		}
 		echo "</ul>\n";
 	}
 	echo "</li>\n";
 }
-
-echo "<li>All Users\n";
-echo "<ul class=\"leftpane_sub\">";
-foreach($users as $username => $realname)
-{
-	echo "<li><a href=\"#\">".$realname."</a></li>\n";
-}
-echo "</ul>";
-
-
 echo "</ul>\n";
-	
-
 //
 
 

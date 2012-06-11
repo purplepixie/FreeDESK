@@ -98,11 +98,6 @@ class FreeDESK
 	var $DataDictionary = null;
 	
 	/**
-	 * Request Manager
-	**/
-	var $RequestManager = null;
-	
-	/**
 	 * Context Manager
 	**/
 	var $ContextManager = null;
@@ -111,6 +106,11 @@ class FreeDESK
 	 * Permission Manager
 	**/
 	var $PermissionManager = null;
+	
+	/**
+	 * Request Manager
+	**/
+	var $RequestManager = null;
 	
 	/**
 	 * Include System
@@ -201,6 +201,7 @@ class FreeDESK
 		// Request Classes
 		$this->Include->IncludeFile("core/request/RequestBase.php");
 		$this->Include->IncludeFile("core/request/Request.php");
+		$this->RequestManager = $this->Include->IncludeInstance("core/request/RequestManager.php", "RequestManager");
 		
 		// Skin
 		$this->Skin = $this->Include->IncludeInstance("core/Skin.php","Skin");

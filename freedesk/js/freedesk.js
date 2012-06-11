@@ -26,6 +26,8 @@ For more information see www.purplepixie.org/freedesk/
 function FreeDESK()
 {
 	this.sid = ""; // Session ID
+	
+	this.requestStatus = new Array();
 
 
 	// Login Support
@@ -150,6 +152,12 @@ function FreeDESK()
 		sr.url = "page.php?page="+page+"&sid="+this.sid;
 		sr.callback = DESK.displaySubpage;
 		sr.Get();
+	}
+	
+	// Load a Request List to the Main Pane
+	this.mainPane = function(teamid, username)
+	{
+		alert(teamid+" "+username);
 	}
 		
 	

@@ -58,7 +58,7 @@ while ($row=mysql_fetch_array($r))
 	
 	$tq="DESCRIBE `".$table."`";
 	c($tq);
-	echo $tq."\n";
+	//echo $tq."\n";
 	$tr=mysql_query($tq);
 	while ($trow=mysql_fetch_array($tr))
 		{

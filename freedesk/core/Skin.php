@@ -149,10 +149,17 @@ class Skin
 		{
 			echo "<script type=\"text/javascript\">\n";
 			echo "DESK.sid = \"".$this->DESK->ContextManager->Session->sid."\";\n";
+			
+			$statuses = $this->DESK->RequestManager->StatusList();
+			foreach($statuses as $key => $val)
+			{
+				echo "DESK.requestStatus[".$key."]=\"".$val."\";\n";
+			}
+			
 			echo "</script>\n";
 		}
 		
-		echo $out;
+		
 	}
 	
 	/**
@@ -161,7 +168,7 @@ class Skin
 	function CommonFooter()
 	{
 		$out = "";
-		echo $out;
+		
 	}
 	
 	/**

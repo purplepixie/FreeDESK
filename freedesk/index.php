@@ -44,6 +44,10 @@ if (!isset($_REQUEST['sid']))
 	$data=array("title"=>$DESK->Lang->Get("welcome"));
 	$DESK->Skin->IncludeFile("header.php",$data);
 
+	echo "\n<noscript>\n";
+	echo "<h1>Sorry you must have Javascript enabled to use FreeDESK analyst portal</h1>\n";
+	echo "</noscript>\n";
+
 	echo "<h3>".$DESK->Lang->Get("select_portal").":</h3>\n";
 	
 	echo "<a href=\"#\" onclick=\"DESK.show_login();\">".$DESK->Lang->Get("select_analyst")."</a><br /><br />\n";
