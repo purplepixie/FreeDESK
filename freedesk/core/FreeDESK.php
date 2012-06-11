@@ -198,6 +198,10 @@ class FreeDESK
 		$this->Include->IncludeExec("core/entity/Entity.php","Entity");
 		$this->Include->IncludeExec("core/entity/EntityFactory.php", "EntityFactory");
 		
+		// Request Classes
+		$this->Include->IncludeFile("core/request/RequestBase.php");
+		$this->Include->IncludeFile("core/request/Request.php");
+		
 		// Skin
 		$this->Skin = $this->Include->IncludeInstance("core/Skin.php","Skin");
 		

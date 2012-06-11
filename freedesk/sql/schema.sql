@@ -46,6 +46,39 @@ CREATE TABLE `permissions` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `request`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `request` (
+  `requestid` bigint(20) NOT NULL AUTO_INCREMENT,
+  `customer` bigint(20) NOT NULL,
+  `assignteam` bigint(20) NOT NULL,
+  `assignuser` varchar(254) NOT NULL,
+  `class` int(11) NOT NULL,
+  `openedt` datetime NOT NULL,
+  `status` int(11) NOT NULL,
+  PRIMARY KEY (`requestid`),
+  KEY `customer` (`customer`,`assignteam`,`assignuser`,`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `requestclass`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `requestclass` (
+  `classid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `classname` varchar(254) NOT NULL,
+  `classclass` varchar(254) NOT NULL,
+  PRIMARY KEY (`classid`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `session`
 --
 
@@ -90,7 +123,7 @@ CREATE TABLE `syslog` (
   `event_type` varchar(128) NOT NULL,
   `event_level` int(11) NOT NULL,
   PRIMARY KEY (`event_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=763 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=767 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -119,6 +152,24 @@ CREATE TABLE `teamuserlink` (
   PRIMARY KEY (`linkid`),
   KEY `teamid` (`teamid`,`username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `update`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `update` (
+  `updateid` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `requestid` bigint(20) unsigned NOT NULL,
+  `update` text NOT NULL,
+  `public` tinyint(4) NOT NULL,
+  `updateby` varchar(254) NOT NULL,
+  `updatedt` datetime NOT NULL,
+  PRIMARY KEY (`updateid`),
+  KEY `requestid` (`requestid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -157,4 +208,4 @@ CREATE TABLE `user` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-06-11  0:09:21
+-- Dump completed on 2012-06-11 17:45:37

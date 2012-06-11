@@ -24,6 +24,35 @@ ALTER TABLE `permissions` ADD `usergroupid` varchar(254) NOT NULL;
 ALTER TABLE `permissions` CHANGE `allowed` `allowed` tinyint(4) NOT NULL;
 ALTER TABLE `permissions` ADD `allowed` tinyint(4) NOT NULL;
 -- 
+-- Table: request
+-- DESCRIBE request
+ALTER TABLE `request` CHANGE `requestid` `requestid` bigint(20) NOT NULL auto_increment;
+ALTER TABLE `request` ADD `requestid` bigint(20) NOT NULL auto_increment;
+ALTER TABLE `request` ADD PRIMARY KEY( `requestid` );
+ALTER TABLE `request` CHANGE `customer` `customer` bigint(20) NOT NULL;
+ALTER TABLE `request` ADD `customer` bigint(20) NOT NULL;
+CREATE INDEX `customer` ON `request` ( `customer` );
+ALTER TABLE `request` CHANGE `assignteam` `assignteam` bigint(20) NOT NULL;
+ALTER TABLE `request` ADD `assignteam` bigint(20) NOT NULL;
+ALTER TABLE `request` CHANGE `assignuser` `assignuser` varchar(254) NOT NULL;
+ALTER TABLE `request` ADD `assignuser` varchar(254) NOT NULL;
+ALTER TABLE `request` CHANGE `class` `class` int(11) NOT NULL;
+ALTER TABLE `request` ADD `class` int(11) NOT NULL;
+ALTER TABLE `request` CHANGE `openedt` `openedt` datetime NOT NULL;
+ALTER TABLE `request` ADD `openedt` datetime NOT NULL;
+ALTER TABLE `request` CHANGE `status` `status` int(11) NOT NULL;
+ALTER TABLE `request` ADD `status` int(11) NOT NULL;
+-- 
+-- Table: requestclass
+-- DESCRIBE requestclass
+ALTER TABLE `requestclass` CHANGE `classid` `classid` int(10) unsigned NOT NULL auto_increment;
+ALTER TABLE `requestclass` ADD `classid` int(10) unsigned NOT NULL auto_increment;
+ALTER TABLE `requestclass` ADD PRIMARY KEY( `classid` );
+ALTER TABLE `requestclass` CHANGE `classname` `classname` varchar(254) NOT NULL;
+ALTER TABLE `requestclass` ADD `classname` varchar(254) NOT NULL;
+ALTER TABLE `requestclass` CHANGE `classclass` `classclass` varchar(254) NOT NULL;
+ALTER TABLE `requestclass` ADD `classclass` varchar(254) NOT NULL;
+-- 
 -- Table: session
 -- DESCRIBE session
 ALTER TABLE `session` CHANGE `session_id` `session_id` varchar(254) NOT NULL;
@@ -82,6 +111,9 @@ ALTER TABLE `teamuserlink` ADD `teamid` bigint(20) unsigned NOT NULL;
 CREATE INDEX `teamid` ON `teamuserlink` ( `teamid` );
 ALTER TABLE `teamuserlink` CHANGE `username` `username` varchar(254) NOT NULL;
 ALTER TABLE `teamuserlink` ADD `username` varchar(254) NOT NULL;
+-- 
+-- Table: update
+-- DESCRIBE update
 -- 
 -- Table: user
 -- DESCRIBE user

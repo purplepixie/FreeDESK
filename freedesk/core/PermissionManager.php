@@ -77,6 +77,8 @@ class PermissionManager
 		
 		if (isset($this->userperm[$username][$permission]))
 			return $this->userperm[$username][$permission];
+		if (isset($this->userperm[$username]['default']))
+			return $this->userperm[$username]['default'];
 		
 		// Otherwise we try for a group
 		$q="SELECT ".$this->DESK->Database->Field("permgroup")." FROM ".$this->DESK->Database->Table("user");
@@ -92,6 +94,8 @@ class PermissionManager
 					$this->LoadGroup($group);
 				if (isset($this->groupperm[$group][$permission]))
 					return $this->groupperm[$group][$permission];
+				if (isset($this->groupperm[$group]['default']))
+					return $this->groupperm[$group]['default'];
 			}
 		}
 		
