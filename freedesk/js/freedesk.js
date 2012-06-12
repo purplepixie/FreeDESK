@@ -344,6 +344,25 @@ function FreeDESK()
 		alert(id);
 	}
 	
+	// Open a Window
+	this.openWindow = function(windowname, url, xsize, ysize, resizeable)
+	{
+		if (xsize == undefined)
+			var xsize = 700;
+		if (ysize == undefined)
+			var ysize = 500;
+			
+		if (resizeable == undefined)
+			var resizeable = 1;
+		else if(resizeable)
+			resizeable=1;
+		else if(!resizeable)
+			resizable=0;
+		
+		var windowopts = "location=0,status=0,scrollbars=1,toolbar=0,width="+xsize+",height="+ysize+",resizeable="+resizeable;
+		
+		window.open(url, windowname, windowopts);
+	}
 }
 
 var DESK = new FreeDESK();

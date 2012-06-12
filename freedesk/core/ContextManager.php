@@ -288,6 +288,13 @@ class ContextManager
 		$alert->onclick="Alerts.add('wibble');";
 		$user->submenu[]=$alert;
 		
+		$req = new MenuItem();
+		$req->tag="request";
+		$req->display="Request Form";
+		//$req->link="request.php?sid=".$this->Session->sid;
+		$req->onclick="DESK.openWindow('FreeDESK Request','request.php?sid=".$this->Session->sid."');";
+		$user->submenu[]=$req;
+		
 		$menu[]=$user;
 		
 		return $menu;

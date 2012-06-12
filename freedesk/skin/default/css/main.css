@@ -105,6 +105,60 @@ div.footer a
 	text-decoration: underline;
 }
 
+/* The minimum versions of everything */
+/* The main frame holding all page content on standard pages */
+div.pageframe_min
+{
+	width: 100%;
+	margin: 2em auto 0;
+	padding: 0;
+	margin-top: 0;
+	background: #fff;
+	-moz-border-radius: 1.5em;
+	-webkit-border-radius: 1.5em;
+	border-radius: 1.5em;
+	border-left: solid 2px black;
+	border-right: solid 2px black;
+	border-bottom: solid 2px black;
+}
+
+/* The header with the logo etc */
+div.header_min
+{
+	background: black;
+	-moz-border-radius-topleft: 1em;
+	-webkit-border-top-left-radius: 1em;
+	-moz-border-radius-topright: 1em;
+	-webkit-border-top-right-radius: 1em;
+	border-top-left-radius: 1em;
+	border-top-right-radius: 1em;
+	padding: 0.3em;
+	padding-left: 1.0em;
+}
+
+/* Standard page footer */
+div.footer_min
+{
+	background: black;
+	-moz-border-radius-bottomleft: 1em;
+	-webkit-border-bottom-left-radius: 1em;
+	-moz-border-radius-bottomright: 1em;
+	-webkit-border-bottom-right-radius: 1em;
+	border-bottom-left-radius: 1em;
+	border-bottom-right-radius: 1em;
+	padding: 0.5em;
+	color: white;
+	clear: both;
+	margin-top: 1em;
+}
+
+/* Link in the footer */
+div.footer_min a
+{
+	display: none;
+}
+
+
 /* A screen backdrop - obscures everything for popup forms e.g. login form */
 div.screen_backdrop
 {

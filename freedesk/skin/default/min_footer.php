@@ -37,7 +37,7 @@ else
 ?>
 <a href="http://freedesk.purplepixie.org/">FreeDESK</a> <?php echo $vers; ?>&copy; Copyright 2012 <a href="http://www.purplepixie.org/dave/">David Cutting</a>, all rights reserved
 </div>
--->
+--><br />
 </div>
 <?php
 $DESK->Skin->CommonFooter();

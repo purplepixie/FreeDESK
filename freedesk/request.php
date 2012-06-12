@@ -33,7 +33,7 @@ $DESK->Start();
 ob_end_clean();
 
 
-if (!isset($_REQUEST['sid']))
+if (!isset($_REQUEST['sid']) || !$DESK->ContextManager->Open(ContextType::User, $_REQUEST['sid']))
 {
 	$data=array("title"=>$DESK->Lang->Get("welcome"));
 	$DESK->Skin->IncludeFile("min_header.php",$data);
@@ -49,23 +49,14 @@ if (!isset($_REQUEST['sid']))
 	exit();
 }
 
-// So we have a SID - check if it authenticates
-if (!$DESK->ContextManager->Open(ContextType::User, $_REQUEST['sid']))
-{
-	header("Location: ./"); // login page redirect on failure
-	exit();
-}
 
 // So we're authenticated let's view the main page
 $data=array("title"=>"FreeDESK");
-$DESK->Skin->IncludeFile("header.php",$data);
+$DESK->Skin->IncludeFile("min_header.php",$data);
 
-echo "<div id=\"mainpage\">\n";
-$DESK->Include->IncludeFile("pages/main.php");
-echo "</div>\n";
-echo "<div id=\"subpage\"></div>\n";
+echo "woo";
 
-$DESK->Skin->IncludeFile("footer.php");
+$DESK->Skin->IncludeFile("min_footer.php");
 
 
 ?>
