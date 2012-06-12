@@ -186,7 +186,7 @@ function xmlArray(&$data, $cdata=true)
 		}
 		else
 		{
-			$this->charElement($key, $item, 0, false, $cdata)
+			$this->charElement($key, $item, 0, false, $cdata);
 		}
 	}
 }
