@@ -84,6 +84,20 @@ function FreeDESK()
 		this.backdrop(false);
 	}
 
+	// Logout
+	this.logout_click=function()
+	{
+		var req = new ServerRequest();
+		req.url="api.php?mode=logout&sid="+this.sid;
+		req.callback = DESK.logout_action;
+		req.Get();
+	}
+	
+	this.logout_action=function()
+	{
+		window.location.href="./";
+	}
+
 	// Show/Hide Backdrop
 	this.backdrop = function(set)
 	{
@@ -157,7 +171,47 @@ function FreeDESK()
 	// Load a Request List to the Main Pane
 	this.mainPane = function(teamid, username)
 	{
-		alert(teamid+" "+username);
+		//alert(teamid+" "+username);
+		var sr = new ServerRequest();
+		sr.url = "api.php?mode=requests_assigned&teamid="+teamid+"&username="+username+"&sid="+this.sid;
+		sr.callback = DESK.mainPaneDisplay;
+		sr.Get();
+	}
+	
+	// Display a request list in the main pane
+	this.mainPaneDisplay = function(xml)
+	{
+		var table = document.createElement("table"); // table for results
+		table.border=0;
+		table.width="100%";
+		table.className="requestList";
+		
+		var container = document.getElementById('mainright');
+		
+		if (container.hasChildNodes())
+		{
+			while(container.childNodes.length >= 1)
+				container.removeChild(container.firstChild);
+		}
+		
+		container.appendChild(table);
+		
+		var entities = xml.getElementsByTagName("entity");
+		
+		for (var i=0; i<entities.length; ++i)
+		{
+			var entity = entities[i];
+			var row = table.insertRow(table.getElementsByTagName("tr").length);
+			row.className="requestList";
+			var fields = entity.getElementsByTagName("field");
+			
+			for (var z=0; z<fields.length; ++z)
+			{
+				var cell = row.insertCell(z);
+				var data = (fields[z].textContent == undefined) ? fields[z].firstChild.nodeValue : fields[z].textContent;
+				cell.innerHTML = data;
+			}
+		}
 	}
 		
 	

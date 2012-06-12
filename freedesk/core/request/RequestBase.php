@@ -36,6 +36,11 @@ abstract class RequestBase
 	protected $ID = 0;
 	
 	/**
+	 * Entity Data
+	**/
+	protected $Entity = null;
+	
+	/**
 	 * Constructor
 	 * @param mixed &$freeDESK Current FreeDESK instance
 	**/
@@ -85,6 +90,23 @@ abstract class RequestBase
 	**/
 	abstract function Attach($fileid, $public=false);
 	
+	/**
+	 * Output XML
+	 * @return string xml output
+	 * @param bool $header Put XML header on output (optional, default false)
+	**/
+	abstract function XML($header=false);
 	
+	/**
+	 * Set an entity value
+	 * @param string $field Field ID
+	 * @param string $value Value
+	**/
+	function Set($field, $value)
+	{
+		if ($this->Entity == null)
+			$this->Entity = new Entity($this->DESK);
+		$this->Entity->Set($field, $value);
+	}
 }
 ?>

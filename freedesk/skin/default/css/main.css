@@ -252,6 +252,7 @@ table#maintable td
 {
 	text-align: left;
 	vertical-align: top;
+	/* width: 100%; */
 }
 
 td#mainleft
@@ -271,11 +272,15 @@ div#mainright
 	left: 11em;
 	*/
 	margin-left: 0.5em;
+	padding-top: 1em;
+	/* border: solid 1px black; */
+	width: 100%;
 }
 
 td#mainright
 {
 	margin-left: 0.5em;
+	/* border: solid 1px black; */
 }
 
 ul.leftpane
@@ -305,4 +310,15 @@ ul.leftpane_sub
 ul.leftpane_sub li
 {
 	padding-bottom: 0;
+}
+
+table.requestList
+{
+	border: 0;
+	width: 100%;
+}
+
+tr.requestList:hover
+{
+	background-color: #f0f0ff;
 }

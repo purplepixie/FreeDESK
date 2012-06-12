@@ -55,16 +55,26 @@ function EntityBase(&$freeDESK)
 }
 
 /**
+ * Set a data field to a value
+ * @param string $field Field ID
+ * @param string $data Data
+**/
+function Set($field, $data)
+{
+	$this->data[$field]=$data;
+}
+
+/**
  * Output a data array as XML
  * @param mixed &$xml XML creator
  * @param array &$data Data object
  * @return mixed XML creator
 **/
-protected function XMLData(&$xml, &$data)
+protected function XMLData(&$xml)
 {
 	//TODO: Deal with entity lists
 	
-	foreach($data as $key=>$item)
+	foreach($this->data as $key=>$item)
 	{
 		if (is_object($item))
 		{

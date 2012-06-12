@@ -176,6 +176,17 @@ class SessionManager
 		}
 		return false;
 	}
+	
+	/**
+	 * Destroy a session
+	 * @param string $sid Session ID
+	**/
+	function Destroy($sid)
+	{
+		$q="DELETE FROM ".$this->DESK->Database->Table("session")." WHERE ".$this->DESK->Database->Field("session_id")."=";
+		$q.=$this->DESK->Database->SafeQuote($sid);
+		$this->DESK->Database->Query($q);
+	}
 }
 
 

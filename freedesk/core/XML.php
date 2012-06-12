@@ -157,7 +157,41 @@ function getXML($header=false,$html=false,$head_version="1.0",$head_encode="utf-
 	if ($html) $out=nl2br(htmlspecialchars($out));
 	return $out;
 }
-	
+
+/**
+ * Returns XML Header
+ * @param string $head_version XML Header version (optional, default 1.0)
+ * @param string $head_encode XML encoding (optional, default utf-8)
+ * @return string xml header
+**/
+static function getHeader($head_version="1.0",$head_encode="utf-8")
+{
+	return "<?xml version=\"".$head_version."\" encoding=\"".$head_encode."\"?>\n";
+}
+
+/**
+ * Convert an array to XML
+ * @param array &$data Data array
+ * @param bool $cdata CData all values (optional, default true)
+**/
+function xmlArray(&$data, $cdata=true)
+{
+	foreach($data as $key => $item)
+	{
+		if(is_array($item))
+		{
+			$this->startElement($key);
+			$this->xmlArray($item);
+			$this->endElement($key);
+		}
+		else
+		{
+			$this->charElement($key, $item, 0, false, $cdata)
+		}
+	}
+}
+
+
 /**
  * Writes XML Buffer to Screen
  * @param boolean $header Show an xml header (optional, default NO)

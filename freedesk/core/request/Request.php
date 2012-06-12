@@ -132,6 +132,17 @@ class Request extends RequestBase
 		//
 	}
 	
+	/**
+	 * Output XML
+	 * @return string xml output
+	 * @param bool $header Put XML header on output (optional, default false)
+	**/
+	function XML($header=false)
+	{
+		return $this->Entity->XML($header);
+	}
+	
+	
 	
 }
 ?>

@@ -44,6 +44,33 @@ abstract class ContextType
 }
 
 /**
+ * Menu Items
+**/
+class MenuItem
+{
+	/**
+	 * Tag Name
+	**/
+	var $tag = "";
+	/**
+	 * Display Name
+	**/
+	var $display = "";
+	/**
+	 * Link
+	**/
+	var $link = "#";
+	/**
+	 * Onclick event
+	**/
+	var $onclick = "";
+	/**
+	 * Sub-Menu
+	**/
+	var $submenu = array();
+}
+
+/**
  * Context Manager for FreeDESK - handle connections to the system
 **/
 class ContextManager
@@ -199,6 +226,66 @@ class ContextManager
 		$this->open = false;
 	}
 	
+	/**
+	 * Destroy the context (logout action)
+	**/
+	function Destroy()
+	{
+		if (!$this->open)
+			return false;
+		$this->SessionManager->Destroy($this->Session->sid);
+	}
+	
+	/**
+	 * Get menu items for current context
+	 * @return mixed menu item description array or bool false for no menu
+	**/
+	function MenuItems()
+	{
+		if (!$this->open)
+			return false;
+	
+		$menu=array();
+		
+		$home = new MenuItem();
+		$home->tag="home";
+		$home->onclick="DESK.displayMain(true);";
+		$home->display="Home";
+		
+		$myreq = new MenuItem();
+		$myreg->tag="myreq";
+		$myreq->onclick="DESK.displayMain(true); DESK.mainPane(0, '".$this->Session->username."');";
+		$myreq->display="My Requests";
+		$home->submenu[]=$myreq;
+		
+		$menu[]=$home;
+		
+		$pages = new MenuItem();
+		$pages->tag="pages";
+		$pages->display="Pages";
+		
+		$debug = new MenuItem();
+		$debug->tag="debug";
+		$debug->display="Debug";
+		$debug->onclick="DESK.loadSubpage('debug');";
+		$pages->submenu[]=$debug;
+		
+		$menu[]=$pages;
+		
+		$user = new MenuItem();
+		$user->tag="user";
+		$user->display="User";
+		
+		$logout = new MenuItem();
+		$logout->tag="logout";
+		$logout->display="Logout";
+		$logout->onclick="DESK.logout_click();";
+		$user->submenu[]=$logout;
+		
+		$menu[]=$user;
+		
+		return $menu;
+	}
 	
 }
 ?>

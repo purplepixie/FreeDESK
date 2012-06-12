@@ -55,5 +55,41 @@ if ($_REQUEST['mode']=="login")
 		exit();
 	}
 }
+else if ($_REQUEST['mode']=="logout")
+{
+	if ($DESK->ContextManager->Open(ContextType::User, $_REQUEST['sid']))
+		$DESK->ContextManager->Destroy();
+	$xml = new xmlCreate();
+	$xml->charElement("logout","1");
+	echo $xml->getXML(true);
+	exit();
+}
+
+if (!$DESK->ContextManager->Open(ContextType::User, $_REQUEST['sid']))
+{
+	$error = new FreeDESK_Error(ErrorCode::SessionExpired, "Session Expired");
+	echo $error->XML(true);
+	exit();
+}
+
+if ($_REQUEST['mode']=="requests_assigned")
+{
+	$team = isset($_REQUEST['teamid']) ? $_REQUEST['teamid'] : 0;
+	$user = isset($_REQUEST['username']) ? $_REQUEST['username'] : "";
+	$list = $DESK->RequestManager->FetchAssigned($team, $user);
+	echo xmlCreate::getHeader()."\n";
+	echo "<request-list>\n";
+	foreach($list as $item)
+	{
+		echo $item->XML(false)."\n";
+	}
+	echo "</request-list>\n";
+	exit();
+}
+
+
+$error = new FreeDESK_Error(ErrorCode::UnknownMode, "Unknown Mode");
+echo $error->XML(true);
+exit();
 
 ?>

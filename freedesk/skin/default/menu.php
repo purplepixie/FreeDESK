@@ -19,7 +19,7 @@ along with FreeDESK.  If not, see www.gnu.org/licenses
 
 For more information see www.purplepixie.org/freedesk/
 -------------------------------------------------------------- */
-?>
+/*
 <div id="page_menu" class="page_menu">
 <ul id="menu">
  <li><a href="#" onclick="DESK.displayMain(true);">Home</a></li>
@@ -33,4 +33,49 @@ For more information see www.purplepixie.org/freedesk/
 </ul>
 </div>
 <br />
+*/
+function MenuOptionPrint($menuitem,$close=true)
+{
+	echo "<li><a href=\"".$menuitem->link."\"";
+	if ($menuitem->onclick != "")
+	{
+		echo " onclick=\"".$menuitem->onclick."\"";
+	}
+	echo ">";
+	echo $menuitem->display;
+	echo "</a>";
+	if ($close)
+		echo "</li>";
+	echo "\n";
+}
 
+global $DESK;
+$items = $DESK->ContextManager->MenuItems();
+if ($items===false)
+{
+	// nothing here
+}
+else
+{
+	echo "<div id=\"page_menu\" class=\"page_menu\">\n";
+	echo "<ul id=\"menu\">";
+	foreach($items as $item)
+	{
+		if (is_array($item->submenu) && (sizeof($item->submenu)>0))
+		{
+			MenuOptionPrint($item, false);
+			echo "<ul>\n";
+			foreach($item->submenu as $subitem)
+				MenuOptionPrint($subitem);
+			echo "</ul>\n";
+			echo "</li>\n";
+		}
+		else
+		{
+			MenuOptionPrint($item);
+		}
+	}
+	echo "</ul>\n";
+	echo "</div>\n";
+}
+?>

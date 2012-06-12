@@ -136,7 +136,9 @@ class Skin
 	**/
 	function CommonHeader()
 	{
+		// FreeDESK Javascript
 		echo "\n<script type=\"text/javascript\" src=\"js/freedesk.js\"></script>\n";
+		// AJAX Javascript
 		echo "<script type=\"text/javascript\" src=\"js/ajax.js\"></script>\n";
 		/*
 		echo "<script type=\"text/javascript\">\n";
@@ -147,6 +149,7 @@ class Skin
 		*/
 		if ($this->DESK->ContextManager->IsOpen())
 		{
+			// Login-specific settings such as SID and request statuses
 			echo "<script type=\"text/javascript\">\n";
 			echo "DESK.sid = \"".$this->DESK->ContextManager->Session->sid."\";\n";
 			
