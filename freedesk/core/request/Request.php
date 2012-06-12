@@ -139,7 +139,12 @@ class Request extends RequestBase
 	**/
 	function XML($header=false)
 	{
-		return $this->Entity->XML($header);
+		$data = $this->Entity->GetData();
+		$xml = new xmlCreate();
+		$xml->startElement("request");
+		$xml->xmlArray($data);
+		$xml->endElement("request");
+		return $xml->getXML($header);
 	}
 	
 	

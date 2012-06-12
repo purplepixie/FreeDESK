@@ -78,11 +78,11 @@ protected function XMLData(&$xml)
 	{
 		if (is_object($item))
 		{
-			if (is_subclass_of($data, "EntityBase"))
+			if (is_subclass_of($item, "EntityBase"))
 			{
 				$subdata=array("entity"=>$key);
 				$xml->startElement("subentity",$subdata);
-				$xml->charData($data->XML());
+				$xml->charData($item->XML());
 				$xml->endElement("subentity");
 			}
 			else if (get_class($data) == "EntityList")
@@ -118,7 +118,14 @@ function XML($header=false)
 }
 
 
-
+/**
+ * Get all the raw data
+ * @return array Data array
+**/
+function GetData()
+{
+	return $this->data;
+}
 
 
 }

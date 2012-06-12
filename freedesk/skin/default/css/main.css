@@ -322,3 +322,69 @@ tr.requestList:hover
 {
 	background-color: #f0f0ff;
 }
+
+tr.requestList
+{
+	padding: 1em;
+}
+
+tr.requestList td
+{
+	padding: 1em;
+	border-bottom: solid 1px #a0a0a0;
+}
+
+tr.requestListTitle
+{
+	font-weight: bold;
+	border-bottom: solid 1px black;
+}
+
+tr.requestListTitle td
+{
+	margin: 0;
+	padding: 0.5em;
+	border-bottom: solid 1px black;
+}
+
+div#option_display
+{
+	position: absolute;
+	right: 0;
+	z-index: 10;
+	overflow: auto;
+	background-color: white;
+	opacity: 0.9;
+	filter: alpha(opacity = 90);
+}
+
+div#option_dialog
+{
+	float: right;
+	z-index: 10;
+	background-color: white;
+	border: solid 1px #a0a0a0;
+	display: none;
+	padding: 0.5em;
+}
+
+div#alertpane
+{
+	margin: 0;
+}
+
+div.alert
+{
+	background-color: #ffffe0;
+	margin: 0;
+	padding: 0.2em 0.2em 0.2em 0.5em;
+	border-bottom: solid 1px #e0e0ff;
+	border-left: solid 1px #e0e0ff;
+	border-right: solid 1px #e0e0ff;
+}
+
+span.alertclose
+{
+	position: absolute;
+	right: 0.5em;
+}

@@ -282,6 +282,12 @@ class ContextManager
 		$logout->onclick="DESK.logout_click();";
 		$user->submenu[]=$logout;
 		
+		$alert = new MenuItem();
+		$alert->tag="alert";
+		$alert->display="Alert Test";
+		$alert->onclick="Alerts.add('wibble');";
+		$user->submenu[]=$alert;
+		
 		$menu[]=$user;
 		
 		return $menu;

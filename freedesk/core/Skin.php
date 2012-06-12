@@ -140,6 +140,8 @@ class Skin
 		echo "\n<script type=\"text/javascript\" src=\"js/freedesk.js\"></script>\n";
 		// AJAX Javascript
 		echo "<script type=\"text/javascript\" src=\"js/ajax.js\"></script>\n";
+		// Alerts
+		echo "<script type=\"text/javascript\" src=\"js/alerts.js\"></script>\n";
 		/*
 		echo "<script type=\"text/javascript\">\n";
 		echo file_get_contents("js/freedesk.js");
@@ -157,6 +159,14 @@ class Skin
 			foreach($statuses as $key => $val)
 			{
 				echo "DESK.requestStatus[".$key."]=\"".$val."\";\n";
+			}
+			
+			// Request list display fields
+			$fields = $this->DESK->RequestManager->FetchFields();
+			$a=0;
+			foreach($fields as $key => $val)
+			{
+				echo "DESK.fieldList[".$a++."] = [ \"".$val[0]."\" , ".$val[1]." , \"".$key."\" ];\n";
 			}
 			
 			echo "</script>\n";

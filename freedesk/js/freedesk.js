@@ -27,8 +27,13 @@ function FreeDESK()
 {
 	this.sid = ""; // Session ID
 	
+	// Statuses of requests (text)
 	this.requestStatus = new Array();
+	// List of display fields for request list
+	this.fieldList = new Array();
 
+	// XML of last request list fetched (for redisplay)
+	this.lastListXML = null;
 
 	// Login Support
 	this.login_action = function(responseXML)
@@ -50,7 +55,8 @@ function FreeDESK()
 			}
 			else
 			{
-				hide_login();
+				DESK.sid = newsid;
+				DESK.hide_login();
 				// Any other actions?
 			}
 		}
@@ -137,6 +143,11 @@ function FreeDESK()
 		return out;
 	}
 	
+	this.getErrorCode = function(xml)
+	{
+		return xml.getElementsByTagName("code")[0].childNodes[0].nodeValue;
+	}
+	
 	// Display main or sub page (true for main, false for sub)
 	this.displayMain = function(disp)
 	{
@@ -181,6 +192,7 @@ function FreeDESK()
 	// Display a request list in the main pane
 	this.mainPaneDisplay = function(xml)
 	{
+		DESK.lastListXML = xml;
 		var table = document.createElement("table"); // table for results
 		table.border=0;
 		table.width="100%";
@@ -194,8 +206,63 @@ function FreeDESK()
 				container.removeChild(container.firstChild);
 		}
 		
+		var requests = xml.getElementsByTagName("request");
+		
+		if (requests.length <= 0)
+		{
+			container.innerHTML = "<h3>No Requests Found</h3>";
+			return;
+		}
+		
 		container.appendChild(table);
 		
+		var title = table.insertRow(0);
+		title.className = "requestListTitle";
+		for (var i=0; i<DESK.fieldList.length; ++i)
+		{
+			if (DESK.fieldList[i][1] == 1) // displayed field
+			{
+				var cell = title.insertCell(-1);
+				cell.innerHTML = DESK.fieldList[i][0];
+			}
+		}
+		
+		for (var req=0; req<requests.length; ++req)
+		{
+			var request = requests[req];
+			var row = table.insertRow(table.getElementsByTagName("tr").length);
+			row.className="requestList";
+			
+			for (var fc=0; fc<DESK.fieldList.length; ++fc)
+			{
+				var field = DESK.fieldList[fc];
+				if (field[1] == 1) // display this field
+				{
+					var contents = "";
+					var data = request.getElementsByTagName(field[2])[0];
+					if (!data) // no field data of this form returned
+					{
+						contents="&nbsp;-";
+					}
+					else
+					{
+						contents = (data.textContent == undefined) ? data.firstChild.nodeValue : data.textContent;
+						if (field[2]=="status")
+							contents = DESK.requestStatus[contents];
+						else if (field[2]=="requestid")
+						{
+							var id = contents;
+							contents = "<a href=\"#\" onclick=\"DESK.displayRequest("+contents+");\">"+contents+"</a>";
+							// row.onclick = function(){ return DESK.displayRequest(id); }; // Always uses last - TODO fix it
+						}
+					}
+					
+					var cell = row.insertCell(-1);
+					cell.innerHTML = contents;
+				}
+			}
+		}
+		/*
 		var entities = xml.getElementsByTagName("entity");
 		
 		for (var i=0; i<entities.length; ++i)
@@ -212,8 +279,70 @@ function FreeDESK()
 				cell.innerHTML = data;
 			}
 		}
+		*/
+	}
+	
+	// Option Displays for Main Page
+	this.optionDisplay = function(opt)
+	{
+		if (opt == 1)
+		{
+			document.getElementById('option_select').style.display = "none";
+			
+			var container = document.getElementById('option_dialog');
+			
+			if (container.hasChildNodes())
+			{
+				while(container.childNodes.length >= 1)
+					container.removeChild(container.firstChild);
+			}
+			
+			for (var i=0; i<this.fieldList.length; ++i)
+			{
+				var displayed = false;
+				if (this.fieldList[i][1]==1)
+					displayed=true;
+				var a = "";
+				if (displayed)
+					a += "<b>";
+				a += "<a href=\"#\" onclick=\"DESK.setFieldDisplay("+i+",";
+				if (displayed)
+					a+="0";
+				else
+					a+="1";
+				a+="); DESK.optionDisplay(1);\">";
+				//container.innerHTML += a;
+				a += this.fieldList[i][0];
+				a += "</a>";
+				if (displayed)
+					a += "</b>";
+				container.innerHTML += a;
+				container.innerHTML += "<br />";
+			}
+				
+				
+			container.innerHTML += "<br /><a href=\"#\" onclick=\"DESK.optionDisplay(0); DESK.mainPaneDisplay(DESK.lastListXML);\">Close and Apply</a>";
+			
+			container.style.display = "block";
+		}
+		else
+		{
+			document.getElementById('option_dialog').style.display = "none";
+			document.getElementById('option_select').style.display = "block";
+		}
 	}
 		
+	// Set a fieldDisplay property
+	this.setFieldDisplay = function(index, setting)
+	{
+		this.fieldList[index][1]=setting;
+	}
+	
+	// Display a Request
+	this.displayRequest = function(id)
+	{
+		alert(id);
+	}
 	
 }
 

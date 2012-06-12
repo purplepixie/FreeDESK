@@ -107,32 +107,15 @@ function ServerRequest()
 					{
 						if (this.responseXML)
 						{
-							if (window.DOMParser)
+							if (DESK.isError(this.responseXML))
 							{
-								//var tmpParser = new DOMParser();
-								//var xml = tmpParser.parseFromString(responseXML, "text/xml");
-								//this.ajax.callback( xml, this.ajax.additional );
-								this.ajax.callback(this.responseXML, this.ajax.additional );
-							
-							}
-							else if (window.ActiveXObject)
-							{
-							/*
-								var xml = new ActiveXObject("Microsoft.XMLDOM");
-								alert("one");
-								xml.async = "false";
-								alert("two");
-								xml.loadXML(this.responseXML);
-								alert("three");
-								this.ajax.callback( xml, this.ajax.additional );
-							*/
-								//alert(this.responseXML.getElementsByTagName("error")[0].childNodes[0].nodeValue);
-								this.ajax.callback(this.responseXML, this.ajax.additional);
-							}
-							else
-							{
-								this.ajax.callback(this.responseXML, this.ajax.additional );
-							}
+								if (DESK.getErrorCode(this.responseXML)==102) // expired session
+								{
+									DESK.show_login(DESK.getError(this.responseXML));
+									return;
+								}
+							} // Hand errors other than 102 through to the callback routine to handle
+							this.ajax.callback(this.responseXML, this.ajax.additional );
 						}
 						else
 						{
