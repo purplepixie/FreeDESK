@@ -192,6 +192,7 @@ class Skin
 		echo "\n";
 		$this->IncludeFile("login.php");
 		echo "<div id=\"screen_backdrop\" class=\"screen_backdrop\"></div>\n";
+		echo "<div id=\"loading\" class=\"loading\"></div>\n";
 	}
 	
 }
