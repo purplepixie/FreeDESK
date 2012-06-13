@@ -142,6 +142,8 @@ class Skin
 		echo "<script type=\"text/javascript\" src=\"js/ajax.js\"></script>\n";
 		// Alerts
 		echo "<script type=\"text/javascript\" src=\"js/alerts.js\"></script>\n";
+		// Search
+		echo "<script type=\"text/javascript\" src=\"js/search.js\"></script>\n";
 		/*
 		echo "<script type=\"text/javascript\">\n";
 		echo file_get_contents("js/freedesk.js");
@@ -180,8 +182,10 @@ class Skin
 	**/
 	function CommonFooter()
 	{
-		$out = "";
-		
+		echo "\n";
+		echo "<form id=\"login_sid_form\" action=\"./\" method=\"post\">\n";
+		echo "<input type=\"hidden\" name=\"sid\" value=\"\">\n";
+		echo "</form>\n";
 	}
 	
 	/**

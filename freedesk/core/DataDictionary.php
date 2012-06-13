@@ -88,12 +88,16 @@ class DD_Table
 	**/
 	var $class = "";
 	/**
+	 * Entity Directly Editable
+	**/
+	var $editable = false;
+	/**
 	 * Add a field to the table
 	 * @param mixed $field Field data of type DD_Field
 	**/
 	function Add($field)
 	{
-		$fields[$field->field] = $field;
+		$this->fields[$field->field] = $field;
 	}
 	/**
 	 * Get a field or return boolean false if not found

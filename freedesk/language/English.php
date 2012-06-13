@@ -37,11 +37,18 @@ $i['login_cancel'] = "Cancel Login";
 $i['username'] = "Username";
 $i['password'] = "Password";
 $i['login_fail'] = "Login Failed";
+$i['login_invalid'] = "Invalid or Expired Login Details";
 
 $i['select_portal'] = "Select your interface from the following";
 $i['select_analyst'] = "I am an analyst";
 $i['select_customer'] = "I am a customer";
 
+$i['permission_denied'] = "Sorry you do not have permission for this action";
+$i['entity_not_found'] = "Sorry this entity was not found";
+
+$i['action_invalid'] = "Sorry but this action is invalid";
+
+$i['search'] = "Search";
 }
 
 }

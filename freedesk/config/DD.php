@@ -259,6 +259,51 @@ static function Exec(&$DESK)
 	$sessionuser->secondfield = "username";
 	
 	$DESK->DataDictionary->AddRelationship($sessionuser);
+	
+	// Customer
+	
+	$customer = new DD_Table();
+	$customer->name="Customer";
+	$customer->entity="customer";
+	$customer->editable=true;
+	
+	$f = new DD_Field();
+	$f->name="Customer ID";
+	$f->field="customerid";
+	$f->type=DD_FieldType::Int;
+	$f->searchable=true;
+	$f->display=true;
+	$f->keyfield=true;
+	$customer->Add($f);
+	
+	$f = new DD_Field();
+	$f->name="First Name";
+	$f->field="firstname";
+	$f->type=DD_FieldType::Char;
+	$f->size=254;
+	$f->searchable=true;
+	$f->display=true;
+	$customer->Add($f);
+	
+	$f = new DD_Field();
+	$f->name="Last Name";
+	$f->field="lastname";
+	$f->type=DD_FieldType::Char;
+	$f->size=254;
+	$f->searchable=true;
+	$f->display=true;
+	$customer->Add($f);
+	
+	$f = new DD_Field();
+	$f->name="Email";
+	$f->field="email";
+	$f->type=DD_FieldType::Char;
+	$f->size=254;
+	$f->searchable=true;
+	$f->display=true;
+	$customer->Add($f);
+	
+	$DESK->DataDictionary->AddTable($customer);
 }
 
 }

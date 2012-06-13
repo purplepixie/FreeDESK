@@ -157,5 +157,75 @@ function ServerRequest()
 		this.xmlhttp.send();
 	}
 	
+	
+	
+	this.Post = function(postdata)
+	{
+		if (!this.xmlhttp)
+			this.makeXmlHttp();
+		
+		this.xmlhttp.open('POST', this.url, true);
+		this.xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		this.xmlhttp.ajax = this;
+		if (this.xmlrequest)
+		{
+			this.xmlhttp.onreadystatechange = function()
+			{
+				if (this.readyState == 4)
+				{
+					if (this.status == 200)
+					{
+						if (this.responseXML)
+						{
+							if (DESK.isError(this.responseXML))
+							{
+								if (DESK.getErrorCode(this.responseXML)==102) // expired session
+								{
+									DESK.show_login(DESK.getError(this.responseXML));
+									return;
+								}
+							} // Hand errors other than 102 through to the callback routine to handle
+							this.ajax.callback(this.responseXML, this.ajax.additional );
+						}
+						else
+						{
+							alert("AJAX XML Error: Invalid or Null\nBody:\n"+this.responseXML);
+						}
+					}
+					else
+					{
+						alert("AJAX Server Code: "+this.status+"\nURL: "+this.ajax.url);
+					}
+				}
+			}
+		}
+		else
+		{
+			// HTML Request
+			this.xmlhttp.onreadystatechange = function()
+			{
+				if (this.readyState == 4)
+				{
+					if (this.status == 200)
+					{
+						if (this.responseText)
+						{
+							this.ajax.callback(this.responseText, this.ajax.additional);
+						}
+						else
+						{
+							alert("AJAX Text Error: Invalid or Null Body\nBody:\n"+this.responseText);
+						}
+					}
+					else
+					{
+						alert("AJAX Server Code: "+this.status+"\nURL: "+this.ajax.url);
+					}
+				}
+			}
+		}
+		this.xmlhttp.send(postdata);
+	}
+	
 }
 

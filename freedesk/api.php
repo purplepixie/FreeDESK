@@ -87,6 +87,90 @@ if ($_REQUEST['mode']=="requests_assigned")
 	exit();
 }
 
+if ($_REQUEST['mode']=="entity_search")
+{
+	$entity = $DESK->DataDictionary->GetTable($_REQUEST['entity']);
+	
+	if ($entity === false || !$entity->editable)
+	{
+		//
+	}
+	
+	if (!$DESK->ContextManager->Permission("entity_view.".$_REQUEST['entity']))
+	{
+		//
+	}
+
+	// ENTITY MANAGER
+	$q="SELECT * FROM ".$DESK->Database->Table($entity->entity);
+	
+	$wc="";
+	
+	foreach($entity->fields as $key => $field)
+	{
+		if ($field->searchable && isset($_REQUEST[$key]) && ($_REQUEST[$key]!=""))
+		{
+			if ($wc != "")
+				$wc.=" AND ";
+			// Char data %
+			$wc.=$DESK->Database->Field($key)."=".$DESK->Database->SafeQuote($_REQUEST[$key]);
+		}
+	}
+	
+	if ($wc != "")
+		$q.=" WHERE ".$wc;
+	
+	if (isset($_REQUEST['start']))
+		$start=$_REQUEST['start'];
+	else
+		$start = 0;
+	
+	if (isset($_REQUEST['limit']))
+		$limit=$_REQUEST['limit'];
+	else
+		$limit = 30;
+	
+	$meta = array(
+		"start" => $start,
+		"limit" => $limit );
+	
+	$r=$DESK->Database->Query($q);
+	
+	$meta["count"]=$DESK->Database->NumRows($r);
+	
+	if ($meta["count"]>$limit)
+	{
+		$q.=" LIMIT ".$DESK->Database->Safe($start).",".$DESK->Database->Safe($limit);
+		$DESK->Database->Free($r);
+		$r=$DESK->Database->Query($q);
+	}
+	
+	$xml = new xmlCreate();
+	$xml->startElement("search-results");
+	$xml->startElement("meta");
+	foreach($meta as $key => $val)
+		$xml->charElement($key, $val);
+	$xml->endElement("meta");
+	
+	while($row=$DESK->Database->FetchAssoc($r))
+	{
+		$xml->startElement("entity");
+		foreach($row as $key => $val)
+		{
+			$xml->charElement("field", $val, array("id"=>$key), false, true);
+		}
+		$xml->endElement("entity");
+	}
+	$DESK->Database->Free($r);
+	
+	$xml->endElement("search-results");
+	
+	echo $xml->getXML(true);
+	exit();
+}
+	
+
+
 
 $error = new FreeDESK_Error(ErrorCode::UnknownMode, "Unknown Mode");
 echo $error->XML(true);

@@ -50,8 +50,10 @@ function FreeDESK()
 			var newsid = responseXML.getElementsByTagName("sid")[0].childNodes[0].nodeValue;
 			if (DESK.sid == "") // no current session so reload to index
 			{
-				var loc = "./?sid="+newsid;
-				window.location.href = loc;
+				//var loc = "./?sid="+newsid;
+				//window.location.href = loc;
+				document.forms['login_sid_form'].elements['sid'].value = newsid;
+				document.forms['login_sid_form'].submit();
 			}
 			else
 			{
