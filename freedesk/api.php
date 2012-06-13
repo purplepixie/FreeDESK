@@ -150,6 +150,17 @@ if ($_REQUEST['mode']=="entity_search")
 	$xml->startElement("meta");
 	foreach($meta as $key => $val)
 		$xml->charElement($key, $val);
+	$keyfield="";
+	foreach($entity->fields as $key => $field)
+	{
+		if ($field->keyfield)
+			$keyfield=$field->field;
+		$xml->startElement("field-data");
+		$xml->charElement("id",$field->field);
+		$xml->charElement("name",$field->name, 0, false, true);
+		$xml->endElement("field-data");
+	}
+	$xml->charElement("keyfield",$field->field);
 	$xml->endElement("meta");
 	
 	while($row=$DESK->Database->FetchAssoc($r))

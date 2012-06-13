@@ -44,6 +44,7 @@ static function Exec(&$DESK)
 	$syslog = new DD_Table();
 	$syslog->name = "SysLog";
 	$syslog->entity = "syslog";
+	$syslog->editable = true;
 	
 	$event_id = new DD_Field();
 	$event_id->name = "Event ID";
@@ -272,6 +273,7 @@ static function Exec(&$DESK)
 	$f->field="customerid";
 	$f->type=DD_FieldType::Int;
 	$f->searchable=true;
+	$f->readonly=true;
 	$f->display=true;
 	$f->keyfield=true;
 	$customer->Add($f);

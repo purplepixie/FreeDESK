@@ -458,3 +458,27 @@ span.alertclose
 	position: absolute;
 	right: 0.5em;
 }
+
+table.searchList
+{
+	overflow: hidden;
+	border-top: solid 1px black;
+	padding-top: 1em;
+	border-bottom: solid 1px black;
+	padding-bottom: 1em;
+}
+
+table.searchList td
+{
+	overflow: hidden;
+}
+
+table.searchList tr.row0
+{
+	overflow: hidden;
+}
+
+table.searchList tr.row1
+{
+	background-color: #e0e0e0;
+}

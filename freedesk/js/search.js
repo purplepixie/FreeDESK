@@ -149,13 +149,31 @@ function FreeDESK_Search()
 		
 		container.appendChild(table);
 		
+		var meta = xml.getElementsByTagName("meta")[0];
+		
+		var start = parseInt(meta.getElementsByTagName("start")[0].firstChild.nodeValue);
+		var limit = parseInt(meta.getElementsByTagName("limit")[0].firstChild.nodeValue);
+		var count = parseInt(meta.getElementsByTagName("count")[0].firstChild.nodeValue);
+		
+		var display = "Displaying results "+(start+1)+" to "+(start+limit)+" of "+count;
+		var dispdivtop = document.createElement("div");
+		var dispdivbot = document.createElement("div");
+		dispdivtop.innerHTML = display;
+		dispdivbot.innerHTML = display;
+		container.appendChild(dispdivtop);
+		
+		container.appendChild(table);
+		
 		var entities = xml.getElementsByTagName("entity");
 		
+		var rowcount = 0;
 		for (var i=0; i<entities.length; ++i)
 		{
 			var entity = entities[i];
 			var row = table.insertRow(table.getElementsByTagName("tr").length);
-			row.className="searchList";
+			row.className="row"+rowcount;
+			if ( ++rowcount > 1)
+				rowcount = 0;
 			var fields = entity.getElementsByTagName("field");
 			
 			for (var z=0; z<fields.length; ++z)
@@ -165,6 +183,8 @@ function FreeDESK_Search()
 				cell.innerHTML = data;
 			}
 		}
+		
+		container.appendChild(dispdivbot);
 		
 	}
 	
