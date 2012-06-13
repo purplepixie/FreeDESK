@@ -19,9 +19,10 @@
 -- Table structure for table `customer`
 --
 
+DROP TABLE IF EXISTS `customer`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `%%$%%customer` (
+CREATE TABLE `customer` (
   `customerid` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `firstname` varchar(254) NOT NULL,
   `lastname` varchar(254) NOT NULL,
@@ -34,9 +35,10 @@ CREATE TABLE `%%$%%customer` (
 -- Table structure for table `permgroup`
 --
 
+DROP TABLE IF EXISTS `permgroup`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `%%$%%permgroup` (
+CREATE TABLE `permgroup` (
   `permgroupid` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `groupname` varchar(254) NOT NULL,
   PRIMARY KEY (`permgroupid`)
@@ -47,9 +49,10 @@ CREATE TABLE `%%$%%permgroup` (
 -- Table structure for table `permissions`
 --
 
+DROP TABLE IF EXISTS `permissions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `%%$%%permissions` (
+CREATE TABLE `permissions` (
   `permissionid` bigint(20) NOT NULL AUTO_INCREMENT,
   `permissiontype` varchar(16) NOT NULL,
   `permission` varchar(254) NOT NULL,
@@ -64,9 +67,10 @@ CREATE TABLE `%%$%%permissions` (
 -- Table structure for table `request`
 --
 
+DROP TABLE IF EXISTS `request`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `%%$%%request` (
+CREATE TABLE `request` (
   `requestid` bigint(20) NOT NULL AUTO_INCREMENT,
   `customer` bigint(20) NOT NULL,
   `assignteam` bigint(20) NOT NULL,
@@ -83,9 +87,10 @@ CREATE TABLE `%%$%%request` (
 -- Table structure for table `requestclass`
 --
 
+DROP TABLE IF EXISTS `requestclass`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `%%$%%requestclass` (
+CREATE TABLE `requestclass` (
   `classid` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `classname` varchar(254) NOT NULL,
   `classclass` varchar(254) NOT NULL,
@@ -97,9 +102,10 @@ CREATE TABLE `%%$%%requestclass` (
 -- Table structure for table `session`
 --
 
+DROP TABLE IF EXISTS `session`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `%%$%%session` (
+CREATE TABLE `session` (
   `session_id` varchar(254) NOT NULL,
   `username` varchar(254) NOT NULL,
   `sessiontype` int(11) NOT NULL DEFAULT '-1',
@@ -114,9 +120,10 @@ CREATE TABLE `%%$%%session` (
 -- Table structure for table `status`
 --
 
+DROP TABLE IF EXISTS `status`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `%%$%%status` (
+CREATE TABLE `status` (
   `status` int(11) NOT NULL,
   `description` varchar(254) NOT NULL,
   PRIMARY KEY (`status`)
@@ -127,9 +134,10 @@ CREATE TABLE `%%$%%status` (
 -- Table structure for table `sysconfig`
 --
 
+DROP TABLE IF EXISTS `sysconfig`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `%%$%%sysconfig` (
+CREATE TABLE `sysconfig` (
   `sc_option` varchar(254) NOT NULL,
   `sc_value` varchar(254) NOT NULL,
   PRIMARY KEY (`sc_option`),
@@ -141,9 +149,10 @@ CREATE TABLE `%%$%%sysconfig` (
 -- Table structure for table `syslog`
 --
 
+DROP TABLE IF EXISTS `syslog`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `%%$%%syslog` (
+CREATE TABLE `syslog` (
   `event_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `event_dt` datetime NOT NULL,
   `event` varchar(254) NOT NULL,
@@ -158,9 +167,10 @@ CREATE TABLE `%%$%%syslog` (
 -- Table structure for table `team`
 --
 
+DROP TABLE IF EXISTS `team`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `%%$%%team` (
+CREATE TABLE `team` (
   `teamid` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `teamname` varchar(254) NOT NULL,
   PRIMARY KEY (`teamid`)
@@ -171,9 +181,10 @@ CREATE TABLE `%%$%%team` (
 -- Table structure for table `teamuserlink`
 --
 
+DROP TABLE IF EXISTS `teamuserlink`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `%%$%%teamuserlink` (
+CREATE TABLE `teamuserlink` (
   `linkid` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `teamid` bigint(20) unsigned NOT NULL,
   `username` varchar(254) NOT NULL,
@@ -186,9 +197,10 @@ CREATE TABLE `%%$%%teamuserlink` (
 -- Table structure for table `update`
 --
 
+DROP TABLE IF EXISTS `update`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `%%$%%update` (
+CREATE TABLE `update` (
   `updateid` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `requestid` bigint(20) unsigned NOT NULL,
   `update` text NOT NULL,
@@ -204,9 +216,10 @@ CREATE TABLE `%%$%%update` (
 -- Table structure for table `user`
 --
 
+DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `%%$%%user` (
+CREATE TABLE `user` (
   `username` varchar(254) NOT NULL,
   `password` varchar(254) NOT NULL,
   `realname` varchar(254) NOT NULL,
