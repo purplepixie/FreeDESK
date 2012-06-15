@@ -231,6 +231,75 @@ class MySQL extends DatabaseBase
 	{
 		return mysql_insert_id($this->connection);
 	}
+	
+	/**
+	 * Generate a clause from a QueryBuilder object
+	 * @param object &$query QueryBuilder object
+	 * @return string query string
+	**/
+	function Clause(&$query)
+	{
+		$c = "";
+		foreach($query->items as $item)
+		{
+			if (isset($item['field']))
+			{
+				if ($c!="")
+					$c.=" ";
+				$c.=$this->Field($item['field']);
+				
+				switch($item['type'])
+				{
+					case QueryType::Equal:
+						$c.="=";
+						break;
+					case QueryType::Like:
+						$c.=" LIKE ";
+						break;
+					case QueryType::MoreThan:
+						$c.=" > ";
+						break;
+					case QueryType::MoreThanEqual:
+						$c.=" >= ";
+						break;
+					case QueryType::LessThan:
+						$c.=" < ";
+						break;
+					case QueryType::LessThanEqual:
+						$c.=" <= ";
+						break;
+					case QueryType::NotEqual;
+						$c.=" != ";
+						break;
+				}
+				
+				$c.=$item['value'];
+			}
+			else
+			{
+				switch($item['type'])
+				{
+					case QueryType::OpenBracket:
+						$c.=" ( ";
+						break;
+					case QueryType::CloseBracket:
+						$c.=" ) ";
+						break;
+					case QueryType::opAND:
+						$c.=" AND ";
+						break;
+					case QueryType::opOR:
+						$c.=" OR ";
+						break;
+				}
+			}
+		}
+		
+		if ($c=="")
+			$c="1";
+		
+		return $c;
+	}
 }
 
 ?>

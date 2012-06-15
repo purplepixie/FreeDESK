@@ -65,6 +65,24 @@ function Set($field, $data)
 }
 
 /**
+ * Set the entity
+ * @param string $entity Entity
+**/
+function SetEntity($entity)
+{
+	$this->entity = $entity;
+}
+
+/**
+ * Get entity
+ * @return string Entity
+**/
+function GetEntity()
+{
+	return $this->entity;
+}
+
+/**
  * Output a data array as XML
  * @param mixed &$xml XML creator
  * @param array &$data Data object

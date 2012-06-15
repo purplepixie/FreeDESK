@@ -45,6 +45,10 @@ abstract class DD_FieldType
 	 * Datetime
 	**/
 	const DateTime = 4;
+	/**
+	 * Text (large multi-line block)
+	**/
+	const Text = 5;
 }
 
 /**

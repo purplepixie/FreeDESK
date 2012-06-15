@@ -19,6 +19,113 @@ along with FreeDESK.  If not, see www.gnu.org/licenses
 
 For more information see www.purplepixie.org/freedesk/
 -------------------------------------------------------------- */
+/**
+ * Database Query Type
+**/
+abstract class QueryType
+{
+	const Equal = 0;
+	const Like = 1;
+	const MoreThan = 2;
+	const MoreThanEqual = 3;
+	const LessThan = 4;
+	const LessThanEqual = 5;
+	const NotEqual = 6;
+	
+	const OpenBracket = 100;
+	const CloseBracket = 101;
+	
+	const opAND = 200;
+	const opOR = 201;
+}
+
+/**
+ * Query Builder Class
+**/
+class QueryBuilder
+{
+	/**
+	 * Query items array
+	**/
+	var $items = array();
+	
+	/**
+	 * Limit Flag
+	**/
+	var $limit = false;
+	
+	/**
+	 * Start (for limit)
+	**/
+	var $start = 0;
+	
+	/**
+	 * Entries (for limit)
+	**/
+	var $entries = 30;
+	
+	/**
+	 * Order Flag
+	**/
+	var $order = false;
+	
+	/**
+	 * Order fields
+	**/
+	var $orderlist = array();
+	
+	/**
+	 * Add item
+	 * @param string $field Field
+	 * @param mixed $type QueryType const
+	 * @param mixed $value Value
+	**/
+	function Add($field, $type, $value)
+	{
+		$this->items[] = array(
+			"field" => $field,
+			"type" => $type,
+			"value" => $value );
+	}
+	
+	/**
+	 * Add an order field
+	 * @param string $field Field
+	 * @param bool $asc Ascending (optional, default true) - false is descending
+	**/
+	function AddOrder($field, $asc = true)
+	{
+		if (!$this->order)
+			$this->order = true;
+		$this->orderlist[$field]=$asc;
+	}
+	
+	/**
+	 * Open bracket
+	**/
+	function OpenBracket()
+	{
+		$this->items[] = array("type" => QueryType::OpenBracket);
+	}
+	
+	/**
+	 * Close bracket
+	**/
+	function CloseBracket()
+	{
+		$this->items[] = array("type" => QueryType::CloseBracket);
+	}
+	
+	/**
+	 * Add operation
+	 * @param mixed $operation Op of type QueryType
+	**/
+	function AddOperation($operation)
+	{
+		$this->items[] = array("type" => $operation);
+	}
+}
+
 
 /**
  * DatabaseBase is the abstract base class for database system implementations
@@ -155,6 +262,13 @@ abstract class DatabaseBase
 	 * @return mixed Last inserted ID
 	**/
 	abstract function InsertID();
+	
+	/**
+	 * Generate a clause from a QueryBuilder object
+	 * @param object &$query QueryBuilder object
+	 * @return string query string
+	**/
+	abstract function Clause(&$query);
 	
 }
 

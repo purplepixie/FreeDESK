@@ -23,6 +23,11 @@ For more information see www.purplepixie.org/freedesk/
 // Check git is up-to-date with all our files to be added using "git ls-files"
 // compared against actual directory structure
 
+// What to exclude - the ./.git directory and also our release directory
+$exclude = array(
+	"./.git",
+	"./release" );
+
 $gitout = array();
 exec("git ls-files", $gitout);
 
@@ -32,21 +37,34 @@ foreach($gitout as $gitfile)
 
 $physfiles=array();
 
+// Identify temp files from gEdit (~ on the end)
+function isTempFile($file)
+{
+	if (substr($file,-1)=="~")
+		return true;
+	return false;
+}
+
+// Recursive function to check a directory
 function checkDir($path)
 {
-	global $physfiles,$gitfiles;
-	$handle = opendir($path);
-	while (false !== ($file = readdir($handle)))
+	// File and exclude arrays
+	global $physfiles,$gitfiles, $exclude;
+	$handle = opendir($path); // open the directory
+	while (false !== ($file = readdir($handle))) // iterate through
 	{
-		$filepath = $path.$file;
+		$filepath = $path.$file; // get a "full" filepath
+		
+		// Exclude . .. temp files and anything in our exclude array
 		if ($file != "." && $file != ".." && 
-			$file != ".git" && (substr($file,-1)!="~") && 
-			$filepath != "./release" )
+			!isTempFile($file) && !in_array($filepath, $exclude) )
 		{
+			// If a directory recursively call checkDir again
 			if (is_dir($filepath))
 				checkDir($filepath."/");
-			else
+			else // is a file
 			{
+				// Check it against the list of git files
 				if (isset($gitfiles[$filepath]))
 					$ingit=true;
 				else
@@ -62,6 +80,7 @@ function checkDir($path)
 
 checkDir("./");
 
+// Show orphaned files - those in git but not on the filesystem
 $orphancount=0;
 foreach($gitfiles as $file => $physical)
 {
@@ -71,13 +90,10 @@ foreach($gitfiles as $file => $physical)
 		echo "ORPHAN: ".$file."\n";
 	}
 }
-if ($orphancount>0)
-{
-	echo $orphancount." orphaned files (in git but not physically listed\n";
-}
-else
-	echo "0 orphaned files found in git respository\n";
+// Show orphan summary
+echo $orphancount." orphaned files (in git but not physically listed)\n";
 
+// Show missing git files (exist on filesystem but not in git)
 $filecount=0;
 $ingitcount=0;
 $misscount=0;
@@ -99,7 +115,7 @@ foreach($physfiles as $file => $ingit)
 	else
 		$ingitcount++;
 }
-
+// Display a summary
 echo "Total ".$filecount." physical files, ".$ingitcount." in git, ".$misscount." missing.\n";
 
 ?>

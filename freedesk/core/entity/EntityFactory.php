@@ -59,7 +59,9 @@ class EntityFactory
 			if ($method->subtype == "")
 				$default=$method->classname;
 		}
-		return new $default($desk);
+		$ent = new $default($desk);
+		$ent->SetEntity($entity);
+		return $ent;
 	}
 	
 }

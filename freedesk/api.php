@@ -104,6 +104,7 @@ if ($_REQUEST['mode']=="entity_search")
 	// ENTITY MANAGER
 	$q="SELECT * FROM ".$DESK->Database->Table($entity->entity);
 	
+	/*
 	$wc="";
 	
 	foreach($entity->fields as $key => $field)
@@ -116,6 +117,23 @@ if ($_REQUEST['mode']=="entity_search")
 			$wc.=$DESK->Database->Field($key)."=".$DESK->Database->SafeQuote($_REQUEST[$key]);
 		}
 	}
+	*/
+	
+	$qb = new QueryBuilder();
+	$fieldcount = 0;
+	foreach($entity->fields as $key => $field)
+	{
+		if ($field->searchable && isset($_REQUEST[$key]) && ($_REQUEST[$key]!=""))
+		{
+			if ($fieldcount++ > 0)
+				$qb->AddOperation(QueryType::opAND);
+			// Char data %
+			//$wc.=$DESK->Database->Field($key)."=".$DESK->Database->SafeQuote($_REQUEST[$key]);
+			$qb->Add($key, QueryType::Equal, $DESK->Database->SafeQuote($_REQUEST[$key]));
+		}
+	}
+	
+	$wc = $DESK->Database->Clause($qb);
 	
 	if ($wc != "")
 		$q.=" WHERE ".$wc;
