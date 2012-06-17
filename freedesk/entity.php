@@ -112,6 +112,7 @@ else if ($mode == "edit")
 	{
 		$data = $loaded->GetData();
 		echo "<table class=\"edit\">\n";
+		echo "<form id=\"entity_edit\" onsubmit=\"return false;\">\n";
 		foreach($table->fields as $id => $field)
 		{
 			echo "<tr>\n";
@@ -126,6 +127,14 @@ else if ($mode == "edit")
 			echo "</td>\n";
 			echo "</tr>\n";
 		}
+		
+		echo "<tr><td>\n";
+		echo "<a href=\"#\" onclick=\"\">Cancel</a>";
+		echo "</td><td>";
+		echo "<input type=\"submit\" value=\"XXXX\" onclick=\"\">";
+		echo "</td></tr>\n";
+		
+		echo "</form></table>\n";
 	}
 	else
 	{
