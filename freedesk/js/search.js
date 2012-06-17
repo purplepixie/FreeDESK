@@ -189,7 +189,7 @@ function FreeDESK_Search()
 				cell.innerHTML = data;
 			}
 			
-			var edit = "<a href=\"#\" onclick=\"DESK.editEntity('entity','"+keyfield+"','"+keyfieldval+"');\">Edit</a>";
+			var edit = "<a href=\"#\" onclick=\"DESK.editEntity('"+DESKSearch.entity+"','"+keyfield+"','"+keyfieldval+"');\">Edit</a>";
 			var cell = row.insertCell(-1);
 			cell.innerHTML = edit;
 		}

@@ -48,5 +48,42 @@ class EntityManager
 	{
 		return EntityFactory::Create($this->DESK, $entity);
 	}
+	
+	/**
+	 * Load an entity from the database (from a keyfield)
+	 * @param string $entity Entity
+	 * @param mixed $value Keyfield Value
+	 * @return mixed Entity object on success or bool false on failure
+	**/
+	function Load($entity, $value)
+	{
+		$table = $this->DESK->DataDictionary->GetTable($entity);
+		
+		if ($table === false) // no such entity in DD
+			return false;
+			
+		$keyfield = $table->keyfield;
+		
+		if ($keyfield == "")
+			return false; // no keyfield defined in DD
+			
+		$qb = new QueryBuilder();
+		$qb->Add($keyfield, QueryType::Equal, $value);
+		
+		$q="SELECT * FROM ".$this->DESK->Database->Table($table->entity);
+		$q.=" WHERE ".$this->DESK->Database->Clause($qb);
+		
+		$r=$this->DESK->Database->Query($q);
+		
+		if ($row=$this->DESK->Database->FetchAssoc($r))
+		{
+			$entity = $this->Create($entity);
+			$entity->LoadAssoc($row);
+			$this->DESK->Database->Free($r);
+			return $entity;
+		}
+		
+		return false;
+	}
 }
 ?>

@@ -105,6 +105,33 @@ else if ($mode == "search")
 	echo "<div id=\"searchresults\">\n";
 	echo "</div>";
 }
+else if ($mode == "edit")
+{
+	$loaded = $DESK->EntityManager->Load($entity, $_REQUEST['value']);
+	if ($loaded !== false)
+	{
+		$data = $loaded->GetData();
+		echo "<table class=\"edit\">\n";
+		foreach($table->fields as $id => $field)
+		{
+			echo "<tr>\n";
+			echo "<td>".$field->name."</td>\n";
+			echo "<td>\n";
+			// TODO: Different field types
+			$i="<input type=\"text\" name=\"".$id."\" value=\"".$data[$id]."\"";
+			if ($field->readonly)
+				$i.=" readonly";
+			$i.=">";
+			echo $i;
+			echo "</td>\n";
+			echo "</tr>\n";
+		}
+	}
+	else
+	{
+		echo "Entity Load Failed";
+	}
+}
 
 
 else

@@ -65,6 +65,16 @@ function Set($field, $data)
 }
 
 /**
+ * Load from an asociative array
+ * @param array &$assoc Array
+**/
+function LoadAssoc(&$assoc)
+{
+	foreach($assoc as $key => $val)
+		$this->Set($key, $val);
+}
+
+/**
  * Set the entity
  * @param string $entity Entity
 **/

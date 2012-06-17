@@ -92,6 +92,10 @@ class DD_Table
 	**/
 	var $class = "";
 	/**
+	 * Keyfield
+	**/
+	var $keyfield = "";
+	/**
 	 * Entity Directly Editable
 	**/
 	var $editable = false;
@@ -102,6 +106,8 @@ class DD_Table
 	function Add($field)
 	{
 		$this->fields[$field->field] = $field;
+		if ($field->keyfield)
+			$this->keyfield = $field->field;
 	}
 	/**
 	 * Get a field or return boolean false if not found

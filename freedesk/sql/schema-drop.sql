@@ -80,7 +80,7 @@ CREATE TABLE `request` (
   `status` int(11) NOT NULL,
   PRIMARY KEY (`requestid`),
   KEY `customer` (`customer`,`assignteam`,`assignuser`,`status`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -160,7 +160,7 @@ CREATE TABLE `syslog` (
   `event_type` varchar(128) NOT NULL,
   `event_level` int(11) NOT NULL,
   PRIMARY KEY (`event_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2571 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2622 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -209,7 +209,7 @@ CREATE TABLE `update` (
   `updatedt` datetime NOT NULL,
   PRIMARY KEY (`updateid`),
   KEY `requestid` (`requestid`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -249,4 +249,4 @@ CREATE TABLE `user` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-06-17 19:33:56
+-- Dump completed on 2012-06-17 20:08:42
