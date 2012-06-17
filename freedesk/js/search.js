@@ -54,6 +54,15 @@ function FreeDESK_Search()
 		this.data += escape(value).replace(/\+/g, "%2B");
 	}
 	
+	// Add a string to the data string (pre-escaped), optional flag add & if required (default true)
+	this.addString = function(str, autoAmp)
+	{
+		if ( autoAmp == undefined || autoAmp )
+			this.data += (this.data.length > 0 ? "&" : "");
+		
+		this.data += str;
+	}
+	
 	// Reset
 	this.reset = function()
 	{
@@ -80,42 +89,7 @@ function FreeDESK_Search()
 		var sr = new ServerRequest();
 		
 		// Load the data from the form
-		var form = document.forms[this.searchformid];
-		if (!form)
-			return ;
-		var elements = form.elements;
-		
-		for (var i=0; i<elements.length; ++i)
-		{
-			var element = elements[i];
-			var type = element.type.toLowerCase();
-			var name = element.name;
-			
-			if (name)
-			{
-				if (	type == "text" || type == "password" ||
-						type == "button" || type == "reset" ||
-						type == "file" || type == "submit" ||
-						type == "image" || type == "hidden"	)
-					this.add(name, element.value);
-					
-				else if ( type == "checkbox" && element.checked )
-					this.add(name, element.value ? element.value : "On");
-				
-				else if ( type == "radio" && element.checked)
-					this.add(name, element.value);
-				
-				else if ( type.indexOf("select") != -1 )
-				{
-					for (var x=0; x<element.options.length; ++x)
-					{
-						var opt = element.options[x];
-						if (opt.selected)
-							this.add(name, opt.value ? opt.value : opt.text);
-					}
-				}
-			}
-		}
+		this.addString(DESK.formToQuery(this.searchformid));
 		
 		if (this.autosid)
 			this.add("sid", DESK.sid);

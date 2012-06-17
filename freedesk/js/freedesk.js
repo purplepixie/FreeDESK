@@ -375,6 +375,63 @@ function FreeDESK()
 	
 		this.openWindow("Edit "+entity, url);
 	}
+	
+	// Convert form to query string
+	this.formToQuery = function(formid)
+	{
+		var data = "";
+		
+		function add(name, value)
+		{
+			if (value == undefined)
+				var value = "";
+			
+			data += (data.length > 0 ? "&" : ""); // add & if required
+		
+			data += escape(name).replace(/\+/g, "%2B") + "=";
+		
+			data += escape(value).replace(/\+/g, "%2B");
+		}
+		
+		var form = document.forms[formid];
+		if (!form)
+			return "";
+		var elements = form.elements;
+		
+		for (var i=0; i<elements.length; ++i)
+		{
+			var element = elements[i];
+			var type = element.type.toLowerCase();
+			var name = element.name;
+			
+			if (name)
+			{
+				if (	type == "text" || type == "password" ||
+						type == "button" || type == "reset" ||
+						type == "file" || type == "submit" ||
+						type == "image" || type == "hidden"	)
+					add(name, element.value);
+					
+				else if ( type == "checkbox" && element.checked )
+					add(name, element.value ? element.value : "On");
+				
+				else if ( type == "radio" && element.checked)
+					add(name, element.value);
+				
+				else if ( type.indexOf("select") != -1 )
+				{
+					for (var x=0; x<element.options.length; ++x)
+					{
+						var opt = element.options[x];
+						if (opt.selected)
+							add(name, opt.value ? opt.value : opt.text);
+					}
+				}
+			}
+		}
+		
+		return data;
+	}
 }
 
 var DESK = new FreeDESK();
