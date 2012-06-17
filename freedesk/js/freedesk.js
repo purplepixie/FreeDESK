@@ -264,24 +264,6 @@ function FreeDESK()
 				}
 			}
 		}
-		/*
-		var entities = xml.getElementsByTagName("entity");
-		
-		for (var i=0; i<entities.length; ++i)
-		{
-			var entity = entities[i];
-			var row = table.insertRow(table.getElementsByTagName("tr").length);
-			row.className="requestList";
-			var fields = entity.getElementsByTagName("field");
-			
-			for (var z=0; z<fields.length; ++z)
-			{
-				var cell = row.insertCell(z);
-				var data = (fields[z].textContent == undefined) ? fields[z].firstChild.nodeValue : fields[z].textContent;
-				cell.innerHTML = data;
-			}
-		}
-		*/
 	}
 	
 	// Option Displays for Main Page
@@ -364,6 +346,34 @@ function FreeDESK()
 		var windowopts = "location=0,status=0,scrollbars=1,toolbar=0,width="+xsize+",height="+ysize+",resizeable="+resizeable;
 		
 		window.open(url, windowname, windowopts);
+	}
+	
+	// Perform an entity search
+	this.entitySearch = function(entity, callback, fields)
+	{
+		var url = "entity.php?mode=search&entity="+entity;
+		
+		if (callback != undefined)
+			url += "&callback="+callback;
+		if (fields != undefined)
+		{
+			for (var i=0; i<fields.length; ++i)
+			{
+				url += "&" + fields[i][0] + "=" + fields[i][1]; // escape?
+			}
+		}
+		url += "&sid=" + this.sid;
+		
+		this.openWindow("Search "+entity, url);
+	}
+	
+	// Open Edit Entity
+	this.editEntity = function(entity, keyfield, keyfieldValue)
+	{
+		var url = "entity.php?mode=edit&entity="+entity+"&keyfield="+keyfield+"&value="+keyfieldValue;
+		url += "&sid=" + this.sid;
+	
+		this.openWindow("Edit "+entity, url);
 	}
 }
 

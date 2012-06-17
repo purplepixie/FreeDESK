@@ -154,6 +154,8 @@ function FreeDESK_Search()
 		var start = parseInt(meta.getElementsByTagName("start")[0].firstChild.nodeValue);
 		var limit = parseInt(meta.getElementsByTagName("limit")[0].firstChild.nodeValue);
 		var count = parseInt(meta.getElementsByTagName("count")[0].firstChild.nodeValue);
+		var keyfield = (meta.getElementsByTagName("keyfield")[0].textContent==undefined) ?
+			meta.getElementsByTagName("keyfield")[0].firstChild.nodeValue : meta.getElementsByTagName("keyfield")[0].textContent ;
 		
 		var display = "Displaying results "+(start+1)+" to "+(start+limit)+" of "+count;
 		var dispdivtop = document.createElement("div");
@@ -169,6 +171,7 @@ function FreeDESK_Search()
 		var rowcount = 0;
 		for (var i=0; i<entities.length; ++i)
 		{
+			var keyfieldval = "";
 			var entity = entities[i];
 			var row = table.insertRow(table.getElementsByTagName("tr").length);
 			row.className="row"+rowcount;
@@ -178,10 +181,17 @@ function FreeDESK_Search()
 			
 			for (var z=0; z<fields.length; ++z)
 			{
+				var id = fields[z].attributes.getNamedItem("id").value;
 				var cell = row.insertCell(z);
 				var data = (fields[z].textContent == undefined) ? fields[z].firstChild.nodeValue : fields[z].textContent;
+				if (id == keyfield)
+					keyfieldval = data;
 				cell.innerHTML = data;
 			}
+			
+			var edit = "<a href=\"#\" onclick=\"DESK.editEntity('entity','"+keyfield+"','"+keyfieldval+"');\">Edit</a>";
+			var cell = row.insertCell(-1);
+			cell.innerHTML = edit;
 		}
 		
 		container.appendChild(dispdivbot);

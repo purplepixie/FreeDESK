@@ -133,10 +133,7 @@ if ($_REQUEST['mode']=="entity_search")
 		}
 	}
 	
-	$wc = $DESK->Database->Clause($qb);
-	
-	if ($wc != "")
-		$q.=" WHERE ".$wc;
+
 	
 	if (isset($_REQUEST['start']))
 		$start=$_REQUEST['start'];
@@ -147,6 +144,12 @@ if ($_REQUEST['mode']=="entity_search")
 		$limit=$_REQUEST['limit'];
 	else
 		$limit = 30;
+
+
+	$wc = $DESK->Database->Clause($qb);
+	
+	if ($wc != "")
+		$q.=" WHERE ".$wc;
 	
 	$meta = array(
 		"start" => $start,
@@ -178,7 +181,7 @@ if ($_REQUEST['mode']=="entity_search")
 		$xml->charElement("name",$field->name, 0, false, true);
 		$xml->endElement("field-data");
 	}
-	$xml->charElement("keyfield",$field->field);
+	$xml->charElement("keyfield",$keyfield);
 	$xml->endElement("meta");
 	
 	while($row=$DESK->Database->FetchAssoc($r))
