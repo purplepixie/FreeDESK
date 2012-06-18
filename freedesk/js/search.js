@@ -91,12 +91,16 @@ function FreeDESK_Search()
 		// Load the data from the form
 		this.addString(DESK.formToQuery(this.searchformid));
 		
+		this.add("start", start);
+		this.add("limit", results);
+		
 		if (this.autosid)
 			this.add("sid", DESK.sid);
 		
+		
 		sr.callback = DESKSearch.searchResults;
 		sr.url = "api.php";
-		//alert(this.data);
+		
 		sr.Post(this.data);
 	}
 	
@@ -142,6 +146,7 @@ function FreeDESK_Search()
 		
 		var entities = xml.getElementsByTagName("entity");
 		
+		var fieldcount = 0;
 		var rowcount = 0;
 		for (var i=0; i<entities.length; ++i)
 		{
@@ -153,6 +158,8 @@ function FreeDESK_Search()
 				rowcount = 0;
 			var fields = entity.getElementsByTagName("field");
 			
+			fieldcount=0;
+			
 			for (var z=0; z<fields.length; ++z)
 			{
 				var id = fields[z].attributes.getNamedItem("id").value;
@@ -161,12 +168,49 @@ function FreeDESK_Search()
 				if (id == keyfield)
 					keyfieldval = data;
 				cell.innerHTML = data;
+				++fieldcount;
 			}
 			
 			var edit = "<a href=\"#\" onclick=\"DESK.editEntity('"+DESKSearch.entity+"','"+keyfield+"','"+keyfieldval+"');\">Edit</a>";
 			var cell = row.insertCell(-1);
 			cell.innerHTML = edit;
 		}
+		
+		var prevCell = "&nbsp;";
+		
+		if (start>0)
+		{
+			prevCell="<a href=\"#\" onclick=\"DESKSearch.search("+(start-limit)+","+limit+");\">&lt;&lt; Previous</a>";
+		}
+		
+		var nextCell = "&nbsp;";
+		
+		if ( (start+limit) < count )
+		{
+			nextCell="<a href=\"#\" onclick=\"DESKSearch.search("+(start+limit)+","+limit+");\">&gt;&gt; Next</a>";
+		}
+		
+		var spanWidth = fieldcount-1; // allowing for the edit
+		
+		var row = table.insertRow(0);
+		var rowb = table.insertRow(-1);
+		var cell = row.insertCell(0);
+		var cellb = rowb.insertCell(0);
+		cell.innerHTML = prevCell;
+		cellb.innerHTML = prevCell;
+		
+		for (var i=0; i<spanWidth; ++i)
+		{
+			cell = row.insertCell(i+1);
+			cellb = rowb.insertCell(i+1);
+			cell.innerHTML = "&nbsp;";
+			cellb.innerHTML = "&nbsp;";
+		}
+		cell=row.insertCell(spanWidth+1);
+		cellb=rowb.insertCell(spanWidth+1);
+		
+		cell.innerHTML = nextCell;
+		cellb.innerHTML = nextCell;
 		
 		container.appendChild(dispdivbot);
 		

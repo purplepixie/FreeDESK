@@ -228,13 +228,22 @@ class RequestManager
 			$q.=$this->DESK->Database->Field("assignteam")."=".$this->DESK->Database->Safe($teamid);
 		}
 		
-		if ($sort != "")
+		if ($sort != "" && $sort != "assigned")
 		{
 			$q.=" ORDER BY ".$this->DESK->Database->Field($sort)." ";
 			if ($order == "ASC")
 				$q.="ASC";
 			else
 				$q.="DESC";
+		}
+		else if ($sort == "assigned")
+		{
+			if ($order == "ASC")
+				$o="ASC";
+			else
+				$o="DESC";
+			$q.="ORDER BY ".$this->DESK->Database->Field("assignteam")." ".$o.",";
+			$q.=$this->DESK->Database->Field("assignuser")." ".$o;
 		}
 		
 		$out=array();
