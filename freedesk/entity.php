@@ -81,6 +81,7 @@ else if ($mode == "search")
 	echo "<div id=\"searchfields\">\n";
 	echo "<table class=\"search\">\n";
 	echo "<form id=\"entitysearch\" onsubmit=\"return false;\">\n";
+	
 	$searchnow=false;
 	foreach($table->fields as $id => $field)
 	{
@@ -113,6 +114,8 @@ else if ($mode == "edit")
 		$data = $loaded->GetData();
 		echo "<table class=\"edit\">\n";
 		echo "<form id=\"entity_edit\" onsubmit=\"return false;\">\n";
+		echo "<input type=\"hidden\" name=\"mode\" value=\"entity_save\">\n";
+		echo "<input type=\"hidden\" name=\"entity\" value=\"".$entity."\">\n";
 		foreach($table->fields as $id => $field)
 		{
 			echo "<tr>\n";
@@ -129,9 +132,10 @@ else if ($mode == "edit")
 		}
 		
 		echo "<tr><td>\n";
-		echo "<a href=\"#\" onclick=\"\">Cancel</a>";
+		echo "<a href=\"#\" onclick=\"window.close();\">Cancel</a>";
 		echo "</td><td>";
-		echo "<input type=\"submit\" value=\"XXXX\" onclick=\"\">";
+		echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("save")."\" onclick=\"DESK.formAPI('entity_edit');\"> ";
+		echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("save_close")."\" onclick=\"DESK.formAPI('entity_edit',true);\">";
 		echo "</td></tr>\n";
 		
 		echo "</form></table>\n";
@@ -141,7 +145,30 @@ else if ($mode == "edit")
 		echo "Entity Load Failed";
 	}
 }
-
+else if ($mode == "create")
+{
+	echo "<table class=\"create\">\n";
+	echo "<form id=\"entity_create\" onsubmit=\"return false;\">\n";
+	echo "<input type=\"hidden\" name=\"mode\" value=\"entity_create\">\n";
+	echo "<input type=\"hidden\" name=\"entity\" value=\"".$entity."\">\n";
+	foreach($table->fields as $id => $field)
+	{
+		echo "<tr>\n";
+		echo "<td>".$field->name."</td>\n";
+		echo "<td>\n";
+		// TODO: Different field types
+		echo "<input type=\"text\" name=\"".$id."\" value=\"\">\n";
+		echo "</td></tr>";
+	}
+	echo "<tr><td>\n";
+	echo "<a href=\"#\" onclick=\"window.close();\">Cancel</a>";
+	echo "</td><td>";
+	echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("save")."\" onclick=\"DESK.formAPI('entity_create');\"> ";
+	echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("save_close")."\" onclick=\"DESK.formAPI('entity_create',true);\">";
+	echo "</td></tr>\n";
+	
+	echo "</form></table>\n";
+}
 
 else
 {

@@ -201,8 +201,91 @@ if ($_REQUEST['mode']=="entity_search")
 	exit();
 }
 	
+else if ($_REQUEST['mode'] == "entity_save")
+{
+	$entity = $_REQUEST['entity'];
+	$table = $DESK->DataDictionary->GetTable($entity);
+	
+	if ($entity === false)
+	{
+		$err = new FreeDESK_Error(ErrorCode::EntityError, "Entity Error (Not Found)");
+		echo $err->XML(true);
+		exit();
+	}
+	
+	$keyfield = $table->keyfield;
+	
+	$data = $DESK->EntityManager->Load($entity, $_REQUEST[$keyfield]);
+	
+	
+	if ($data === false)
+	{
+		$err = new FreeDESK_Error(ErrorCode::EntityError, "Entity Error (Not Loaded)");
+		echo $err->XML(true);
+		exit();
+	}
+	
+	foreach($table->fields as $id => $field)
+	{
+		if ($id != $keyfield)
+			if (isset($_REQUEST[$id]))
+				$data->Set($id, $_REQUEST[$id]);
+	}
+	
+	$result = $DESK->EntityManager->Save($data);
+	
+	if ($result)
+	{
+		$xml = new xmlCreate();
+		$xml->charElement("operation","1");
+		echo $xml->getXML(true);
+		exit();
+	}
+	else
+	{
+		$err = new FreeDESK_Error(ErrorCode::EntityError, "Entity Error (Not Saved)");
+		echo $err->XML(true);
+		exit();
+	}
+}
 
-
+else if ($_REQUEST['mode'] == "entity_create")
+{
+	$entity = $_REQUEST['entity'];
+	$table = $DESK->DataDictionary->GetTable($entity);
+	
+	if ($entity === false)
+	{
+		$err = new FreeDESK_Error(ErrorCode::EntityError, "Entity Error (Not Found)");
+		echo $err->XML(true);
+		exit();
+	}
+	
+	$data = $DESK->EntityManager->Create($entity);
+	
+	foreach($table->fields as $id => $field)
+	{
+		if ($id != $keyfield)
+			if (isset($_REQUEST[$id]))
+				$data->Set($id, $_REQUEST[$id]);
+	}
+	
+	$result = $DESK->EntityManager->Insert($data);
+	
+	if ($result)
+	{
+		$xml = new xmlCreate();
+		$xml->charElement("operation","1");
+		echo $xml->getXML(true);
+		exit();
+	}
+	else
+	{
+		$err = new FreeDESK_Error(ErrorCode::EntityError, "Entity Error (Not Saved)");
+		echo $err->XML(true);
+		exit();
+	}
+}
 
 $error = new FreeDESK_Error(ErrorCode::UnknownMode, "Unknown Mode");
 echo $error->XML(true);

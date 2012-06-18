@@ -85,5 +85,111 @@ class EntityManager
 		
 		return false;
 	}
+	
+	/**
+	 * Save an entity
+	 * @param object &$entity Entity object
+	 * @return bool true on success or false on failure
+	**/
+	function Save(&$entity)
+	{
+		$eid = $entity->GetEntity();
+		$data = $entity->GetData();
+		
+		$table = $this->DESK->DataDictionary->GetTable($eid);
+		
+		if ($table === false)
+			return false;
+		
+		$keyfield = $table->keyfield;
+		
+		if ($keyfield == "" || (!isset($data[$keyfield])))
+			return false;
+		
+		$q="UPDATE ".$this->DESK->Database->Table($table->entity)." SET ";
+		
+		$first=true;
+		foreach($data as $key => $value)
+		{
+			if ($key != $keyfield)
+			{
+				if ($first)
+					$first=false;
+				else
+					$q.=",";
+				$q.=$this->DESK->Database->Field($key);
+				$q.="=";
+				$q.=$this->DESK->Database->SafeQuote($value);
+			}
+		}
+		
+		$q.=" WHERE ".$this->DESK->Database->Field($keyfield)."=";
+		$q.=$this->DESK->Database->SafeQuote($data[$keyfield]);
+		
+		$this->DESK->Database->Query($q);
+		
+		return true;
+	}
+	
+	/**
+	 * Insert a (new) entity
+	 * @param object &$entity Entity object
+	 * @return bool true on success or false on failure
+	**/
+	function Insert(&$entity)
+	{
+		$eid = $entity->GetEntity();
+		$data = $entity->GetData();
+		
+		$table = $this->DESK->DataDictionary->GetTable($eid);
+		
+		if ($table === false)
+			return false;
+		
+		$keyfield = $table->keyfield;
+		
+		$q="INSERT INTO ".$this->DESK->Database->Table($eid);
+		
+		$fieldlist = array();
+		
+		foreach($data as $key => $value)
+		{
+			if (isset($_REQUEST[$key]) &&
+				( $key != $keyfield || $_REQUEST[$key]!="" ) )
+			{
+				$fieldlist[]=$key;
+			}
+		}
+		
+		$q.="(";
+		$first=true;
+		foreach($fieldlist as $field)
+		{
+			if ($first)
+				$first=false;
+			else
+				$q.=",";
+			$q.=$this->DESK->Database->Field($field);
+		}
+		$q.=")";
+		
+		$q.=" VALUES(";
+		$first=true;
+		foreach($fieldlist as $field)
+		{
+			if ($first)
+				$first=false;
+			else
+				$q.=",";
+			$q.=$this->DESK->Database->SafeQuote($_REQUEST[$field]);
+		}
+		$q.=")";
+		
+		$this->DESK->Database->Query($q);
+		
+		return true;
+	}
+			
+				
 }
 ?>

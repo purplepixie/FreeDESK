@@ -54,7 +54,7 @@ function ServerRequest()
 				}
 				catch(ex)
 				{
-					// No Microsoft WHAT HAVE YOU DONE??!?
+					// No, Microsoft WHAT HAVE YOU DONE??!?
 				}
 			}
 		}

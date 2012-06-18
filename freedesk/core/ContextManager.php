@@ -309,6 +309,13 @@ class ContextManager
 		$customer->submenu[]=$csearch;
 		
 		$csearch = new MenuItem();
+		$csearch->tag="customercreate";
+		$csearch->display="Create";
+		//$csearch->onclick="DESK.openWindow('FreeDESK Customer','entity.php?mode=search&entity=customer&sid=".$this->Session->sid."');";
+		$csearch->onclick="DESK.entityCreate('customer');";
+		$customer->submenu[]=$csearch;
+		
+		$csearch = new MenuItem();
 		$csearch->tag="syslogsearch";
 		$csearch->display="Syslog";
 		//$csearch->onclick="DESK.openWindow('FreeDESK Syslog','entity.php?mode=search&entity=syslog&sid=".$this->Session->sid."');";

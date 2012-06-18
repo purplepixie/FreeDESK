@@ -29,6 +29,8 @@ class ErrorCode
 	const SessionExpired = 102;
 	
 	const UnknownMode = 201;
+	
+	const EntityError = 300;
 }
 
 /**

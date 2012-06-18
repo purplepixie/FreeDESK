@@ -49,6 +49,8 @@ $i['entity_not_found'] = "Sorry this entity was not found";
 $i['action_invalid'] = "Sorry but this action is invalid";
 
 $i['search'] = "Search";
+$i['save'] = "Save";
+$i['save_close'] = "Save and Close";
 }
 
 }

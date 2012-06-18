@@ -376,6 +376,19 @@ function FreeDESK()
 		this.openWindow("Edit "+entity, url);
 	}
 	
+	// Perform an entity creation
+	this.entityCreate = function(entity, callback)
+	{
+		var url = "entity.php?mode=create&entity="+entity;
+		
+		if (callback != undefined)
+			url += "&callback="+callback;
+			
+		url += "&sid=" + this.sid;
+		
+		this.openWindow("Create "+entity, url);
+	}
+	
 	// Convert form to query string
 	this.formToQuery = function(formid)
 	{
@@ -432,6 +445,39 @@ function FreeDESK()
 		
 		return data;
 	}
+	
+	// API Form Action e.g. save entity
+	this.formAPI = function(formid, closeOnComplete)
+	{
+		if (closeOnComplete == undefined)
+			var closeOnComplete = false;
+		
+		var q = DESK.formToQuery(formid);
+		
+		q += "&sid=" + DESK.sid;
+		
+		var sr = new ServerRequest();
+		sr.url = "api.php";
+		sr.callback = DESK.formAPIcallback;
+		sr.additional[0] = closeOnComplete;
+		sr.Post(q);
+	}
+	
+	this.formAPIcallback = function(xml, additional)
+	{
+		if (DESK.isError(xml))
+		{
+			alert(DESK.getError(xml));
+		}
+		else
+		{
+			// Message ?
+			
+			if (additional[0])
+				window.close();
+		}
+	}
+		
 }
 
 var DESK = new FreeDESK();

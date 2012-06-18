@@ -55,7 +55,11 @@ class EntityFactory
 		foreach($methodlist as $method)
 		{
 			if ($method->subtype == $class)
-				return new $method->classname($desk);
+			{
+				$ent = new $method->classname($desk);
+				$ent->SetEntity($entity);
+				return $ent;
+			}
 			if ($method->subtype == "")
 				$default=$method->classname;
 		}
