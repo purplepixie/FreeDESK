@@ -467,11 +467,12 @@ function FreeDESK()
 	{
 		if (DESK.isError(xml))
 		{
-			alert(DESK.getError(xml));
+			Alerts.add(DESK.getError(xml), 2, 10);
 		}
 		else
 		{
-			// Message ?
+			// We got this far - no DESK error or XML error so we can say success!
+			Alerts.add("Operation Successful", 0);
 			
 			if (additional[0])
 				window.close();

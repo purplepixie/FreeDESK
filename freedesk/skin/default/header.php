@@ -57,5 +57,5 @@ echo "<img src=\"".$DESK->Skin->GetWebLocation("images/logo-white-120.png")."\" 
 <?php
 $DESK->Skin->IncludeFile("menu.php");
 ?>
-
+<div id="alert_pane"></div>
 <div class="content" id="content">

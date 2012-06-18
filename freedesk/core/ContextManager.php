@@ -285,7 +285,7 @@ class ContextManager
 		$alert = new MenuItem();
 		$alert->tag="alert";
 		$alert->display="Alert Test";
-		$alert->onclick="Alerts.add('wibble');";
+		$alert->onclick="Alerts.randomTest();";
 		$user->submenu[]=$alert;
 		
 		$req = new MenuItem();
