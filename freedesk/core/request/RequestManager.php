@@ -210,9 +210,11 @@ class RequestManager
 	 * Fetch a request assignment list
 	 * @param int $teamid Assigned team (optional, default 0)
 	 * @param string $username Assigned username (optional, default "")
+	 * @param string $sort Field to sort on
+	 * @param string $order Order (ASC or DESC)
 	 * @return mixed array of requests matching
 	**/
-	function FetchAssigned($teamid=0, $username="")
+	function FetchAssigned($teamid=0, $username="", $sort="", $order="")
 	{
 		// assignteam assignuser
 		$q="SELECT ".$this->DESK->Database->Field("requestid")." FROM ".$this->DESK->Database->Table("request")." WHERE ";
@@ -224,6 +226,15 @@ class RequestManager
 		{
 			$q.=$this->DESK->Database->Field("assignuser")."=".$this->DESK->Database->SafeQuote($username)." AND ";
 			$q.=$this->DESK->Database->Field("assignteam")."=".$this->DESK->Database->Safe($teamid);
+		}
+		
+		if ($sort != "")
+		{
+			$q.=" ORDER BY ".$this->DESK->Database->Field($sort)." ";
+			if ($order == "ASC")
+				$q.="ASC";
+			else
+				$q.="DESC";
 		}
 		
 		$out=array();

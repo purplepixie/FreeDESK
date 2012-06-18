@@ -34,6 +34,14 @@ function FreeDESK()
 
 	// XML of last request list fetched (for redisplay)
 	this.lastListXML = null;
+	
+	// Last Request Details
+	this.lastTeam = 0;
+	this.lastUser = "";
+	
+	// Sort Criteria
+	this.sortField = "requestid";
+	this.sortOrder = "D";
 
 	// Login Support
 	this.login_action = function(responseXML)
@@ -172,11 +180,16 @@ function FreeDESK()
 		DESK.displayMain(false);
 	}
 	
-	this.loadSubpage = function(page)
+	this.loadSubpage = function(page, opts)
 	{
+		if (opts == undefined)
+			var opts = "";
 		var sr = new ServerRequest();
 		sr.xmlrequest=false;
-		sr.url = "page.php?page="+page+"&sid="+this.sid;
+		sr.url = "page.php?page="+page;
+		if (opts != "")
+			sr.url += "&"+opts;
+		sr.url += "&sid="+this.sid;
 		sr.callback = DESK.displaySubpage;
 		sr.Get();
 	}
@@ -186,7 +199,16 @@ function FreeDESK()
 	{
 		//alert(teamid+" "+username);
 		var sr = new ServerRequest();
-		sr.url = "api.php?mode=requests_assigned&teamid="+teamid+"&username="+username+"&sid="+this.sid;
+		this.lastTeam = teamid;
+		this.lastUser = username;
+		
+		sr.url = "api.php?mode=requests_assigned&teamid="+teamid+"&username="+username;
+		if (this.sortField != "")
+		{
+			sr.url += "&sort="+this.sortField;
+			sr.url += "&order="+this.sortOrder;
+		}
+		sr.url += "&sid="+this.sid;
 		sr.callback = DESK.mainPaneDisplay;
 		sr.Get();
 	}
@@ -225,7 +247,21 @@ function FreeDESK()
 			if (DESK.fieldList[i][1] == 1) // displayed field
 			{
 				var cell = title.insertCell(-1);
-				cell.innerHTML = DESK.fieldList[i][0];
+				
+				var fieldTitle = DESK.fieldList[i][0];
+				
+				var link = "<a href=\"#\" onclick=\"DESK.mainPaneSort('"+DESK.fieldList[i][2]+"');\">";
+				link += fieldTitle;
+				
+				if (DESK.sortField == DESK.fieldList[i][2])
+					if (DESK.sortOrder == "D")
+						link+=" &gt;";
+					else
+						link+=" &lt;";
+						
+				link+"</a>";
+				
+				cell.innerHTML = link;
 			}
 		}
 		
@@ -264,6 +300,24 @@ function FreeDESK()
 				}
 			}
 		}
+	}
+	
+	// Set main pane sort
+	this.mainPaneSort = function(field)
+	{
+		if (DESK.sortField == field)
+		{
+			if (DESK.sortOrder == "D")
+				DESK.sortOrder = "A";
+			else
+				DESK.sortOrder = "D";
+		}
+		else
+		{
+			DESK.sortField = field;
+			DESK.sortOrder = "D";
+		}
+		DESK.mainPane(DESK.lastTeam, DESK.lastUser);
 	}
 	
 	// Option Displays for Main Page

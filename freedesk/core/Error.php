@@ -31,6 +31,9 @@ class ErrorCode
 	const UnknownMode = 201;
 	
 	const EntityError = 300;
+	
+	const Forbidden = 403;
+	const ResourceNotFound = 404;
 }
 
 /**

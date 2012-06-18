@@ -39,5 +39,27 @@ if ( (!isset($_REQUEST['sid'])) || (!$DESK->ContextManager->Open(ContextType::Us
 	exit();
 }
 
-$DESK->Include->IncludeFile("pages/debug.php");
+$page = $DESK->PluginManager->GetPage($_REQUEST['page']);
+
+if ($page === false)
+{
+	echo "404: ".$DESK->Lang->Get("not_found");
+	exit();
+}
+
+$perm = "page.".$_REQUEST['page'];
+
+if ($DESK->PermissionManager->PermissionExists($perm))
+{
+	// This page has its own permission rule
+	if (!$DESK->ContextManager->Permission($perm))
+	{
+		echo ErrorCode::Forbidden.": ".$DESK->Lang->Get("permission_denied");
+		exit();
+	}
+}
+
+include($page);
+
+
 ?>

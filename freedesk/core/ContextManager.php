@@ -324,6 +324,18 @@ class ContextManager
 		
 		$menu[]=$customer;
 		
+		$sys = new MenuItem();
+		$sys->tag="system";
+		$sys->display="System";
+		
+		$i = new MenuItem();
+		$i->tag="sysadmin";
+		$i->display="System Settings";
+		$i->onclick="DESK.loadSubpage('sysadmin');";
+		$sys->submenu[]=$i;
+		
+		$menu[]=$sys;
+				
 		return $menu;
 	}
 	

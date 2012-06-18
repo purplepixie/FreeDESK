@@ -76,7 +76,9 @@ if ($_REQUEST['mode']=="requests_assigned")
 {
 	$team = isset($_REQUEST['teamid']) ? $_REQUEST['teamid'] : 0;
 	$user = isset($_REQUEST['username']) ? $_REQUEST['username'] : "";
-	$list = $DESK->RequestManager->FetchAssigned($team, $user);
+	$sort = isset($_REQUEST['sort']) ? $_REQUEST['sort'] : "";
+	$order = isset($_REQUEST['order']) && $_REQUEST['order']=="D" ? "DESC" : "ASC";
+	$list = $DESK->RequestManager->FetchAssigned($team, $user, $sort, $order);
 	echo xmlCreate::getHeader()."\n";
 	echo "<request-list>\n";
 	foreach($list as $item)
@@ -287,7 +289,54 @@ else if ($_REQUEST['mode'] == "entity_create")
 	}
 }
 
-$error = new FreeDESK_Error(ErrorCode::UnknownMode, "Unknown Mode");
+else if ($_REQUEST['mode'] == "user_edit")
+{
+	if (!$DESK->ContextManager->Permission("user_admin"))
+	{
+		$error = new FreeDESK_Error(ErrorCode::Forbidden, "Permission Denied");
+		echo $error->XML(true);
+		exit();
+	}
+	
+	$q = "UPDATE ".$DESK->Database->Table("user")." SET ";
+	
+	$q.=$DESK->Database->Field("username")."=".$DESK->Database->SafeQuote($_REQUEST['username']).",";
+	$q.=$DESK->Database->Field("realname")."=".$DESK->Database->SafeQuote($_REQUEST['realname']).",";
+	$q.=$DESK->Database->Field("email")."=".$DESK->Database->SafeQuote($_REQUEST['email']).",";
+	$q.=$DESK->Database->Field("permgroup")."=".$DESK->Database->SafeQuote($_REQUEST['permgroup']);
+	
+	$q.=" WHERE ".$DESK->Database->Field("username")."=".$DESK->Database->SafeQuote($_REQUEST['original_username']);
+	
+	$DESK->Database->Query($q);
+	
+	if (isset($_REQUEST['password']) && $_REQUEST['password']!="")
+	{
+		$amb = new AuthMethodStandard($DESK);
+		$amb->SetPassword($_REQUEST['username'], $_REQUEST['password']);
+	}
+	
+	$q="DELETE FROM ".$DESK->Database->Table("teamuserlink")." WHERE ".$DESK->Database->Field("username")."="
+		.$DESK->Database->SafeQuote($_REQUEST['original_username']);
+	$DESK->Database->Query($q);
+	
+	if (isset($_REQUEST['team']))
+	{
+		foreach($_REQUEST['team'] as $team)
+		{
+			$q="INSERT INTO ".$DESK->Database->Table("teamuserlink")."(".$DESK->Database->Field("username").","
+				.$DESK->Database->Field("teamid").") VALUES(".$DESK->Database->SafeQuote($_REQUEST['username']).","
+				.$DESK->Database->Safe($team).")";
+			$DESK->Database->Query($q);
+		}
+	}
+	
+	$xml = new xmlCreate();
+	$xml->charElement("operation","1");
+	echo $xml->getXML(true);
+	exit();
+}
+
+$error = new FreeDESK_Error(ErrorCode::UnknownMode, "Unknown Mode ".$_REQUEST['mode']);
 echo $error->XML(true);
 exit();
 

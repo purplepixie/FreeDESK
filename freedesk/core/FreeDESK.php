@@ -209,6 +209,7 @@ class FreeDESK
 		
 		// Language
 		$this->Lang = $this->Include->IncludeInstance("core/Language.php", "Language");
+		
 	}
 	
 	/**
@@ -226,6 +227,10 @@ class FreeDESK
 		// Logging Engine
 		$this->LoggingEngine->Start();
 		$this->LoggingEngine->Log("FreeDESK Startup ".$this->FullVersion(),"Core","Start",10);
+		
+		// Register System Pages
+		$this->PluginManager->RegisterPage("debug","pages/debug.php",false);
+		$this->PluginManager->RegisterPage("sysadmin","pages/sysadmin.php",true);
 		
 		return true;
 	}

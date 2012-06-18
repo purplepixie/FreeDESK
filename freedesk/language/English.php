@@ -51,6 +51,16 @@ $i['action_invalid'] = "Sorry but this action is invalid";
 $i['search'] = "Search";
 $i['save'] = "Save";
 $i['save_close'] = "Save and Close";
+
+$i['not_found'] = "Not Found";
+
+$i['system_admin'] = "System Administration";
+$i['admin_user'] = "User Administration";
+
+$i['realname'] = "Real Name";
+$i['email'] = "Email";
+$i['team_membership'] = "Team Membership";
+$i['permgroup'] = "Permission Group";
 }
 
 }

@@ -65,6 +65,18 @@ class PermissionManager
 	}
 	
 	/**
+	 * Check if a permission tag exists
+	 * @param string $permission Permission tag
+	 * @return bool True if exists, false on failure
+	**/
+	function PermissionExists($permission)
+	{
+		if (isset($this->permissions[$permission]))
+			return true;
+		return false;
+	}
+	
+	/**
 	 * Check a user permission
 	 * @param string $permission Permission tag
 	 * @param string $username Username

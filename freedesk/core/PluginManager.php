@@ -79,6 +79,11 @@ class PluginManager
 	private $plugins = array();
 	
 	/**
+	 * Array of simple pages
+	**/
+	private $pages = array();
+	
+	/**
 	 * Constructor
 	 * @param mixed $freeDESK FreeDESK instance
 	**/
@@ -94,6 +99,30 @@ class PluginManager
 	function Register(&$plugin)
 	{
 		$this->plugins[]=$plugin;
+	}
+	
+	/**
+	 * Register a page for display
+	 * @param string $id Page identifier
+	 * @param string $page Page path (fully-qualified)
+	 * @param bool $autoperm Automatically register permission for the page (optional, default true)
+	**/
+	function RegisterPage($id, $page, $autoperm=true)
+	{
+		$this->pages[$id]=$page;
+		$this->DESK->PermissionManager->Register("page."+$id,false);
+	}
+	
+	/**
+	 * Get a page by ID
+	 * @param string $id Page identifier
+	 * @return mixed Page path (fully-qualified) or bool false on failure
+	**/
+	function GetPage($id)
+	{
+		if (isset($this->pages[$id]))
+			return $this->pages[$id];
+		return false;
 	}
 	
 	/**
