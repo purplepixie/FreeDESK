@@ -25,7 +25,7 @@ For more information see www.purplepixie.org/freedesk/
 
 function FreeDESK_Request()
 {
-
+	var customerIsSelected = false;
 
 	this.searchCustomer = function()
 	{
@@ -39,7 +39,22 @@ function FreeDESK_Request()
 	
 	this.searchCustomerCallback = function(customerid)
 	{
-		alert(customerid);
+		document.getElementById('customer_id').innerHTML = customerid;
+		document.getElementById('customer_select').style.display = 'none';
+		document.getElementById('customer_details').style.display = 'block';
+		DESKRequest.customerSelected(true);
+	}
+	
+	this.searchCustomerAgain = function()
+	{
+		document.getElementById('customer_details').style.display = 'none';
+		document.getElementById('customer_select').style.display = 'block';
+		DESKRequest.customerSelected(false);
+	}
+	
+	this.customerSelected = function(sel)
+	{
+		DESKRequest.customerIsSelected = sel;
 	}
 	
 }

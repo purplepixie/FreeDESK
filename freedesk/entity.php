@@ -110,7 +110,7 @@ else if ($mode == "search")
 	
 	echo "<script type=\"text/javascript\">\n";
 	if (isset($_REQUEST['callback']) && $_REQUEST['callback']!="")
-		echo "DESKSearch.callback = parent.".$_REQUEST['callback'].";\n";
+		echo "DESKSearch.callback = window.opener.".$_REQUEST['callback'].";\n";
 	else
 		echo "DESKSearch.callback = null;\n";
 	if (isset($_REQUEST['onereturn']) && $_REQUEST['onereturn']==1)

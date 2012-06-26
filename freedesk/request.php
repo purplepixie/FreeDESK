@@ -206,7 +206,9 @@ echo "</form></table>\n";
 
 
 echo "</div>";
-echo "<div id=\"customer_details\" class=\"customer_details_hidden\">\n";
+echo "<div id=\"customer_details\" class=\"customer_details\">\n";
+echo "<br /><b>".$DESK->Lang->Get("customer")." : </b><span id=\"customer_id\"></span> \n";
+echo "<a href=\"#\" onclick=\"DESKRequest.searchCustomerAgain();\">Change</a>";
 echo "</div>";
 
 echo "<hr class=\"request\" />\n";

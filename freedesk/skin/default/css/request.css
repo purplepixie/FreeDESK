@@ -47,3 +47,13 @@ hr.request
 	background-color: #606060;
 	height: 2px;
 }
+
+div.customer_select
+{
+	display: block;
+}
+
+div.customer_details
+{
+	display: none;
+}
