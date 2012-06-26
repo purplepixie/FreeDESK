@@ -61,6 +61,10 @@ $i['realname'] = "Real Name";
 $i['email'] = "Email";
 $i['team_membership'] = "Team Membership";
 $i['permgroup'] = "Permission Group";
+
+$i['assign'] = "Assign";
+$i['no_change'] = "No Change";
+$i['assigned_to'] = "Assigned to";
 }
 
 }

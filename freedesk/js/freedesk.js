@@ -477,7 +477,8 @@ function FreeDESK()
 				if (	type == "text" || type == "password" ||
 						type == "button" || type == "reset" ||
 						type == "file" || type == "submit" ||
-						type == "image" || type == "hidden"	)
+						type == "image" || type == "hidden"	|| 
+						type == "textarea" )
 					add(name, element.value);
 					
 				else if ( type == "checkbox" && element.checked )
@@ -502,10 +503,13 @@ function FreeDESK()
 	}
 	
 	// API Form Action e.g. save entity
-	this.formAPI = function(formid, closeOnComplete)
+	this.formAPI = function(formid, closeOnComplete, reloadOnComplete)
 	{
 		if (closeOnComplete == undefined)
 			var closeOnComplete = false;
+		if (reloadOnComplete == undefined)
+			var reloadOnComplete = false;
+		
 		
 		var q = DESK.formToQuery(formid);
 		
@@ -515,6 +519,7 @@ function FreeDESK()
 		sr.url = "api.php";
 		sr.callback = DESK.formAPIcallback;
 		sr.additional[0] = closeOnComplete;
+		sr.additional[1] = reloadOnComplete;
 		sr.Post(q);
 	}
 	
@@ -531,6 +536,8 @@ function FreeDESK()
 			
 			if (additional[0])
 				window.close();
+			else if (additional[1])
+				window.location.reload();
 		}
 	}
 	

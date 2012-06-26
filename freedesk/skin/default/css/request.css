@@ -19,49 +19,31 @@ along with FreeDESK.  If not, see www.gnu.org/licenses
 For more information see www.purplepixie.org/freedesk/
 -------------------------------------------------------------- */
 
-/* Pane CSS */
+/* Request CSS */
 
-div.pane_set
+div.update
 {
-	border: 1px solid #c0f0c0;
-	margin-top: 1em;
+	margin-bottom: 0.5em;
 }
 
-div.pane_header
+div.update_header
 {
-	background-color: #c0f0c0;
-	padding: 0.5em 0.5em 0.2em 0.5em;
+	font-size: 80%;
+	font-weight: bold;
+	background-color: #f0f0f0;
+	padding-top: 0.2em;
+	padding-bottom: 0.2em;
 }
 
-span.pane_option
+div.update_content
 {
-	background-color: #c0f0c0;
-	padding: 0.2em 0.5em 0.2em 0.2em;
-	border-right: 1px solid black;
-	border-top: 1px solid black;
+	white-space: pre;
 }
 
-span.pane_option_selected
+hr.request
 {
-	background-color: white;
-	padding: 0.2em 0.5em 0.2em 0.2em;
-	border-right: 1px solid black;
-	border-top: 1px solid black;
+	border: 0;
+	color: #f0f0f0;
+	background-color: #f0f0f0;
+	height: 2px;
 }
-
-span.pane_option_selected a
-{
-	color: black;
-}
-
-div.pane_content
-{
-	display: block;
-	padding: 0.5em;
-}
-
-div.pane_content_hidden
-{
-	display: none;
-}
-

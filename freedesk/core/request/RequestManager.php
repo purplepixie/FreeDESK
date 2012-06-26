@@ -188,6 +188,7 @@ class RequestManager
 		if ($row=$this->DESK->Database->FetchAssoc($r))
 		{
 			$req = $this->CreateByID($row['class']);
+			$req->ID = $row['requestid'];
 			foreach($row as $key => $val)
 				$req->Set($key, $val);
 			$assign="";

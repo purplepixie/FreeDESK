@@ -34,6 +34,8 @@ class ErrorCode
 	
 	const Forbidden = 403;
 	const ResourceNotFound = 404;
+	
+	const UnknownRequest = 604;
 }
 
 /**

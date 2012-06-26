@@ -80,6 +80,8 @@ ALTER TABLE `session` CHANGE `updated_dt` `updated_dt` datetime NOT NULL;
 ALTER TABLE `session` ADD `updated_dt` datetime NOT NULL;
 ALTER TABLE `session` CHANGE `expires_dt` `expires_dt` datetime NOT NULL;
 ALTER TABLE `session` ADD `expires_dt` datetime NOT NULL;
+ALTER TABLE `session` CHANGE `realname` `realname` varchar(254) NOT NULL;
+ALTER TABLE `session` ADD `realname` varchar(254) NOT NULL;
 -- 
 -- Table: status
 -- DESCRIBE `status`

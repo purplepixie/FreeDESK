@@ -33,12 +33,17 @@ abstract class RequestBase
 	/**
 	 * Current Request ID
 	**/
-	protected $ID = 0;
+	var $ID = 0;
 	
 	/**
 	 * Entity Data
 	**/
 	protected $Entity = null;
+	
+	/**
+	 * Updates
+	**/
+	protected $Updates = null;
 	
 	/**
 	 * Constructor
@@ -108,5 +113,36 @@ abstract class RequestBase
 			$this->Entity = new Entity($this->DESK);
 		$this->Entity->Set($field, $value);
 	}
+	
+	/**
+	 * Load updates for our ID
+	**/
+	function LoadUpdates()
+	{
+		$q="SELECT * FROM ".$this->DESK->Database->Table("update")." WHERE ";
+		$q.=$this->DESK->Database->Field("requestid")."=".$this->DESK->Database->Safe($this->ID)." ";
+		$q.="ORDER BY ".$this->DESK->Database->Field("updateid")." DESC";
+		
+		$this->Updates = array();
+		
+		$r=$this->DESK->Database->Query($q);
+		
+		while ($row=$this->DESK->Database->FetchAssoc($r))
+			$this->Updates[] = $row;
+		
+		$this->DESK->Database->Free($r);
+	}
+	
+	/**
+	 * Get updates
+	 * @return array Updates
+	**/
+	function GetUpdates()
+	{
+		if ($this->Updates == null)
+			$this->LoadUpdates();
+		return $this->Updates;
+	}
+		
 }
 ?>

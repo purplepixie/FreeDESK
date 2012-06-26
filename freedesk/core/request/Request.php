@@ -80,6 +80,8 @@ class Request extends RequestBase
 	{
 		if ($this->ID <= 0)
 			return false;
+		if ($this->DESK->ContextManager->Session == null)
+			return false;
 		
 		$q="INSERT INTO ".$this->DESK->Database->Table("update")."(";
 		$q.=$this->DESK->Database->Field("requestid").",";
@@ -95,7 +97,7 @@ class Request extends RequestBase
 		else
 			$p=0;
 		$q.=$p.",";
-		$q.="\"TODO\",";
+		$q.="\"".$this->DESK->ContextManager->Session->NiceName()."\",";
 		$q.="NOW())";
 		
 		$this->DESK->Database->Query($q);
@@ -119,7 +121,31 @@ class Request extends RequestBase
 	**/
 	function Assign($group, $username="", $public=false)
 	{
-		//
+		$q="UPDATE ".$this->DESK->Database->Table("request")." SET ";
+		$q.=$this->DESK->Database->Field("assignteam")."=".$this->DESK->Database->Safe($group).",";
+		$q.=$this->DESK->Database->Field("assignuser")."=".$this->DESK->Database->SafeQuote($username)." WHERE ";
+		$q.=$this->DESK->Database->Field("requestid")."=".$this->DESK->Database->Safe($this->ID);
+		$this->DESK->Database->Query($q);
+		
+		$teams = $this->DESK->RequestManager->TeamList();
+		$users = $this->DESK->RequestManager->UserList();
+		$assign = "";
+		
+		if (isset($teams[$group]))
+			$assign.=$teams[$group];
+		else if ($group == 0)
+			$assign.=$this->DESK->Lang->Get("unassigned");
+		
+		if ($username != "" && isset($users[$username]))
+		{
+			if ($assign != "")
+				$assign.=" &gt; ";
+			$assign.=$users[$username];
+		}
+		
+		$update = $this->DESK->Lang->Get("assigned_to")." ".$assign;
+		
+		$this->Update($update, $public);
 	}
 	
 	/**

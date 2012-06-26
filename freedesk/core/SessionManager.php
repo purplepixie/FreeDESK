@@ -38,6 +38,10 @@ class Session
 	**/
 	var $username = "";
 	/**
+	 * Real name
+	**/
+	var $realname = "";
+	/**
 	 * Create a SID - sets $this->sid and returns SID
 	 * @return string SID
 	**/
@@ -68,6 +72,21 @@ class Session
 		$xml->charElement("username",$this->username);
 		$xml->endElement("session");
 		return $xml->getXML($header);
+	}
+	/**
+	 * Get a 'nice' name
+	 * @return string Nice name for current user
+	**/
+	function NiceName()
+	{
+		$name = "";
+		if ($this->type == ContextType::Customer)
+			$name.="CUSTOMER: ";
+		if ($this->realname != "")
+			$name.=$this->realname;
+		else
+			$name.=$this->username;
+		return $name;
 	}
 }
 
@@ -103,7 +122,7 @@ class SessionManager
 	{	// TODO: Customer
 		$expiry = $this->DESK->Configuration->Get("session.expire","15");
 		// Fetch user auth type
-		$q="SELECT ".$this->DESK->Database->Field("authtype")." FROM ".$this->DESK->Database->Table("user")." ";
+		$q="SELECT ".$this->DESK->Database->Field("authtype").",".$this->DESK->Database->Field("realname")." FROM ".$this->DESK->Database->Table("user")." ";
 		$q.="WHERE ".$this->DESK->Database->Field("username")."=\"".$this->DESK->Database->Safe($username)."\" LIMIT 0,1";
 		$r=$this->DESK->Database->Query($q);
 		$user=$this->DESK->Database->FetchAssoc($r);
@@ -122,17 +141,19 @@ class SessionManager
 				$session = new Session();
 				$session->type = $type;
 				$session->username = $username;
+				$session->realname = $user['realname'];
 				$session->CreateSID();
 				
 				// Create the session in the DB
 				$q="INSERT INTO ".$this->DESK->Database->Table("session")."(".$this->DESK->Database->Field("username").",";
 				$q.=$this->DESK->Database->Field("session_id").",".$this->DESK->Database->Field("sessiontype").",";
 				$q.=$this->DESK->Database->Field("created_dt").",".$this->DESK->Database->Field("updated_dt").",";
-				$q.=$this->DESK->Database->Field("expires_dt").") VALUES(";
+				$q.=$this->DESK->Database->Field("expires_dt").",".$this->DESK->Database->Field("realname").") VALUES(";
 				$q.="\"".$this->DESK->Database->Safe($username)."\",";
 				$q.="\"".$this->DESK->Database->Safe($session->sid)."\",";
 				$q.=$this->DESK->Database->Safe($type).",";
-				$q.="NOW(),NOW(),DATE_ADD(NOW(), INTERVAL ".$this->DESK->Database->Safe($expiry)." MINUTE))";
+				$q.="NOW(),NOW(),DATE_ADD(NOW(), INTERVAL ".$this->DESK->Database->Safe($expiry)." MINUTE),";
+				$q.=$this->DESK->Database->SafeQuote($user['realname']).")";
 				
 				$this->DESK->Database->Query($q);
 				
@@ -165,6 +186,7 @@ class SessionManager
 			$session->sid = $sid;
 			$session->type = $sess['sessiontype'];
 			$session->username = $sess['username'];
+			$session->realname = $sess['realname'];
 			
 			// And update expiry
 			$q="UPDATE ".$this->DESK->Database->Table("session")." SET ".$this->DESK->Database->Field("updated_dt")."=NOW(),";

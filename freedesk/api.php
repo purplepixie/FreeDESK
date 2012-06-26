@@ -336,6 +336,54 @@ else if ($_REQUEST['mode'] == "user_edit")
 	exit();
 }
 
+else if ($_REQUEST['mode'] == "request_update")
+{
+	// TODO: PERMISSIONS
+	
+	$public=false;
+	if (isset($_REQUEST['public']) && $_REQUEST['public']==1)
+		$public=true;
+	
+	$req = $DESK->RequestManager->Fetch($_REQUEST['requestid']);
+	if ($req === false)
+	{
+		$error = new FreeDESK_Error(ErrorCode::UnknownRequest, "Unknown Request");
+		echo $error->XML(true);
+		exit();
+	}
+	
+	if (isset($_REQUEST['update']) && $_REQUEST['update']!="")
+		$req->Update($_REQUEST['update'], $public);
+	
+	
+	// TODO: ASSIGNMENT PERMISSION
+	if (isset($_REQUEST['assign']) || $_REQUEST['assign'] != "") // Composite assignment
+	{
+		$team = 0;
+		$user = "";
+		
+		$assign = $_REQUEST['assign'];
+		
+		if (is_numeric($assign)) // just a team
+			$team = $assign;
+		else
+		{
+			$parts = explode("/",$assign);
+			$team = $parts[0];
+			if (isset($parts[1]))
+				$user=$parts[1];
+		}
+		
+		$req->Assign($team, $user, $public);
+	}
+	
+	
+	$xml = new xmlCreate();
+	$xml->charElement("operation","1");
+	echo $xml->getXML(true);
+	exit();
+}
+
 $error = new FreeDESK_Error(ErrorCode::UnknownMode, "Unknown Mode ".$_REQUEST['mode']);
 echo $error->XML(true);
 exit();
