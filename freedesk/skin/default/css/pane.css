@@ -1,0 +1,62 @@
+/* -------------------------------------------------------------
+This file is part of FreeDESK
+
+FreeDESK is (C) Copyright 2012 David Cutting
+
+FreeDESK is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+FreeDESK is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with FreeDESK.  If not, see www.gnu.org/licenses
+
+For more information see www.purplepixie.org/freedesk/
+-------------------------------------------------------------- */
+
+/* Pane CSS */
+
+div.pane_set
+{
+	border: 1px solid #c0f0c0;
+	margin-top: 1em;
+}
+
+div.pane_header
+{
+	background-color: #c0f0c0;
+	padding: 0.5em 0.5em 0.2em 0.5em;
+}
+
+span.pane_option
+{
+	background-color: #c0f0c0;
+	padding: 0.2em 0.5em 0.2em 0.2em;
+	border-right: 1px solid black;
+	border-top: 1px solid black;
+}
+
+span.pane_option_selected
+{
+	background-color: white;
+	padding: 0.2em 0.5em 0.2em 0.2em;
+	border-right: 1px solid black;
+	border-top: 1px solid black;
+}
+
+div.pane_content
+{
+	display: block;
+	padding: 0.5em;
+}
+
+div.pane_content_hidden
+{
+	display: none;
+}
+

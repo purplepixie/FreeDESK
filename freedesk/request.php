@@ -42,7 +42,7 @@ if (!isset($_REQUEST['sid']) || !$DESK->ContextManager->Open(ContextType::User, 
 	echo "<h1>Sorry you must have Javascript enabled to use FreeDESK analyst portal</h1>\n";
 	echo "</noscript>\n";
 
-	echo "<h3>".$DESK->Lang->Get("select_portal").":</h3>\n";
+	echo "<h3>".$DESK->Lang->Get("login_invalid").":</h3>\n";
 
 	
 	$DESK->Skin->IncludeFile("min_footer.php");
@@ -54,7 +54,27 @@ if (!isset($_REQUEST['sid']) || !$DESK->ContextManager->Open(ContextType::User, 
 $data=array("title"=>"FreeDESK");
 $DESK->Skin->IncludeFile("min_header.php",$data);
 
-echo "woo";
+$panes = array(
+	"log" => array( "title" => "Request History" ),
+	"details" => array( "title" => "Details" ),
+	"update" => array( "title" => "Update Request" ) );
+
+$data = array( "id" => "request", "panes" => $panes );
+$DESK->Skin->IncludeFile("pane_start.php", $data);
+
+echo "<div id=\"pane_request_log_content\" class=\"pane_content\">\n";
+echo "Log";
+echo "</div>";
+
+echo "<div id=\"pane_request_details_content\" class=\"pane_content_hidden\">\n";
+echo "Details";
+echo "</div>";
+
+echo "<div id=\"pane_request_update_content\" class=\"pane_content_hidden\">\n";
+echo "Update";
+echo "</div>";
+
+$DESK->Skin->IncludeFile("pane_finish.php");
 
 $DESK->Skin->IncludeFile("min_footer.php");
 

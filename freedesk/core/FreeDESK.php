@@ -202,6 +202,7 @@ class FreeDESK
 		// Request Classes
 		$this->Include->IncludeFile("core/request/RequestBase.php");
 		$this->Include->IncludeFile("core/request/Request.php");
+		$this->Include->IncludeExec("core/request/RequestFactory.php", "RequestFactory");
 		$this->RequestManager = $this->Include->IncludeInstance("core/request/RequestManager.php", "RequestManager");
 		
 		// Skin

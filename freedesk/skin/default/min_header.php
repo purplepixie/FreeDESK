@@ -36,6 +36,7 @@ echo "<title>".$title."</title>\n";
 
 echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"".$DESK->Skin->GetWebLocation("css/main.css")."\" />\n";
 echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"".$DESK->Skin->GetWebLocation("css/menu.css")."\" />\n";
+echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"".$DESK->Skin->GetWebLocation("css/pane.css")."\" />\n";
 
 $DESK->Skin->CommonHeader();
 ?>

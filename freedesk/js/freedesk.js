@@ -379,7 +379,8 @@ function FreeDESK()
 	// Display a Request
 	this.displayRequest = function(id)
 	{
-		alert(id);
+		var url = "request.php?id="+id+"&sid="+DESK.sid;
+		DESK.openWindow("FreeDESK Request", url);
 	}
 	
 	// Open a Window
@@ -531,6 +532,36 @@ function FreeDESK()
 			if (additional[0])
 				window.close();
 		}
+	}
+	
+	// Switch a pane
+	this.paneSwitch = function(pid, oid)
+	{
+		var pane = document.getElementById("pane_"+pid);
+		var header = document.getElementById("pane_"+pid+"_header");
+		
+		var child = header.firstChild;
+		
+		var spans = header.getElementsByTagName("SPAN");
+		
+		for (var i=0; i<spans.length; ++i)
+		{
+			var arr = spans[i].id.split("_");
+			var opt = arr[arr.length-1];
+			
+			var contentid = "pane_"+pid+"_"+opt+"_content";
+			
+			if (oid == opt)
+				spans[i].className = "pane_option_selected";
+			else
+				spans[i].className = "pane_option";
+			// Always hide the divs to avoid duplicate display
+			document.getElementById(contentid).className = "pane_content_hidden";
+		}
+		
+		var contentid = "pane_"+pid+"_"+oid+"_content";
+		document.getElementById(contentid).className = "pane_content";
+		
 	}
 		
 }

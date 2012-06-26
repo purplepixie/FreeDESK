@@ -41,6 +41,11 @@ class RequestManager
 	private $Users = null;
 	
 	/**
+	 * Request classes list
+	**/
+	private $ClassList = null;
+	
+	/**
 	 * Constructor
 	 * @param mixed &$freeDESK FreeDESK instance
 	**/
@@ -182,8 +187,7 @@ class RequestManager
 		$r=$this->DESK->Database->Query($q);
 		if ($row=$this->DESK->Database->FetchAssoc($r))
 		{
-			// TODO: Request types and classes
-			$req = new Request($this->DESK);
+			$req = $this->CreateByID($row['class']);
 			foreach($row as $key => $val)
 				$req->Set($key, $val);
 			$assign="";
@@ -292,5 +296,63 @@ class RequestManager
 			$this->TeamUserList();
 		return $this->Teams;
 	}
+	
+	/**
+	 * Determine is a user is in a team
+	 * @param string $username Username
+	 * @param int $teamid Team ID
+	 * @return bool True if user is in team else false
+	**/
+	function IsUserInTeam($username, $teamid)
+	{
+		$q="SELECT ".$this->DESK->Database->Field("linkid")." FROM ";
+		$q.=$this->DESK->Database->Table("teamuserlink")." WHERE ";
+		$q.=$this->DESK->Database->Field("teamid")."=".$this->DESK->Database->Safe($teamid)." AND ";
+		$q.=$this->DESK->Database->Field("username")."=".$this->DESK->Database->SafeQuote($username);
+		$q.=" LIMIT 0,1";
+		
+		$r=$DESK->Database->Query($q);
+		
+		$inteam=false;
+		
+		if ($row=$DESK->Database->FetchAssoc($r))
+			$inteam=true;
+			
+		$DESK->Database->Free($r);
+		
+		return $inteam;
+	}
+	
+	/**
+	 * Load a class list
+	**/
+	private function LoadClassList()
+	{
+		$q="SELECT * FROM ".$this->DESK->Database->Table("requestclass");
+		$r=$this->DESK->Database->Query($q);
+		$this->ClassList = array();
+		while ($row=$this->DESK->Database->FetchAssoc($r))
+		{
+			$this->ClassList[$row['classid']] = $row;
+		}
+		$this->DESK->Database->Free($r);
+	}
+	
+	/**
+	 * Create a request by classid
+	 * @param int $classid Class ID
+	 * @return object Request object
+	**/
+	function CreateByID($classid)
+	{
+		if ($this->ClassList == null)
+			$this->LoadClassList();
+		
+		if (isset($this->ClassList[$classid]))
+			return RequestFactory::Create($this->DESK, $this->ClassList[$classid]['classclass']);
+		else
+			return RequestFactory::Create($this->DESK, "");
+	}
+	
 }
 ?>
