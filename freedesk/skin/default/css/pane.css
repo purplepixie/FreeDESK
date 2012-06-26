@@ -23,35 +23,44 @@ For more information see www.purplepixie.org/freedesk/
 
 div.pane_set
 {
-	border: 1px solid #c0f0c0;
+	border: 1px solid black;
 	margin-top: 1em;
 }
 
 div.pane_header
 {
-	background-color: #c0f0c0;
+	/* background-color: #c0f0c0; */
+	background-color: black;
 	padding: 0.5em 0.5em 0.2em 0.5em;
 }
 
 span.pane_option
 {
-	background-color: #c0f0c0;
+	/* background-color: #c0f0c0; */
+	background-color: black;
 	padding: 0.2em 0.5em 0.2em 0.2em;
-	border-right: 1px solid black;
-	border-top: 1px solid black;
+	border-right: 1px solid #909090;
+	border-top: 1px solid #909090;
+}
+
+span.pane_option a
+{
+	color: white;
+	font-weight: bold;
 }
 
 span.pane_option_selected
 {
 	background-color: white;
 	padding: 0.2em 0.5em 0.2em 0.2em;
-	border-right: 1px solid black;
-	border-top: 1px solid black;
+	border-right: 1px solid #909090;
+	border-top: 1px solid #909090;
 }
 
 span.pane_option_selected a
 {
 	color: black;
+	font-weight: bold;
 }
 
 div.pane_content

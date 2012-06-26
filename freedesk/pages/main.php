@@ -36,7 +36,7 @@ echo "<ul class=\"leftpane\">\n";
 foreach($teamusers as $team)
 {
 	echo "<li>";
-	if ($team['view']) echo "<a href=\"#".$team['id']."\" onclick=\"DESK.mainPane(".$team['id'].")\">";
+	if ($team['view']) echo "<a href=\"#!/requests/".$team['id']."\" onclick=\"DESK.mainPane(".$team['id'].")\">";
 	echo $team['name'];
 	if ($team['view']) echo "</a>";
 	if (is_array($team['items']) && (sizeof($team['items'])>0))
@@ -49,7 +49,7 @@ foreach($teamusers as $team)
 				$t=$team['id'];
 			else
 				$t=0;
-			if ($member['view']) echo "<a href=\"#a-".$member['username']."\" onclick=\"DESK.mainPane(".$t.",'".$member['username']."')\">";
+			if ($member['view']) echo "<a href=\"#!/requests/".$member['username']."/".$t."\" onclick=\"DESK.mainPane(".$t.",'".$member['username']."')\">";
 			echo $member['realname'];
 			if ($member['view']) echo "</a>";
 			echo "</li>\n";

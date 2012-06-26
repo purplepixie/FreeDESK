@@ -205,6 +205,21 @@ class RequestManager
 				$assign.=$users[$row['assignuser']];
 			}
 			$req->Set("assigned",$assign);
+			
+			$cq="SELECT ".$this->DESK->Database->Field("firstname").",".$this->DESK->Database->Field("lastname");
+			$cq.=" FROM ".$this->DESK->Database->Table("customer")." ";
+			$cq.="WHERE ".$this->DESK->Database->Field("customerid")."=".$this->DESK->Database->Safe($row['customer']);
+			$cq.=" LIMIT 0,1";
+			$cr=$this->DESK->Database->Query($cq);
+			$req->Set("customerid",$row['customer']);
+			if ($cust=$this->DESK->Database->FetchAssoc($cr))
+			{
+				$req->Set("customer",$cust['firstname']." ".$cust['lastname']);
+			}
+			else
+				$req->Set("customer","Unknown (".$row['customer'].")");
+			$this->DESK->Database->Free($cr);
+			
 			return $req;
 		}
 		else
@@ -233,7 +248,7 @@ class RequestManager
 			$q.=$this->DESK->Database->Field("assignteam")."=".$this->DESK->Database->Safe($teamid);
 		}
 		
-		if ($sort != "" && $sort != "assigned")
+		if ($sort != "" && $sort != "assigned" && $sort != "customer")
 		{
 			$q.=" ORDER BY ".$this->DESK->Database->Field($sort)." ";
 			if ($order == "ASC")
@@ -247,8 +262,16 @@ class RequestManager
 				$o="ASC";
 			else
 				$o="DESC";
-			$q.="ORDER BY ".$this->DESK->Database->Field("assignteam")." ".$o.",";
+			$q.=" ORDER BY ".$this->DESK->Database->Field("assignteam")." ".$o.",";
 			$q.=$this->DESK->Database->Field("assignuser")." ".$o;
+		}
+		else if ($sort == "customer")
+		{
+			if ($order == "ASC")
+				$o="ASC";
+			else
+				$o="DESC";
+			$q.=" ORDER BY ".$this->DESK->Database->Field("customer")." ".$o;
 		}
 		
 		$out=array();

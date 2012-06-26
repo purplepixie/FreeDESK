@@ -260,69 +260,43 @@ class ContextManager
 		
 		$menu[]=$home;
 		
-		$pages = new MenuItem();
-		$pages->tag="pages";
-		$pages->display="Pages";
-		
-		$debug = new MenuItem();
-		$debug->tag="debug";
-		$debug->display="Debug";
-		$debug->onclick="DESK.loadSubpage('debug');";
-		$pages->submenu[]=$debug;
-		
-		$menu[]=$pages;
-		
 		$user = new MenuItem();
-		$user->tag="user";
-		$user->display="User";
-		
-		$logout = new MenuItem();
-		$logout->tag="logout";
-		$logout->display="Logout";
-		$logout->onclick="DESK.logout_click();";
-		$user->submenu[]=$logout;
-		
-		$alert = new MenuItem();
-		$alert->tag="alert";
-		$alert->display="Alert Test";
-		$alert->onclick="Alerts.randomTest();";
-		$user->submenu[]=$alert;
+		$user->tag="request";
+		$user->display="Requests";
 		
 		$req = new MenuItem();
-		$req->tag="request";
-		$req->display="Request Form";
+		$req->tag="newrequest";
+		$req->display="New Request";
 		//$req->link="request.php?sid=".$this->Session->sid;
 		$req->onclick="DESK.openWindow('FreeDESK Request','request.php?sid=".$this->Session->sid."');";
 		$user->submenu[]=$req;
 		
 		$menu[]=$user;
 		
-		$customer = new MenuItem();
-		$customer->tag="customer";
-		$customer->display="Customer";
+		$entity = new MenuItem();
+		$entity->tag="entity";
+		$entity->display="Entity";
 		
-		$csearch = new MenuItem();
-		$csearch->tag="customersearch";
-		$csearch->display="Search";
-		//$csearch->onclick="DESK.openWindow('FreeDESK Customer','entity.php?mode=search&entity=customer&sid=".$this->Session->sid."');";
-		$csearch->onclick="DESK.entitySearch('customer');";
-		$customer->submenu[]=$csearch;
+		foreach($this->DESK->DataDictionary->Tables as $table)
+		{
+			if ($table->editable)
+			{
+				$add = new MenuItem();
+				$add->tag=$table->entity."_create";
+				$name = $table->name == "" ? $table->entity : $table->name;
+				$add->display="Add ".$name;
+				$add->onclick="DESK.entityCreate('".$table->entity."');";
+				$entity->submenu[]=$add;
+				
+				$search = new MenuItem();
+				$search->tag=$table->entity."_search";
+				$search->display="Search ".$name;
+				$search->onclick="DESK.entitySearch('".$table->entity."');";
+				$entity->submenu[]=$search;
+			}
+		}
 		
-		$csearch = new MenuItem();
-		$csearch->tag="customercreate";
-		$csearch->display="Create";
-		//$csearch->onclick="DESK.openWindow('FreeDESK Customer','entity.php?mode=search&entity=customer&sid=".$this->Session->sid."');";
-		$csearch->onclick="DESK.entityCreate('customer');";
-		$customer->submenu[]=$csearch;
-		
-		$csearch = new MenuItem();
-		$csearch->tag="syslogsearch";
-		$csearch->display="Syslog";
-		//$csearch->onclick="DESK.openWindow('FreeDESK Syslog','entity.php?mode=search&entity=syslog&sid=".$this->Session->sid."');";
-		$csearch->onclick="DESK.entitySearch('syslog');";
-		$customer->submenu[]=$csearch;
-		
-		$menu[]=$customer;
+		$menu[]=$entity;
 		
 		$sys = new MenuItem();
 		$sys->tag="system";
@@ -334,7 +308,25 @@ class ContextManager
 		$i->onclick="DESK.loadSubpage('sysadmin');";
 		$sys->submenu[]=$i;
 		
+		$logout = new MenuItem();
+		$logout->tag="logout";
+		$logout->display="Logout";
+		$logout->onclick="DESK.logout_click();";
+		$sys->submenu[]=$logout;
+		
 		$menu[]=$sys;
+				
+		$pages = new MenuItem();
+		$pages->tag="pages";
+		$pages->display="Pages";
+		
+		$debug = new MenuItem();
+		$debug->tag="debug";
+		$debug->display="Debug";
+		$debug->onclick="DESK.loadSubpage('debug');";
+		$pages->submenu[]=$debug;
+		
+		$menu[]=$pages;
 				
 		return $menu;
 	}

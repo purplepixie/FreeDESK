@@ -197,6 +197,10 @@ function FreeDESK()
 	// Load a Request List to the Main Pane
 	this.mainPane = function(teamid, username)
 	{
+		if (teamid == undefined)
+			var teamid = 0;
+		if (username == undefined)
+			var username="";
 		//alert(teamid+" "+username);
 		var sr = new ServerRequest();
 		this.lastTeam = teamid;
