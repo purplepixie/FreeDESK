@@ -92,7 +92,8 @@ else if ($mode == "search")
 			if (isset($_REQUEST[$field->field]))
 			{
 				$val=$_REQUEST[$field->field];
-				$searchnow=true;
+				if ($val!="")
+					$searchnow=true;
 			}
 			echo "<td><input type=\"text\" name=\"".$field->field."\" value=\"".$val."\"></td></tr>\n";
 		}
@@ -105,6 +106,21 @@ else if ($mode == "search")
 	
 	echo "<div id=\"searchresults\">\n";
 	echo "</div>";
+	
+	
+	echo "<script type=\"text/javascript\">\n";
+	if (isset($_REQUEST['callback']) && $_REQUEST['callback']!="")
+		echo "DESKSearch.callback = parent.".$_REQUEST['callback'].";\n";
+	else
+		echo "DESKSearch.callback = null;\n";
+	if (isset($_REQUEST['onereturn']) && $_REQUEST['onereturn']==1)
+		echo "DESKSearch.callbackOnSingle = true;\n";
+	else
+		echo "DESKSearch.callbackOnSingle = false;\n";
+	if ($searchnow)
+		echo "DESKSearch.search();\n";
+	echo "</script>\n";
+	
 }
 else if ($mode == "edit")
 {

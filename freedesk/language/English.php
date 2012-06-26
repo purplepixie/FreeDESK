@@ -65,6 +65,10 @@ $i['permgroup'] = "Permission Group";
 $i['assign'] = "Assign";
 $i['no_change'] = "No Change";
 $i['assigned_to'] = "Assigned to";
+
+$i['unassigned'] = "Unassigned";
+
+$i['customer'] = "Customer";
 }
 
 }

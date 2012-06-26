@@ -39,6 +39,10 @@ function FreeDESK_Search()
 	
 	this.automode = true; // automatically set entity_search mode
 	
+	this.callback = null; // parent form callback function
+	
+	this.callbackOnSingle = false; // call callback if only one result
+	
 	this.data = "";
 	
 	// Add an item to the data string
@@ -148,6 +152,11 @@ function FreeDESK_Search()
 		
 		var fieldcount = 0;
 		var rowcount = 0;
+		var callbacknow = false;
+		
+		if (DESKSearch.callback != null && entities.length==1)
+			callbacknow=true;
+		
 		for (var i=0; i<entities.length; ++i)
 		{
 			var keyfieldval = "";
@@ -166,7 +175,18 @@ function FreeDESK_Search()
 				var cell = row.insertCell(z);
 				var data = (fields[z].textContent == undefined) ? fields[z].firstChild.nodeValue : fields[z].textContent;
 				if (id == keyfield)
+				{
 					keyfieldval = data;
+					if (DESKSearch.callback != null)
+					{
+						data = "<a href=\"#\" onclick=\"DESKSearch.callback('"+keyfieldval+"');\">"+keyfieldval+"</a>";
+						if (callbacknow)
+						{
+							DESKSearch.callback(keyfieldval);
+							window.close();
+						}
+					}
+				}
 				cell.innerHTML = data;
 				++fieldcount;
 			}

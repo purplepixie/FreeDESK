@@ -25,6 +25,7 @@ For more information see www.purplepixie.org/freedesk/
 <?php echo $DESK->Lang->Get("login"); ?>
 </div>
 <div id="login_content" class="login_content">
+<form id="login_details_form" onsubmit="return false;">
 <div class="login_title"><?php echo $DESK->Lang->Get("username"); ?></div>
 <div class="login_field"><input type="text" name="username" size="15" id="login_username" /></div>
 <br />
@@ -35,6 +36,7 @@ For more information see www.purplepixie.org/freedesk/
 <a href="#" onclick="DESK.hide_login();"><?php echo $DESK->Lang->Get("login_cancel"); ?></a></div>
 <div id="login_message"></div>
 </div>
+</form>
 <div id="login_footer" class="login_footer"></div>
 </div>
 

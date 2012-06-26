@@ -19,31 +19,30 @@ along with FreeDESK.  If not, see www.gnu.org/licenses
 For more information see www.purplepixie.org/freedesk/
 -------------------------------------------------------------- */
 
-/* Request CSS */
+/**
+ * FreeDESK client-side request code
+**/
 
-div.update
+function FreeDESK_Request()
 {
-	margin-bottom: 0.5em;
+
+
+	this.searchCustomer = function()
+	{
+		var url = "entity.php?mode=search&entity=customer&";
+		url += DESK.formToQuery('customersearch');
+		url += "&searchnow=1&callback=DESKRequest.searchCustomerCallback&onereturn=1";
+		url += "&sid=" + DESK.sid;
+		
+		DESK.openWindow("FreeDESK Customer Search", url);
+	}
+	
+	this.searchCustomerCallback = function(customerid)
+	{
+		alert(customerid);
+	}
+	
 }
 
-div.update_header
-{
-	font-size: 80%;
-	font-weight: bold;
-	background-color: #f0f0f0;
-	padding-top: 0.2em;
-	padding-bottom: 0.2em;
-}
+var DESKRequest = new FreeDESK_Request();
 
-div.update_content
-{
-	white-space: pre;
-}
-
-hr.request
-{
-	border: 0;
-	color: #606060;
-	background-color: #606060;
-	height: 2px;
-}

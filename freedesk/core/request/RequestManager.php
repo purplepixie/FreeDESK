@@ -204,6 +204,8 @@ class RequestManager
 				$users = $this->UserList();
 				$assign.=$users[$row['assignuser']];
 			}
+			if ($row['assignteam']==0 && $row['assignuser']=="")
+				$assign=$this->DESK->Lang->Get("unassigned");
 			$req->Set("assigned",$assign);
 			
 			$cq="SELECT ".$this->DESK->Database->Field("firstname").",".$this->DESK->Database->Field("lastname");

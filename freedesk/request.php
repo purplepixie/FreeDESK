@@ -176,7 +176,40 @@ $DESK->Skin->IncludeFile("pane_finish.php");
 }
 else // new request
 {
-//
+//echo "<b>".$DESK->Lang->Get("customer")."</b>\n";
+
+echo "<div id=\"customer_select\" class=\"customer_select\">\n";
+
+echo "<table class=\"search\">\n";
+echo "<form id=\"customersearch\" onsubmit=\"return false;\">\n";
+
+$table=$DESK->DataDictionary->Tables["customer"];
+
+foreach($table->fields as $id => $field)
+{
+	if ($field->searchable)
+	{
+		echo "<tr><td>".$field->name."</td>\n";
+		$val="";
+		if (isset($_REQUEST[$field->field]))
+		{
+			$val=$_REQUEST[$field->field];
+			$searchnow=true;
+		}
+		echo "<td><input type=\"text\" name=\"".$field->field."\" value=\"".$val."\"></td></tr>\n";
+	}
+}
+echo "<tr><td>&nbsp;</td>\n";
+echo "<td><input type=\"submit\" value=\"".$DESK->Lang->Get("search")."\" onclick=\"DESKRequest.searchCustomer();\"></td>\n";
+echo "</tr>";
+echo "</form></table>\n";
+
+
+echo "</div>";
+echo "<div id=\"customer_details\" class=\"customer_details_hidden\">\n";
+echo "</div>";
+
+echo "<hr class=\"request\" />\n";
 }
 
 

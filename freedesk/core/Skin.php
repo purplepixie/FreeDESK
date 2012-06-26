@@ -137,20 +137,28 @@ class Skin
 	function CommonHeader()
 	{
 		// FreeDESK Javascript
-		echo "\n<script type=\"text/javascript\" src=\"js/freedesk.js\"></script>\n";
+		//echo "\n<script type=\"text/javascript\" src=\"js/freedesk.js\"></script>\n";
 		// AJAX Javascript
-		echo "<script type=\"text/javascript\" src=\"js/ajax.js\"></script>\n";
+		//echo "<script type=\"text/javascript\" src=\"js/ajax.js\"></script>\n";
 		// Alerts
-		echo "<script type=\"text/javascript\" src=\"js/alerts.js\"></script>\n";
+		//echo "<script type=\"text/javascript\" src=\"js/alerts.js\"></script>\n";
 		// Search
-		echo "<script type=\"text/javascript\" src=\"js/search.js\"></script>\n";
-		/*
+		//echo "<script type=\"text/javascript\" src=\"js/search.js\"></script>\n";
+		// Request
+		//echo "<script type=\"text/javascript\" src=\"js/request.js\"></script>\n";
+		
 		echo "<script type=\"text/javascript\">\n";
 		echo file_get_contents("js/freedesk.js");
 		echo "\n";
 		echo file_get_contents("js/ajax.js");
+		echo "\n";
+		echo file_get_contents("js/alerts.js");
+		echo "\n";
+		echo file_get_contents("js/search.js");
+		echo "\n";
+		echo file_get_contents("js/request.js");
 		echo "\n</script>\n";
-		*/
+		
 		if ($this->DESK->ContextManager->IsOpen())
 		{
 			// Login-specific settings such as SID and request statuses
