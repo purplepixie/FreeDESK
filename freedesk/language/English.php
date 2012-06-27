@@ -56,6 +56,7 @@ $i['not_found'] = "Not Found";
 
 $i['system_admin'] = "System Administration";
 $i['admin_user'] = "User Administration";
+$i['admin_group'] = "Security Groups";
 
 $i['realname'] = "Real Name";
 $i['email'] = "Email";

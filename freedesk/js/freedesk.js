@@ -531,6 +531,8 @@ function FreeDESK()
 			var closeOnComplete = false;
 		if (reloadOnComplete == undefined)
 			var reloadOnComplete = false;
+		if (callbackOnComplete == undefined)
+			var callbackOnComplete = false;
 		
 		
 		var q = DESK.formToQuery(formid);
@@ -540,6 +542,7 @@ function FreeDESK()
 		var sr = new ServerRequest();
 		sr.url = "api.php";
 		sr.callback = DESK.formAPIcallback;
+		sr.additional = new Array();
 		sr.additional[0] = closeOnComplete;
 		sr.additional[1] = reloadOnComplete;
 		sr.additional[2] = callbackOnComplete;
@@ -561,8 +564,10 @@ function FreeDESK()
 				window.close();
 			else if (additional[1])
 				window.location.reload();
-			else if (additional[2] != undefined)
-				additional[2]();
+			else if (additional[2])
+			{	
+				additional[2](xml);
+			}
 		}
 	}
 	
@@ -620,6 +625,13 @@ function FreeDESK()
 			out += "Session ID mis-match between client and server<br /><br />";
 			
 		document.getElementById(container).innerHTML = out;
+	}
+	
+	// Relogin (use current SID and re-post login form)
+	this.relogin = function()
+	{
+		document.forms['login_sid_form'].elements['sid'].value = DESK.sid;
+		document.forms['login_sid_form'].submit();
 	}
 		
 }

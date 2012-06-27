@@ -311,6 +311,12 @@ class ContextManager
 		$i->onclick="DESK.loadSubpage('sysadmin');";
 		$sys->submenu[]=$i;
 		
+		$relogin = new MenuItem();
+		$relogin->tag="relogin";
+		$relogin->display="Relogin";
+		$relogin->onclick="DESK.relogin();";
+		$sys->submenu[]=$relogin;
+		
 		$logout = new MenuItem();
 		$logout->tag="logout";
 		$logout->display="Logout";

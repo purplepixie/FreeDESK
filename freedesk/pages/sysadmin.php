@@ -27,6 +27,14 @@ For more information see www.purplepixie.org/freedesk/
 global $DESK;
 
 echo "<!DOCTYPE html>\n";
+echo "<html>\n";
+
+if (!$DESK->ContextManager->Permission("system_admin"))
+{
+	echo "<h3>".$DESK->Lang->Get("permission_denied")."</h3>\n";
+	echo "</html>\n";
+	exit();
+}
 
 function sa_link($text,$opts=array())
 {
@@ -49,7 +57,13 @@ else
 if ($mode == "")
 {
 	echo "<h3>".$DESK->Lang->Get("system_admin")."</h3>\n";
-	echo sa_link($DESK->Lang->Get("admin_user"), array("mode"=>"user"))."<br />\n";
+	
+	if ($DESK->ContextManager->Permission("user_admin"))
+	{
+		echo sa_link($DESK->Lang->Get("admin_user"), array("mode"=>"user"))."<br /><br />\n";
+		echo sa_link($DESK->Lang->Get("admin_group"), array("mode"=>"group"))."<br /><br />\n";
+	}
+	
 }
 
 else if ($mode == "user")
@@ -64,16 +78,16 @@ else if ($mode == "user")
 	{
 		echo "<form id=\"delete_".$row['username']."\" onsubmit=\"return false;\">";
 		
+		echo "<input type=\"hidden\" name=\"mode\" value=\"delete_user\" />\n";
+		echo "<input type=\"hidden\" name=\"username\" value=\"".$row['username']."\" />\n";
+		echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("delete")."\" onclick=\"if (confirm('Delete user ".$row['username']."')) DESK.formAPI('delete_".$row['username']."',false,false,DESK.refreshSubpage);\" />\n";
+		
 		$oa = array("mode" => "useredit", "username" => $row['username']);
 		echo sa_link($row['username'].": ".$row['realname'], $oa)." ";
 		
-		
-		echo "<input type=\"hidden\" name=\"mode\" value=\"delete_user\" />\n";
-		echo "<input type=\"hidden\" name=\"username\" value=\"".$row['username']."\" />\n";
-		echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("delete")."\" onclick=\"if (confirm('Delete user ".$row['username']."')) DESK.formAPI('delete_".$row['username']."',false,false,DESK.refreshSubpage());\" />\n";
 		echo "</form>";
 		
-		echo "<br />";
+		//echo "<br />";
 	}
 	$DESK->Database->Free($r);
 	
@@ -82,7 +96,7 @@ else if ($mode == "user")
 	echo "<input type=\"hidden\" name=\"mode\" value=\"create_user\">\n";
 	echo $DESK->Lang->Get("username")." ";
 	echo "<input type=\"text\" name=\"username\" value=\"\" /> \n";
-	echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("save")."\" onclick=\"DESK.formAPI('create_user',false,false,DESK.refreshSubpage());\" />\n";
+	echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("save")."\" onclick=\"DESK.formAPI('create_user',false,false,DESK.refreshSubpage);\" />\n";
 	echo "</form>\n";
 	
 }
@@ -255,6 +269,11 @@ else if ($mode == "useredit")
 	echo "</form>\n";
 	
 	//echo memory_get_usage();
+}
+else if ($mode == "group")
+{
+	echo "<br />".sa_link("&lt;&lt; ".$DESK->Lang->Get("system_admin"))."<br />\n";
+	echo "<h3>".$DESK->Lang->Get("admin_group")."</h3>\n";
 }
 else
 {
