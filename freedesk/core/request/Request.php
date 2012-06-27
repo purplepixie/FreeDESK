@@ -47,6 +47,8 @@ class Request extends RequestBase
 	**/
 	function Create($customer, $update, $class, $status, $group=0, $assign="")
 	{
+		if (!is_numeric($class))
+			$class=1;
 		$q="INSERT INTO ".$this->DESK->Database->Table("request");
 		$q.="(".$this->DESK->Database->Field("customer").",";
 		$q.=$this->DESK->Database->Field("assignteam").",";
@@ -56,7 +58,7 @@ class Request extends RequestBase
 		$q.=$this->DESK->Database->Field("status").") ";
 		$q.="VALUES(";
 		$q.=$this->DESK->Database->Safe($customer).",";
-		$q.=$this->DESK->Database->Safe($group).",";
+		$q.=$this->DESK->Database->SafeQuote($group).",";
 		$q.=$this->DESK->Database->SafeQuote($assign).",";
 		$q.=$this->DESK->Database->SafeQuote($class).",";
 		$q.="NOW(),";

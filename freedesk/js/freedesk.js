@@ -39,6 +39,10 @@ function FreeDESK()
 	this.lastTeam = 0;
 	this.lastUser = "";
 	
+	// Last subpage
+	this.lastSubpage = "";
+	this.lastSubpageOpts = "";
+	
 	// Sort Criteria
 	this.sortField = "requestid";
 	this.sortOrder = "D";
@@ -184,6 +188,8 @@ function FreeDESK()
 	{
 		if (opts == undefined)
 			var opts = "";
+		this.lastSubpage = page;
+		this.lastSubpageOpts = opts;
 		var sr = new ServerRequest();
 		sr.xmlrequest=false;
 		sr.url = "page.php?page="+page;
@@ -192,6 +198,12 @@ function FreeDESK()
 		sr.url += "&sid="+this.sid;
 		sr.callback = DESK.displaySubpage;
 		sr.Get();
+	}
+	
+	// Refresh the subpage
+	this.refreshSubpage = function()
+	{
+		DESK.loadSubpage(DESK.lastSubpage, DESK.lastSubpageOpts);
 	}
 	
 	// Load a Request List to the Main Pane
@@ -215,6 +227,12 @@ function FreeDESK()
 		sr.url += "&sid="+this.sid;
 		sr.callback = DESK.mainPaneDisplay;
 		sr.Get();
+	}
+	
+	// Refresh the Main Pane
+	this.mainPaneRefresh = function()
+	{
+		DESK.mainPane(DESK.lastTeam, DESK.lastUser);
 	}
 	
 	// Display a request list in the main pane
@@ -507,7 +525,7 @@ function FreeDESK()
 	}
 	
 	// API Form Action e.g. save entity
-	this.formAPI = function(formid, closeOnComplete, reloadOnComplete)
+	this.formAPI = function(formid, closeOnComplete, reloadOnComplete, callbackOnComplete)
 	{
 		if (closeOnComplete == undefined)
 			var closeOnComplete = false;
@@ -524,6 +542,7 @@ function FreeDESK()
 		sr.callback = DESK.formAPIcallback;
 		sr.additional[0] = closeOnComplete;
 		sr.additional[1] = reloadOnComplete;
+		sr.additional[2] = callbackOnComplete;
 		sr.Post(q);
 	}
 	
@@ -542,6 +561,8 @@ function FreeDESK()
 				window.close();
 			else if (additional[1])
 				window.location.reload();
+			else if (additional[2] != undefined)
+				additional[2]();
 		}
 	}
 	
@@ -573,6 +594,32 @@ function FreeDESK()
 		var contentid = "pane_"+pid+"_"+oid+"_content";
 		document.getElementById(contentid).className = "pane_content";
 		
+	}
+	
+	// Open new create request window
+	this.createRequest = function(reqclass)
+	{
+		if (reqclass == undefined)
+			var reqclass = "";
+		
+		var url = "request.php?";
+		if (reqclass != "")
+			url += "class="+reqclass+"&";
+		url += "sid="+DESK.sid;
+		
+		DESK.openWindow("FreeDESK Request", url);
+	}
+	
+	// Debug data output
+	this.debugData = function(container, session)
+	{
+		var out = "<b>Client-Side JavaScript Debug</b><br /><br />";
+		if (session == DESK.sid)
+			out += "Session IDs match server and client side<br /><br />";
+		else
+			out += "Session ID mis-match between client and server<br /><br />";
+			
+		document.getElementById(container).innerHTML = out;
 	}
 		
 }

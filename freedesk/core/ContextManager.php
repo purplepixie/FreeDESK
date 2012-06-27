@@ -112,6 +112,9 @@ class ContextManager
 			"Context Manager", "0.01", "Core" ));
 		// Load the SessionManager
 		$this->SessionManager = $this->DESK->Include->IncludeInstance("core/SessionManager.php","SessionManager");
+		
+		// Our permissions
+		$this->DESK->PermissionManager->Register("user_admin",false);
 	}
 	
 	/**
@@ -268,7 +271,7 @@ class ContextManager
 		$req->tag="newrequest";
 		$req->display="New Request";
 		//$req->link="request.php?sid=".$this->Session->sid;
-		$req->onclick="DESK.openWindow('FreeDESK Request','request.php?sid=".$this->Session->sid."');";
+		$req->onclick="DESK.createRequest();";
 		$user->submenu[]=$req;
 		
 		$menu[]=$user;

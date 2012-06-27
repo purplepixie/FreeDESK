@@ -62,6 +62,7 @@ class PermissionManager
 	function Register($permission, $default=false)
 	{
 		$this->permissions[$permission]=$default;
+		//$this->DESK->LoggingEngine->Log("Reg: ".$permission,"Ha","Ha");
 	}
 	
 	/**
@@ -168,6 +169,82 @@ class PermissionManager
 		
 		$this->DESK->Database->Free($r);
 	}
+	
+	/**
+	 * Get the full set of permissions
+	 * @return array Permission list
+	**/
+	function PermissionList()
+	{
+		$permlist = $this->permissions;
+		if (!isset($permlist['default']))
+			$permlist['default']=false;
+		return $permlist;
+	}
+	
+	/**
+	 * Get user settings (user-specific, not group or anything else) for permissions
+	 * @param string $username Username
+	 * @return array Array of permissions with form (-1 undefined, 0 denied, 1 allowed)
+	**/
+	function UserPermissionList($username)
+	{
+		$permlist = $this->PermissionList();
+		
+		$perms = array("default" => -1);
+		
+		foreach($permlist as $key => $perm)
+			$perms[$key]=-1;
+		
+		
+		$q="SELECT ".$this->DESK->Database->Field("permission").",".$this->DESK->Database->Field("allowed")." ";
+		$q.="FROM ".$this->DESK->Database->Table("permissions")." WHERE ";
+		$q.=$this->DESK->Database->Field("permissiontype")."=".$this->DESK->Database->SafeQuote("user")." AND ";
+		$q.=$this->DESK->Database->Field("usergroupid")."=".$this->DESK->Database->SafeQuote($username);
+		
+		$r=$this->DESK->Database->Query($q);
+		
+		while ($row=$this->DESK->Database->FetchAssoc($r))
+		{
+			$perms[$row['permission']] = $row['allowed'];
+		}
+		
+		$this->DESK->Database->Free($r);
+		
+		return $perms;
+	}
+	
+	/**
+	 * Get group settings for permissions
+	 * @param string $groupid Group ID
+	 * @return array Array of permissions with form (-1 undefined, 0 denied, 1 allowed)
+	**/
+	function GroupPermissionList($groupid)
+	{
+		$permlist = $this->PermissionList();
+		
+		$perms = array("default" => -1);
+		
+		foreach($permlist as $key => $perm)
+			$perms[$key]=-1;
+		
+		$q="SELECT ".$this->DESK->Database->Field("permission").",".$this->DESK->Database->Field("allowed")." ";
+		$q.="FROM ".$this->DESK->Database->Table("permissions")." WHERE ";
+		$q.=$this->DESK->Database->Field("permissiontype")."=".$this->DESK->Database->SafeQuote("group")." AND ";
+		$q.=$this->DESK->Database->Field("usergroupid")."=".$this->DESK->Database->Safe($groupid);
+		
+		$r=$this->DESK->Database->Query($q);
+		
+		while ($row=$this->DESK->Database->FetchAssoc($r))
+		{
+			$perms[$row['permission']] = $row['allowed'];
+		}
+		
+		$this->DESK->Database->Free($r);
+		
+		return $perms;
+	}
+	
 	
 }
 ?>

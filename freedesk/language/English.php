@@ -69,6 +69,16 @@ $i['assigned_to'] = "Assigned to";
 $i['unassigned'] = "Unassigned";
 
 $i['customer'] = "Customer";
+$i['request'] = "Request";
+
+$i['permissions'] = "Permissions";
+$i['undefined'] = "Undefined";
+$i['denied'] = "Denied";
+$i['allowed'] = "Allowed";
+
+$i['delete'] = "Delete";
+
+$i['user_create'] = "Create User";
 }
 
 }

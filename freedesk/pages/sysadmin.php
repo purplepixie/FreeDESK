@@ -62,10 +62,28 @@ else if ($mode == "user")
 	$r=$DESK->Database->Query($q);
 	while ($row=$DESK->Database->FetchAssoc($r))
 	{
+		echo "<form id=\"delete_".$row['username']."\" onsubmit=\"return false;\">";
+		
 		$oa = array("mode" => "useredit", "username" => $row['username']);
-		echo sa_link($row['username'].": ".$row['realname'], $oa)."<br />";
+		echo sa_link($row['username'].": ".$row['realname'], $oa)." ";
+		
+		
+		echo "<input type=\"hidden\" name=\"mode\" value=\"delete_user\" />\n";
+		echo "<input type=\"hidden\" name=\"username\" value=\"".$row['username']."\" />\n";
+		echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("delete")."\" onclick=\"if (confirm('Delete user ".$row['username']."')) DESK.formAPI('delete_".$row['username']."',false,false,DESK.refreshSubpage());\" />\n";
+		echo "</form>";
+		
+		echo "<br />";
 	}
 	$DESK->Database->Free($r);
+	
+	echo "<br /><b>".$DESK->Lang->Get("user_create")."</b><br /><br />\n";
+	echo "<form id=\"create_user\" onsubmit=\"return false;\">\n";
+	echo "<input type=\"hidden\" name=\"mode\" value=\"create_user\">\n";
+	echo $DESK->Lang->Get("username")." ";
+	echo "<input type=\"text\" name=\"username\" value=\"\" /> \n";
+	echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("save")."\" onclick=\"DESK.formAPI('create_user',false,false,DESK.refreshSubpage());\" />\n";
+	echo "</form>\n";
 	
 }
 else if ($mode == "useredit")
@@ -176,7 +194,67 @@ else if ($mode == "useredit")
 	
 	echo "</table></form>";
 	
+	echo "<h3>".$DESK->Lang->Get("permissions")."</h3>\n";
 	
+	echo "<form id=\"permission_form\" onsubmit=\"return false;\">\n";
+	echo "<input type=\"hidden\" name=\"mode\" value=\"permission_save\" />\n";
+	echo "<input type=\"hidden\" name=\"type\" value=\"user\" />\n";
+	echo "<input type=\"hidden\" name=\"username\" value=\"".$_REQUEST['username']."\" />\n";
+	echo "<table class=\"searchList\">\n";
+	
+	$perms = $DESK->PermissionManager->UserPermissionList($_REQUEST['username']);
+	
+	$row=0;
+	
+	foreach($perms as $perm => $allowed)
+	{
+		// HTML-Safe
+		$permhtml = str_replace(".","#",$perm);
+	
+		$class = "row".$row++;
+		if ($row>1) $row=0;
+		echo "<tr class=\"".$class."\">";
+		
+		echo "<td>\n";
+		echo $perm;
+		echo "</td>\n";
+		
+		echo "<td>\n";
+		echo "<input type=\"radio\" name=\"".$permhtml."\" value=\"-1\"";
+		if ($allowed == -1)
+			echo " checked";
+		echo " />";
+		echo $DESK->Lang->Get("undefined");
+		echo "</td>";
+		
+		echo "<td>\n";
+		echo "<input type=\"radio\" name=\"".$permhtml."\" value=\"0\"";
+		if ($allowed == 0)
+			echo " checked";
+		echo " />";
+		echo $DESK->Lang->Get("denied");
+		echo "</td>";
+		
+		echo "<td>\n";
+		echo "<input type=\"radio\" name=\"".$permhtml."\" value=\"1\"";
+		if ($allowed == 1)
+			echo " checked";
+		echo " />";
+		echo $DESK->Lang->Get("allowed");
+		echo "</td>";
+		
+		
+		echo "</tr>";
+	}
+	
+	echo "<tr><td> </td><td>\n";
+	echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("save")."\" onclick=\"DESK.formAPI('permission_form');\" />\n";
+	echo "</td></tr>";
+	
+	echo "</table>\n";
+	echo "</form>\n";
+	
+	//echo memory_get_usage();
 }
 else
 {

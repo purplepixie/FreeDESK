@@ -67,6 +67,10 @@ if ($request === false)
 	exit();
 }
 
+echo "<div id=\"request_header\">\n";
+echo "<b>".$DESK->Lang->Get("request")." ".$id."</b>\n";
+echo "</div>";
+
 $request->LoadUpdates();
 
 $panes = array(

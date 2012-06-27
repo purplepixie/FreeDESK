@@ -55,14 +55,14 @@ class RequestManager
 		$this->DESK->PluginManager->Register(new Plugin(
 			"Request Manager", "0.01", "Core" ));
 		// Register our permissions
-		$this->DESK->PermissionManager->Register("request.view.otherteam",false);
-		$this->DESK->PermissionManager->Register("request.view.otherteamuser",false);
-		$this->DESK->PermissionManager->Register("request.view.otheruser",false);
-		$this->DESK->PermissionManager->Register("request.view.unassigned",false);
-		$this->DESK->PermissionManager->Register("request.assign.otherteam",false);
-		$this->DESK->PermissionManager->Register("request.assign.otherteamuser",false);
-		$this->DESK->PermissionManager->Register("request.assign.otheruser",false);
-		$this->DESK->PermissionManager->Register("request.assign.unassigned",false);
+		$this->DESK->PermissionManager->Register("request_view_otherteam",false);
+		$this->DESK->PermissionManager->Register("request_view_otherteamuser",false);
+		$this->DESK->PermissionManager->Register("request_view_otheruser",false);
+		$this->DESK->PermissionManager->Register("request_view_unassigned",false);
+		$this->DESK->PermissionManager->Register("request_assign_otherteam",false);
+		$this->DESK->PermissionManager->Register("request_assign_otherteamuser",false);
+		$this->DESK->PermissionManager->Register("request_assign_otheruser",false);
+		$this->DESK->PermissionManager->Register("request_assign_unassigned",false);
 		
 	}
 	

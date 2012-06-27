@@ -62,6 +62,7 @@ function FreeDESK_Request()
 		if (closeOnComplete == undefined)
 			var closeOnComplete = false;
 		
+		
 		if (!this.customerIsSelected)
 		{
 			alert("Must select a customer");
@@ -85,6 +86,7 @@ function FreeDESK_Request()
 		
 		sr.callback = DESKRequest.createCallback;
 		sr.url = "api.php";
+		sr.additional = add;
 		sr.Post(data);
 	}
 	
@@ -96,7 +98,13 @@ function FreeDESK_Request()
 		}
 		else
 		{
-			//
+			var req = xml.getElementsByTagName("request")[0];
+			var id = (req.textContent == undefined) ? req.firstChild.nodeValue : req.textContent;
+			var url = "request.php?id="+id+"&sid="+DESK.sid;
+			if (add[0] == 1)
+				window.close();
+			else
+				window.location.href = url;
 		}
 	}
 	

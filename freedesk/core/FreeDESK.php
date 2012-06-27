@@ -168,7 +168,10 @@ class FreeDESK
 		// Now the concrete class
 		$this->Database = $this->Include->IncludeInstance("core/database/".$this->BaseConfig->db_System.".php",
 			$this->BaseConfig->db_System);
-			
+		
+		// Permission Manager
+		$this->PermissionManager = $this->Include->IncludeInstance("core/PermissionManager.php", "PermissionManager");
+		
 		// Configuration Manager
 		$this->Configuration = $this->Include->IncludeInstance("core/Configuration.php","Configuration");
 		
@@ -181,9 +184,6 @@ class FreeDESK
 		
 		// Context Manager
 		$this->ContextManager = $this->Include->IncludeInstance("core/ContextManager.php", "ContextManager");
-		
-		// Permission Manager
-		$this->PermissionManager = $this->Include->IncludeInstance("core/PermissionManager.php", "PermissionManager");
 		
 		// Authentication Methods
 		// The core files

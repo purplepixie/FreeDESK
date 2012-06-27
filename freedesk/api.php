@@ -106,20 +106,6 @@ if ($_REQUEST['mode']=="entity_search")
 	// ENTITY MANAGER
 	$q="SELECT * FROM ".$DESK->Database->Table($entity->entity);
 	
-	/*
-	$wc="";
-	
-	foreach($entity->fields as $key => $field)
-	{
-		if ($field->searchable && isset($_REQUEST[$key]) && ($_REQUEST[$key]!=""))
-		{
-			if ($wc != "")
-				$wc.=" AND ";
-			// Char data %
-			$wc.=$DESK->Database->Field($key)."=".$DESK->Database->SafeQuote($_REQUEST[$key]);
-		}
-	}
-	*/
 	
 	$qb = new QueryBuilder();
 	$fieldcount = 0;
@@ -129,9 +115,12 @@ if ($_REQUEST['mode']=="entity_search")
 		{
 			if ($fieldcount++ > 0)
 				$qb->AddOperation(QueryType::opAND);
-			// Char data %
-			//$wc.=$DESK->Database->Field($key)."=".$DESK->Database->SafeQuote($_REQUEST[$key]);
-			$qb->Add($key, QueryType::Equal, $DESK->Database->SafeQuote($_REQUEST[$key]));
+			
+			if ( ($field->type==DD_FieldType::Char || $field->type==DD_FieldType::Text)  &&
+					strpos($_REQUEST[$key], "%") !== true )
+				$qb->Add($key, QueryType::Like, $DESK->Database->SafeQuote($_REQUEST[$key]));
+			else
+				$qb->Add($key, QueryType::Equal, $DESK->Database->SafeQuote($_REQUEST[$key]));
 		}
 	}
 	
@@ -338,7 +327,7 @@ else if ($_REQUEST['mode'] == "user_edit")
 
 else if ($_REQUEST['mode'] == "request_update")
 {
-	// TODO: PERMISSIONS
+	// TODO: PERMISSIONS + PUBLIC
 	
 	$public=false;
 	if (isset($_REQUEST['public']) && $_REQUEST['public']==1)
@@ -384,6 +373,151 @@ else if ($_REQUEST['mode'] == "request_update")
 	$xml->charElement("operation","1");
 	echo $xml->getXML(true);
 	exit();
+}
+
+else if ($_REQUEST['mode'] == 'request_create')
+{
+	if (isset($_REQUEST['class']))
+		$class = $_REQUEST['class'];
+	else
+		$class = "";
+	
+	// Request of required class
+	$req = $DESK->RequestManager->CreateById($class);
+	
+	// Assignment of request: TODO permissions for this!
+	$team=0;
+	$user="";
+	
+	if (isset($_REQUEST['assign']))
+	{
+		if (is_numeric($assign)) // just a team
+			$team = $assign;
+		else
+		{
+			$parts = explode("/",$assign);
+			$team = $parts[0];
+			if (isset($parts[1]))
+				$user=$parts[1];
+		}
+	}
+	
+	$id = $req->Create($_REQUEST['customer'], $_REQUEST['update'], $class, $_REQUEST['status'], 
+		$team, $user);
+	
+	$xml = new xmlCreate();
+	$xml->charElement("request", $id);
+	echo $xml->getXML(true);
+	exit();
+}
+
+else if ($_REQUEST['mode'] == 'permission_save')
+{
+	if (!$DESK->ContextManager->Permission("user_admin"))
+	{
+		$error = new FreeDESK_Error(ErrorCode::Forbidden, "Permission Denied");
+		echo $error->XML(true);
+		exit();
+	}
+	
+	if ($_REQUEST['type'] == "user")
+	{
+		$type="user";
+		$usergroupid=$_REQUEST['username'];
+	}
+	else if ($_REQUEST['tyoe'] == "group")
+	{
+		$type="group";
+		$usergroupid=$_REQUEST['groupid'];
+	}
+	else
+	{
+		$error = new FreeDESK_Error(ErrorCode::UnknownMode, "Unknown Mode ".$_REQUEST['mode']);
+		echo $error->XML(true);
+		exit();
+	}
+	
+	$q="DELETE FROM ".$DESK->Database->Table("permissions")." WHERE ";
+	$q.=$DESK->Database->Field("permissiontype")."=".$DESK->Database->SafeQuote($type)." AND ";
+	$q.=$DESK->Database->Field("usergroupid")."=".$DESK->Database->SafeQuote($usergroupid);
+	
+	$DESK->Database->Query($q);
+	
+	$perms = $DESK->PermissionManager->PermissionList();
+	
+	foreach($perms as $perm => $def)
+	{
+		$htmlperm = str_replace(".","#",$perm);
+		if (isset($_REQUEST[$htmlperm]))
+		{
+			$DESK->LoggingEngine->Log($perm,$_REQUEST[$htmlperm],"hi");
+			$val=-1;
+			if ($_REQUEST[$htmlperm] == "1")
+				$val=1;
+			else if ($_REQUEST[$htmlperm] == "0")
+				$val=0;
+			
+			if ($val==1 || $val==0)
+			{
+				$q="INSERT INTO ".$DESK->Database->Table("permissions")."(";
+				$q.=$DESK->Database->Field("permissiontype").",".$DESK->Database->Field("permission").",";
+				$q.=$DESK->Database->Field("usergroupid").",".$DESK->Database->Field("allowed").") VALUES(";
+				$q.=$DESK->Database->SafeQuote($type).",".$DESK->Database->SafeQuote($perm).",";
+				$q.=$DESK->Database->SafeQuote($usergroupid).",".$DESK->Database->Safe($val).")";
+				
+				$DESK->Database->Query($q);
+			}
+		}
+	}
+	
+	
+	$xml = new xmlCreate();
+	$xml->charElement("operation","1");
+	echo $xml->getXML(true);
+	exit();
+}
+
+else if ($_REQUEST['mode'] == "create_user")
+{
+	if (!$DESK->ContextManager->Permission("user_admin"))
+	{
+		$error = new FreeDESK_Error(ErrorCode::Forbidden, "Permission Denied");
+		echo $error->XML(true);
+		exit();
+	}
+
+	if ($_REQUEST['username'] != "")
+	{
+		$q="INSERT INTO ".$DESK->Database->Table("user")."(".$DESK->Database->Field("username").") VALUES(";
+		$q.=$DESK->Database->SafeQuote($_REQUEST['username']).")";
+		$DESK->Database->Query($q);
+	}
+	$xml = new xmlCreate();
+	$xml->charElement("operation","1");
+	echo $xml->getXML(true);
+	exit();	
+}
+
+else if ($_REQUEST['mode'] == "delete_user")
+{
+	// TODO: Delete related data e.g. perms, links and reassign requests
+	if (!$DESK->ContextManager->Permission("user_admin"))
+	{
+		$error = new FreeDESK_Error(ErrorCode::Forbidden, "Permission Denied");
+		echo $error->XML(true);
+		exit();
+	}
+
+	if ($_REQUEST['username'] != "")
+	{
+		$q="DELETE FROM ".$DESK->Database->Table("user")." WHERE ";
+		$q.=$DESK->Database->Field("username")."=".$DESK->Database->SafeQuote($_REQUEST['username']);
+		$DESK->Database->Query($q);
+	}
+	$xml = new xmlCreate();
+	$xml->charElement("operation","1");
+	echo $xml->getXML(true);
+	exit();	
 }
 
 $error = new FreeDESK_Error(ErrorCode::UnknownMode, "Unknown Mode ".$_REQUEST['mode']);

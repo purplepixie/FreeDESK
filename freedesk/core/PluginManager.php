@@ -110,7 +110,7 @@ class PluginManager
 	function RegisterPage($id, $page, $autoperm=true)
 	{
 		$this->pages[$id]=$page;
-		$this->DESK->PermissionManager->Register("page."+$id,false);
+		$this->DESK->PermissionManager->Register("page.".$id,false);
 	}
 	
 	/**

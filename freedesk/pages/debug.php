@@ -45,6 +45,12 @@ echo "</table>\n";
 
 echo "</div>\n";
 
+echo "<br /><br />";
+
+echo "<div id=\"js_debug\">\n";
+echo "<a href=\"#\" onclick=\"DESK.debugData('js_debug', '".$DESK->ContextManager->Session->sid."');\">Client-Side Debug Information</a>\n";
+echo "</div>\n";
+
 //<script type="text/javascript">
 //document.getElementById("debug_info").innerHTML += "blah";
 //</script>
