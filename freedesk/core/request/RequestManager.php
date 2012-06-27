@@ -165,6 +165,7 @@ class RequestManager
 	function StatusList()
 	{
 		$q="SELECT * FROM ".$this->DESK->Database->Table("status");
+		$q.=" ORDER BY ".$this->DESK->Database->Field("status")." DESC";
 		$r=$this->DESK->Database->Query($q);
 		$out=array();
 		while ($row=$this->DESK->Database->FetchAssoc($r))

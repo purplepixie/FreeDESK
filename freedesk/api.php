@@ -355,9 +355,11 @@ else if ($_REQUEST['mode'] == "request_update")
 	if (isset($_REQUEST['update']) && $_REQUEST['update']!="")
 		$req->Update($_REQUEST['update'], $public);
 	
+	if (isset($_REQUEST['status']) && $_REQUEST['status']!="" && $_REQUEST['status']!=" " && is_numeric($_REQUEST['status']))
+		$req->Status($_REQUEST['status'], $public);
 	
 	// TODO: ASSIGNMENT PERMISSION
-	if (isset($_REQUEST['assign']) || $_REQUEST['assign'] != "") // Composite assignment
+	if (isset($_REQUEST['assign']) && $_REQUEST['assign'] != "" && $_REQUEST['assign'] != " ") // Composite assignment
 	{
 		$team = 0;
 		$user = "";

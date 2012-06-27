@@ -102,14 +102,25 @@ echo "</div>";
 echo "<div id=\"pane_request_update_content\" class=\"pane_content_hidden\">\n";
 
 echo "<form id=\"request_update\" onsubmit=\"return false;\">";
+
+echo "<table class=\"request_update\">\n";
+
+echo "<tr><td colspan=\"2\">\n";
+
 echo "<input type=\"hidden\" name=\"mode\" value=\"request_update\">\n";
 echo "<input type=\"hidden\" name=\"requestid\" value=\"".$id."\">\n";
-echo "<textarea rows=\"10\" cols=\"50\" name=\"update\"></textarea><br />\n";
+echo "<textarea rows=\"10\" cols=\"50\" name=\"update\"></textarea>\n";
+
+echo "</td></tr>\n";
+echo "<tr><td>";
+
 echo $DESK->Lang->Get("assign")." ";
+
+echo "</td><td>";
 
 echo "<select name=\"assign\">\n";
 
-echo "<option value=\"\" selected>".$DESK->Lang->Get("no_change")."</option>\n";
+echo "<option value=\" \" selected>".$DESK->Lang->Get("no_change")."</option>\n";
 
 $list = $DESK->RequestManager->TeamUserList();
 
@@ -133,18 +144,103 @@ foreach($list as $teamid => $team)
 }
 echo "</select>\n";
 
+echo "</td></tr>\n";
+
+echo "<tr><td>\n";
+
+echo $DESK->Lang->Get("status");
+
+echo "</td><td>\n";
+
+$statuses = $DESK->RequestManager->StatusList();
+
+echo "<select name=\"status\">\n";
+echo "<option value=\" \" selected>".$DESK->Lang->Get("no_change")."</option>\n";
+
+foreach($statuses as $code => $desc)
+	echo "<option value=\"".$code."\">".$desc."</option>\n";
+
+echo "</select>\n";
+echo "</td></tr>\n";
+
+echo "<tr><td>\n";
+
 echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("save")."\" onclick=\"DESK.formAPI('request_update',false,true);\">";
+
+echo "</td><td>\n";
+
+echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("save_close")."\" onclick=\"DESK.formAPI('request_update',true,false);\">";
+
+echo "</td></tr>\n";
+
+echo "</table>";
 
 echo "</form>\n";
 
-/*
-echo "<hr class=\"request\">\n";
+echo "</div>";
 
-echo $DESK->Lang->Get("just_assign")." ";
-echo "<form id=\"request_assign\" onsubmit=\"return false;\">\n";
-echo "<input type=\"hidden\" name=\"mode\" value=\"request_update\">\n";
-echo "<input type=\"hidden\" name=\"requestid\" value=\"".$id."\">\n";
+
+
+$DESK->Skin->IncludeFile("pane_finish.php");
+}
+else // new request
+{
+
+echo "<div id=\"customer_select\" class=\"customer_select\">\n";
+
+echo "<form id=\"customersearch\" onsubmit=\"return false;\">\n";
+echo "<table class=\"search\">\n";
+
+$table=$DESK->DataDictionary->Tables["customer"];
+
+foreach($table->fields as $id => $field)
+{
+	if ($field->searchable)
+	{
+		echo "<tr><td>".$field->name."</td>\n";
+		$val="";
+		if (isset($_REQUEST[$field->field]))
+		{
+			$val=$_REQUEST[$field->field];
+			$searchnow=true;
+		}
+		echo "<td><input type=\"text\" name=\"".$field->field."\" value=\"".$val."\" /></td></tr>\n";
+	}
+}
+echo "<tr><td> </td>\n";
+echo "<td><input type=\"submit\" value=\"".$DESK->Lang->Get("search")."\" onclick=\"DESKRequest.searchCustomer();\" /></td>\n";
+echo "</tr>";
+echo "</table>\n";
+echo "</form>\n";
+
+
+echo "</div>";
+echo "<div id=\"customer_details\" class=\"customer_details\">\n";
+echo "<br /><b>".$DESK->Lang->Get("customer")." : </b><span id=\"customer_id\"></span> \n";
+echo "<a href=\"#\" onclick=\"DESKRequest.searchCustomerAgain();\">Change</a>";
+echo "</div>";
+
+echo "<hr class=\"request\" />\n";
+
+echo "<form id=\"request_create\" onsubmit=\"return false;\">";
+
+echo "<table class=\"request_update\">\n";
+
+echo "<tr><td colspan=\"2\">\n";
+
+echo "<textarea rows=\"10\" cols=\"50\" name=\"update\"></textarea>\n";
+
+echo "</td></tr>\n";
+echo "<tr><td>";
+
+echo $DESK->Lang->Get("assign")." ";
+
+echo "</td><td>";
+
 echo "<select name=\"assign\">\n";
+
+$list = $DESK->RequestManager->TeamUserList();
+
 foreach($list as $teamid => $team)
 {
 	$teamname = $team['name'];
@@ -164,54 +260,39 @@ foreach($list as $teamid => $team)
 	}
 }
 echo "</select>\n";
-echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("save")."\" onclick=\"DESK.formAPI('request_assign',false,true);\">";
+
+echo "</td></tr>\n";
+
+echo "<tr><td>\n";
+
+echo $DESK->Lang->Get("status");
+
+echo "</td><td>\n";
+
+$statuses = $DESK->RequestManager->StatusList();
+
+echo "<select name=\"status\">\n";
+
+foreach($statuses as $code => $desc)
+	echo "<option value=\"".$code."\">".$desc."</option>\n";
+
+echo "</select>\n";
+echo "</td></tr>\n";
+
+echo "<tr><td>\n";
+
+echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("save")."\" onclick=\"DESKRequest.Create();\" />";
+
+echo "</td><td>\n";
+
+echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("save_close")."\" onclick=\"DESKRequest.Create(true);\" />";
+
+echo "</td></tr>\n";
+
+echo "</table>";
+
 echo "</form>";
-*/
 
-echo "</div>";
-
-
-
-$DESK->Skin->IncludeFile("pane_finish.php");
-}
-else // new request
-{
-//echo "<b>".$DESK->Lang->Get("customer")."</b>\n";
-
-echo "<div id=\"customer_select\" class=\"customer_select\">\n";
-
-echo "<table class=\"search\">\n";
-echo "<form id=\"customersearch\" onsubmit=\"return false;\">\n";
-
-$table=$DESK->DataDictionary->Tables["customer"];
-
-foreach($table->fields as $id => $field)
-{
-	if ($field->searchable)
-	{
-		echo "<tr><td>".$field->name."</td>\n";
-		$val="";
-		if (isset($_REQUEST[$field->field]))
-		{
-			$val=$_REQUEST[$field->field];
-			$searchnow=true;
-		}
-		echo "<td><input type=\"text\" name=\"".$field->field."\" value=\"".$val."\"></td></tr>\n";
-	}
-}
-echo "<tr><td>&nbsp;</td>\n";
-echo "<td><input type=\"submit\" value=\"".$DESK->Lang->Get("search")."\" onclick=\"DESKRequest.searchCustomer();\"></td>\n";
-echo "</tr>";
-echo "</form></table>\n";
-
-
-echo "</div>";
-echo "<div id=\"customer_details\" class=\"customer_details\">\n";
-echo "<br /><b>".$DESK->Lang->Get("customer")." : </b><span id=\"customer_id\"></span> \n";
-echo "<a href=\"#\" onclick=\"DESKRequest.searchCustomerAgain();\">Change</a>";
-echo "</div>";
-
-echo "<hr class=\"request\" />\n";
 }
 
 

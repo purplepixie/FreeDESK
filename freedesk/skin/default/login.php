@@ -35,8 +35,8 @@ For more information see www.purplepixie.org/freedesk/
 <div class="login_button"><input type="submit" value="<?php echo $DESK->Lang->Get("login"); ?>" onclick="DESK.login_click()" /><br />
 <a href="#" onclick="DESK.hide_login();"><?php echo $DESK->Lang->Get("login_cancel"); ?></a></div>
 <div id="login_message"></div>
-</div>
 </form>
+</div>
 <div id="login_footer" class="login_footer"></div>
 </div>
 

@@ -57,6 +57,49 @@ function FreeDESK_Request()
 		DESKRequest.customerIsSelected = sel;
 	}
 	
+	this.Create = function(closeOnComplete)
+	{
+		if (closeOnComplete == undefined)
+			var closeOnComplete = false;
+		
+		if (!this.customerIsSelected)
+		{
+			alert("Must select a customer");
+			return;
+		}
+		
+		var detail = DESK.formToQuery("request_create");
+		var mode = "request_create";
+		var add = "customer="+document.getElementById('customer_id').innerHTML;
+		
+		var data = "mode="+mode+"&"+add+"&"+detail+"&sid="+DESK.sid;
+		
+		var sr = new ServerRequest();
+		
+		var add = Array();
+		
+		if (closeOnComplete)
+			add[0]=1;
+		else
+			add[0]=0;
+		
+		sr.callback = DESKRequest.createCallback;
+		sr.url = "api.php";
+		sr.Post(data);
+	}
+	
+	this.createCallback = function(xml, add)
+	{
+		if (DESK.isError(xml))
+		{
+			Alerts.add(DESK.getError(xml), 2, 10);
+		}
+		else
+		{
+			//
+		}
+	}
+	
 }
 
 var DESKRequest = new FreeDESK_Request();

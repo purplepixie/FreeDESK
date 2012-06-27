@@ -136,28 +136,40 @@ class Skin
 	**/
 	function CommonHeader()
 	{
-		// FreeDESK Javascript
-		//echo "\n<script type=\"text/javascript\" src=\"js/freedesk.js\"></script>\n";
-		// AJAX Javascript
-		//echo "<script type=\"text/javascript\" src=\"js/ajax.js\"></script>\n";
-		// Alerts
-		//echo "<script type=\"text/javascript\" src=\"js/alerts.js\"></script>\n";
-		// Search
-		//echo "<script type=\"text/javascript\" src=\"js/search.js\"></script>\n";
-		// Request
-		//echo "<script type=\"text/javascript\" src=\"js/request.js\"></script>\n";
-		
-		echo "<script type=\"text/javascript\">\n";
-		echo file_get_contents("js/freedesk.js");
-		echo "\n";
-		echo file_get_contents("js/ajax.js");
-		echo "\n";
-		echo file_get_contents("js/alerts.js");
-		echo "\n";
-		echo file_get_contents("js/search.js");
-		echo "\n";
-		echo file_get_contents("js/request.js");
-		echo "\n</script>\n";
+		$scripts = array("freedesk.js","ajax.js","alerts.js","search.js","request.js");
+		$mode = 1; // 0 - standard, 1 std with no cache, 2 include inline
+	
+		if ($mode==0)
+		{
+			foreach($scripts as $script)
+				echo "<script type=\"text/javascript\" src=\"js/".$script."\"></script>\n";
+		}
+		else if ($mode==1)
+		{
+			mt_srand(microtime()*1000000);
+			$len=32;
+			$chars="abcdefghijklmnopqrstuvwxyz";
+			$clen=strlen($chars);
+			foreach($scripts as $script)
+			{
+				$nc="";
+				for($a=0; $a<$len; ++$a)
+				{
+					$nc.=$chars[mt_rand(0,$clen-1)];
+				}
+				echo "<script type=\"text/javascript\" src=\"js/".$script."?nc=".$nc."\"></script>\n";
+			}
+		}
+		else
+		{
+			echo "<script type=\"text/javascript\">\n";
+			foreach($scripts as $script)
+			{
+				echo file_get_contents("js/".$script);
+				echo "\n";
+			}
+			echo "\n</script>\n";
+		}
 		
 		if ($this->DESK->ContextManager->IsOpen())
 		{
@@ -192,7 +204,7 @@ class Skin
 	{
 		echo "\n";
 		echo "<form id=\"login_sid_form\" action=\"./\" method=\"post\">\n";
-		echo "<input type=\"hidden\" name=\"sid\" value=\"\">\n";
+		echo "<input type=\"hidden\" name=\"sid\" value=\"\" />\n";
 		echo "</form>\n";
 	}
 	

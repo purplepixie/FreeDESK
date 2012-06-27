@@ -110,7 +110,18 @@ class Request extends RequestBase
 	**/
 	function Status($status, $public=false)
 	{
-		//
+		$list = $this->DESK->RequestManager->StatusList();
+		
+		if (isset($list[$status]))
+		{
+			$q="UPDATE ".$this->DESK->Database->Table("request")." SET ";
+			$q.=$this->DESK->Database->Field("status")."=".$this->DESK->Database->Safe($status)." ";
+			$q.="WHERE ".$this->DESK->Database->Field("requestid")."=".$this->DESK->Database->Safe($this->ID);
+			$this->DESK->Database->Query($q);
+			
+			$update="Status changed to ".$list[$status];
+			$this->Update($update, $public);
+		}
 	}
 	
 	/**
