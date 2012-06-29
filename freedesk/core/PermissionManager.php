@@ -245,6 +245,25 @@ class PermissionManager
 		return $perms;
 	}
 	
+	/**
+	 * Get a list of security groups
+	 * @return array List of groups id => name
+	**/
+	function GroupList()
+	{
+		$q="SELECT * FROM ".$this->DESK->Database->Table("permgroup")." ORDER BY ".$this->DESK->Database->Field("permgroupid")." ASC";
+		$r=$this->DESK->Database->Query($q);
+		
+		$out = array();
+		
+		while ($row=$this->DESK->Database->FetchAssoc($r))
+			$out[$row['permgroupid']]=$row['groupname'];
+		
+		$this->DESK->Database->Free($r);
+		
+		return $out;
+	}
+	
 	
 }
 ?>

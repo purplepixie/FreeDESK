@@ -425,7 +425,7 @@ else if ($_REQUEST['mode'] == 'permission_save')
 		$type="user";
 		$usergroupid=$_REQUEST['username'];
 	}
-	else if ($_REQUEST['tyoe'] == "group")
+	else if ($_REQUEST['type'] == "group")
 	{
 		$type="group";
 		$usergroupid=$_REQUEST['groupid'];

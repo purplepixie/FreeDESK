@@ -26,6 +26,12 @@ For more information see www.purplepixie.org/freedesk/
 
 global $DESK;
 
+header("Content-type: text/xml");
+header("Expires: Tue, 27 Jul 1997 01:00:00 GMT");
+header("Cache-Control: no-store, no-cache, must-revalidate");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+
 echo "<!DOCTYPE html>\n";
 echo "<html>\n";
 
@@ -39,8 +45,15 @@ if (!$DESK->ContextManager->Permission("system_admin"))
 function sa_link($text,$opts=array())
 {
 	$opt = "";
+	$first=true;
 	foreach($opts as $key => $item)
-		$opt.=$key."=".$item."&";
+	{
+		if ($first)
+			$first=false;
+		else
+			$opt.="&";
+		$opt.=$key."=".$item;
+	}
 	$out = "<a href=\"#\" onclick=\"DESK.loadSubpage('sysadmin'";
 	if ($opt != "")
 		$out.=",'".$opt."'";
@@ -274,6 +287,86 @@ else if ($mode == "group")
 {
 	echo "<br />".sa_link("&lt;&lt; ".$DESK->Lang->Get("system_admin"))."<br />\n";
 	echo "<h3>".$DESK->Lang->Get("admin_group")."</h3>\n";
+	$groups = $DESK->PermissionManager->GroupList();
+	
+	foreach($groups as $id => $name)
+	{
+		echo "<form id=\"delete_group_".$id."\" onsubmit=\"return false;\" />\n";
+		echo "<input type=\"hidden\" name=\"mode\" value=\"permgroup_delete\" />\n";
+		echo "<input type=\"hidden\" name=\"permgroupid\" value=\"".$id."\" />\n";
+		echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("delete")."\" onclick=\"if(confirm('Delete group ".$id."')) DESK.formAPI('delete_group_".$id."',false,false,DESK.refreshSubpage);\" />\n";
+		echo " ";
+		$opts = array("mode" => "groupedit", "permgroupid" => $id);
+		echo sa_link($id.": ".$name,$opts);
+		echo "\n</form>\n";
+	}
+}
+else if ($mode == "groupedit")
+{
+	$groups = $DESK->PermissionManager->GroupList();
+	echo "<br />".sa_link("&lt;&lt; ".$DESK->Lang->Get("system_admin"))." \n";
+	echo sa_link("&lt;&lt; ".$DESK->Lang->Get("admin_group"),array("mode"=>"group"))."<br />\n";
+	$group = $groups[$_REQUEST['permgroupid']];
+	$id=$_REQUEST['permgroupid'];
+	echo "<h3>".$id.": ".$group."</h3>\n";
+	
+	echo "<form id=\"permission_form\" onsubmit=\"return false;\">\n";
+	echo "<input type=\"hidden\" name=\"mode\" value=\"permission_save\" />\n";
+	echo "<input type=\"hidden\" name=\"type\" value=\"group\" />\n";
+	echo "<input type=\"hidden\" name=\"groupid\" value=\"".$id."\" />\n";
+	echo "<table class=\"searchList\">\n";
+	
+	$perms = $DESK->PermissionManager->GroupPermissionList($id);
+	
+	$row=0;
+	
+	foreach($perms as $perm => $allowed)
+	{
+		// HTML-Safe
+		$permhtml = str_replace(".","#",$perm);
+	
+		$class = "row".$row++;
+		if ($row>1) $row=0;
+		echo "<tr class=\"".$class."\">";
+		
+		echo "<td>\n";
+		echo $perm;
+		echo "</td>\n";
+		
+		echo "<td>\n";
+		echo "<input type=\"radio\" name=\"".$permhtml."\" value=\"-1\"";
+		if ($allowed == -1)
+			echo " checked";
+		echo " />";
+		echo $DESK->Lang->Get("undefined");
+		echo "</td>";
+		
+		echo "<td>\n";
+		echo "<input type=\"radio\" name=\"".$permhtml."\" value=\"0\"";
+		if ($allowed == 0)
+			echo " checked";
+		echo " />";
+		echo $DESK->Lang->Get("denied");
+		echo "</td>";
+		
+		echo "<td>\n";
+		echo "<input type=\"radio\" name=\"".$permhtml."\" value=\"1\"";
+		if ($allowed == 1)
+			echo " checked";
+		echo " />";
+		echo $DESK->Lang->Get("allowed");
+		echo "</td>";
+		
+		
+		echo "</tr>";
+	}
+	
+	echo "<tr><td> </td><td>\n";
+	echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("save")."\" onclick=\"DESK.formAPI('permission_form');\" />\n";
+	echo "</td></tr>";
+	
+	echo "</table>\n";
+	echo "</form>\n";
 }
 else
 {
@@ -281,4 +374,5 @@ else
 	echo ErrorCode::UnknownMode.": ".$DESK->Lang->Get("action_invalid")." (".$mode.")<br />\n";
 	exit();
 }
+echo "</html>";
 ?>
