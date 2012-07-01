@@ -264,6 +264,41 @@ class PermissionManager
 		return $out;
 	}
 	
+	/**
+	 * Delete a security group
+	 * @param int $groupid Group ID
+	**/
+	function DeleteGroup($groupid)
+	{
+		// First remove users from the group
+		$q="UPDATE ".$this->DESK->Database->Table("user")." SET ";
+		$q.=$this->DESK->Database->Field("permgroup")."=0 WHERE ";
+		$q.=$this->DESK->Database->Field("permgroup")."=".$this->DESK->Database->Safe($groupid);
+		$this->DESK->Database->Query($q);
+		
+		// And the linked permissions
+		$q="DELETE FROM ".$this->DESK->Database->Table("permissions")." WHERE ";
+		$q.=$this->DESK->Database->Field("permissiontype")."=".$this->DESK->Database->SafeQuote("group")." AND ";
+		$q.=$this->DESK->Database->Field("usergroupid")."=".$this->DESK->Database->SafeQuote($groupid);
+		$this->DESK->Database->Query($q);
+		
+		// Now delete the group
+		$q="DELETE FROM ".$this->DESK->Database->Table("permgroup")." WHERE ";
+		$q.=$this->DESK->Database->Field("permgroupid")."=".$this->DESK->Database->Safe($groupid);
+		$this->DESK->Database->Query($q);
+	}
+	
+	/**
+	 * Create a group
+	 * @param string $groupname Name of the group
+	**/
+	function CreateGroup($groupname)
+	{
+		$q="INSERT INTO ".$this->DESK->Database->Table("permgroup")."(".$this->DESK->Database->Field("groupname").") ";
+		$q.="VALUES(".$this->DESK->Database->SafeQuote($groupname).")";
+		$this->DESK->Database->Query($q);
+	}
+	
 	
 }
 ?>

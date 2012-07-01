@@ -251,6 +251,8 @@ class RequestManager
 			$q.=$this->DESK->Database->Field("assignteam")."=".$this->DESK->Database->Safe($teamid);
 		}
 		
+		$q.=" AND ".$this->DESK->Database->Field("status").">0";
+		
 		if ($sort != "" && $sort != "assigned" && $sort != "customer")
 		{
 			$q.=" ORDER BY ".$this->DESK->Database->Field($sort)." ";

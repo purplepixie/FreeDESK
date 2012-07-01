@@ -39,6 +39,8 @@ function ServerRequest()
 			this.xmlhttp = new XMLHttpRequest;
 			if (this.xmlrequest && this.xmlhttp.overrideMimeType)
 				this.xmlhttp.overrideMimeType("text/xml");
+			else if (!this.xmlrequest && this.xmlhttp.overrideMimeType)
+				this.xmlhttp.overrideMimeType("text/html");
 		}
 		else if (window.ActiveXObject) // Satan's Browser (old IE or Exploiter 7+ with XMLHttp Disabled)
 		{
@@ -55,12 +57,14 @@ function ServerRequest()
 				catch(ex)
 				{
 					// No, Microsoft WHAT HAVE YOU DONE??!?
+					alert("Fatal Error: Cannot create ActiveXObject for xmlhttp");
 				}
 			}
 		}
 		else
 		{
 			// Dear lord are we running in lynx ??!?
+			alert("Fatal Error: Cannot create xmlhttp object");
 		}
 		
 		if (!this.xmlhttp)

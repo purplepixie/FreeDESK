@@ -126,25 +126,25 @@ else if ($mode == "useredit")
 	
 	echo "<form id=\"user_admin\" action=\"#\" onsubmit=\"return false;\">\n";
 	echo "<table>\n";
-	echo "<input type=\"hidden\" name=\"mode\" value=\"user_edit\">\n";
-	echo "<input type=\"hidden\" name=\"original_username\" value=\"".$row['username']."\">\n";
+	echo "<input type=\"hidden\" name=\"mode\" value=\"user_edit\" />\n";
+	echo "<input type=\"hidden\" name=\"original_username\" value=\"".$row['username']."\" />\n";
 	
 	echo "<tr><td>\n";
 	echo $DESK->Lang->Get("username");
 	echo "</td><td>\n";
-	echo "<input type=\"text\" name=\"username\" value=\"".$row['username']."\">\n";
+	echo "<input type=\"text\" name=\"username\" value=\"".$row['username']."\" />\n";
 	echo "</td></tr>\n";
 	
 	echo "<tr><td>\n";
 	echo $DESK->Lang->Get("realname");
 	echo "</td><td>\n";
-	echo "<input type=\"text\" name=\"realname\" value=\"".$row['realname']."\">\n";
+	echo "<input type=\"text\" name=\"realname\" value=\"".$row['realname']."\" />\n";
 	echo "</td></tr>\n";
 	
 	echo "<tr><td>\n";
 	echo $DESK->Lang->Get("email");
 	echo "</td><td>\n";
-	echo "<input type=\"text\" name=\"email\" value=\"".$row['email']."\">\n";
+	echo "<input type=\"text\" name=\"email\" value=\"".$row['email']."\" />\n";
 	echo "</td></tr>\n";
 	
 	$q="SELECT * FROM ".$DESK->Database->Table("teamuserlink")." WHERE ".$DESK->Database->Field("username")."=".$DESK->Database->SafeQuote($row['username']);
@@ -300,6 +300,14 @@ else if ($mode == "group")
 		echo sa_link($id.": ".$name,$opts);
 		echo "\n</form>\n";
 	}
+	
+	echo "<br />";
+	echo "<form id=\"create_group\" onsubmit=\"return false;\">\n";
+	echo "<input type=\"hidden\" name=\"mode\" value=\"permgroup_create\">\n";
+	echo $DESK->Lang->Get("admin_group")." ";
+	echo "<input type=\"text\" name=\"groupname\" value=\"\" /> \n";
+	echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("save")."\" onclick=\"DESK.formAPI('create_group',false,false,DESK.refreshSubpage);\" />\n";
+	echo "</form>\n";
 }
 else if ($mode == "groupedit")
 {

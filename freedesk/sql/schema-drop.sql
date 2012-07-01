@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.20, for Linux (i686)
+-- MySQL dump 10.13  Distrib 5.5.24, for Linux (i686)
 --
 -- Host: localhost    Database: freedesk
 -- ------------------------------------------------------
--- Server version	5.5.20
+-- Server version	5.5.24
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -42,7 +42,7 @@ CREATE TABLE `permgroup` (
   `permgroupid` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `groupname` varchar(254) NOT NULL,
   PRIMARY KEY (`permgroupid`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -60,7 +60,7 @@ CREATE TABLE `permissions` (
   `allowed` tinyint(4) NOT NULL,
   PRIMARY KEY (`permissionid`),
   KEY `permissiontype` (`permissiontype`,`permission`,`usergroupid`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -161,7 +161,7 @@ CREATE TABLE `syslog` (
   `event_type` varchar(128) NOT NULL,
   `event_level` int(11) NOT NULL,
   PRIMARY KEY (`event_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6348 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6544 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -191,7 +191,7 @@ CREATE TABLE `teamuserlink` (
   `username` varchar(254) NOT NULL,
   PRIMARY KEY (`linkid`),
   KEY `teamid` (`teamid`,`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -250,4 +250,4 @@ CREATE TABLE `user` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-06-29 20:58:34
+-- Dump completed on 2012-07-01 17:17:25

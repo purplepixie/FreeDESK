@@ -520,6 +520,42 @@ else if ($_REQUEST['mode'] == "delete_user")
 	exit();	
 }
 
+else if ($_REQUEST['mode'] == "permgroup_delete")
+{
+	$id=$_REQUEST['permgroupid'];
+	if (!$DESK->ContextManager->Permission("user_admin"))
+	{
+		$error = new FreeDESK_Error(ErrorCode::Forbidden, "Permission Denied");
+		echo $error->XML(true);
+		exit();
+	}
+	
+	$DESK->PermissionManager->DeleteGroup($id);
+	
+	$xml = new xmlCreate();
+	$xml->charElement("operation","1");
+	echo $xml->getXML(true);
+	exit();	
+}
+
+else if ($_REQUEST['mode'] == "permgroup_create")
+{
+	$name=$_REQUEST['groupname'];
+	if (!$DESK->ContextManager->Permission("user_admin"))
+	{
+		$error = new FreeDESK_Error(ErrorCode::Forbidden, "Permission Denied");
+		echo $error->XML(true);
+		exit();
+	}
+	
+	$DESK->PermissionManager->CreateGroup($name);
+	
+	$xml = new xmlCreate();
+	$xml->charElement("operation","1");
+	echo $xml->getXML(true);
+	exit();	
+}
+
 $error = new FreeDESK_Error(ErrorCode::UnknownMode, "Unknown Mode ".$_REQUEST['mode']);
 echo $error->XML(true);
 exit();
