@@ -79,9 +79,19 @@ class PluginManager
 	private $plugins = array();
 	
 	/**
+	 * Array of plugin modules
+	**/
+	private $pims = array();
+	
+	/**
 	 * Array of simple pages
 	**/
 	private $pages = array();
+	
+	/**
+	 * Array of scripts
+	**/
+	private $scripts = array();
 	
 	/**
 	 * Constructor
@@ -110,7 +120,26 @@ class PluginManager
 	function RegisterPage($id, $page, $autoperm=true)
 	{
 		$this->pages[$id]=$page;
-		$this->DESK->PermissionManager->Register("page.".$id,false);
+		if ($autoperm)
+			$this->DESK->PermissionManager->Register("page.".$id,false);
+	}
+	
+	/**
+	 * Register a script for inclusion
+	 * @param string $script Web path to script
+	**/
+	function RegisterScript($script)
+	{
+		$this->scripts[] = $script;
+	}
+	
+	/**
+	 * Get list of scripts
+	 * @return array List of scripts
+	**/
+	function GetScripts()
+	{
+		return $this->scripts;
 	}
 	
 	/**

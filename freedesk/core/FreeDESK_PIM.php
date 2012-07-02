@@ -31,12 +31,26 @@ abstract class FreeDESK_PIM
 	protected $DESK = null;
 	
 	/**
+	 * File path for PIM
+	**/
+	protected $filepath = "";
+	
+	/**
+	 * Web path for PIM
+	**/
+	protected $webpath = "";
+	
+	/**
 	 * Main Constructor
 	 * @param mixed $freeDESK FreeDESK instance
+	 * @param string $filepath Path to plugin directory (filebase)
+	 * @param string $webpath Path to plugin directory (webpath)
 	**/
-	function FreeDESK_PIM(&$freeDESK)
+	function FreeDESK_PIM(&$freeDESK, $filepath, $webpath)
 	{
 		$this->DESK = &$freeDESK;
+		$this->filepath = $filepath;
+		$this->webpath = $webpath;
 	}
 	
 	/**
@@ -67,6 +81,25 @@ abstract class FreeDESK_PIM
 	 * Uninstall - to be overriden
 	**/
 	function Uninstall()
+	{
+		//
+	}
+	
+	/**
+	 * API Call - to be overriden
+	 * @param string $mode API Mode
+	**/
+	function API($mode)
+	{
+		//
+	}
+	
+	/**
+	 * Event Call - to be overriden
+	 * @param string $event Event
+	 * @param mixed &$data Event data (dependent on the event)
+	**/
+	function Event($event, &$data)
 	{
 		//
 	}
