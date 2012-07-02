@@ -75,6 +75,8 @@ if ($mode == "")
 	{
 		echo sa_link($DESK->Lang->Get("admin_user"), array("mode"=>"user"))."<br /><br />\n";
 		echo sa_link($DESK->Lang->Get("admin_group"), array("mode"=>"group"))."<br /><br />\n";
+		echo sa_link($DESK->Lang->Get("teams"), array("mode"=>"teams"))."<br /><br />\n";
+		echo sa_link($DESK->Lang->Get("request_status"), array("mode"=>"status"))."<br /><br />\n";
 	}
 	
 }
@@ -374,6 +376,37 @@ else if ($mode == "groupedit")
 	echo "</td></tr>";
 	
 	echo "</table>\n";
+	echo "</form>\n";
+}
+else if ($mode == "teams")
+{
+	echo "<br />".sa_link("&lt;&lt; ".$DESK->Lang->Get("system_admin"))."<br />\n";
+	echo "<table>";
+	$teams = $DESK->RequestManager->TeamList();
+	foreach($teams as $id => $teamname)
+	{
+		echo "<tr><td>";
+		echo "<form id=\"team_delete_".$id."\" onsubmit=\"return false;\">\n";
+		echo "<input type=\"hidden\" name=\"mode\" value=\"team_delete\" />\n";
+		echo "<input type=\"hidden\" name=\"id\" value=\"".$id."\" />\n";
+		echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("delete")."\" onclick=\"if(confirm('Delete team ".$teamname."')) DESK.formAPI('team_delete_".$id."',false,false,DESK.refreshSubpage);\" />\n";
+		echo "</form>\n";
+		echo "</td><td>";
+		echo "<form id=\"team_update_".$id."\" onsubmit=\"return false;\">\n";
+		echo "<input type=\"hidden\" name=\"mode\" value=\"team_update\" />\n";
+		echo "<input type=\"hidden\" name=\"id\" value=\"".$id."\" />\n";
+		echo $id." : ";
+		echo "<input type=\"text\" name=\"teamname\" value=\"".$teamname."\" /> \n";
+		echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("save")."\" onclick=\"DESK.formAPI('team_update_".$id."',false,false,DESK.refreshSubpage);\" />\n";
+		echo "</form>\n";
+		echo "</td></tr>";
+	}
+	echo "</table>";
+	echo "<br />";
+	echo "<form id=\"team_create\" onsubmit=\"return false;\">\n";
+	echo "<input type=\"hidden\" name=\"mode\" value=\"team_create\" />\n";
+	echo "<input type=\"text\" name=\"teamname\" value=\"\" /> \n";
+	echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("save")."\" onclick=\"DESK.formAPI('team_create',false,false,DESK.refreshSubpage);\" />\n";
 	echo "</form>\n";
 }
 else

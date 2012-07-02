@@ -383,5 +383,41 @@ class RequestManager
 			return RequestFactory::Create($this->DESK, "");
 	}
 	
+	/**
+	 * Create a new team
+	 * @param string $teamname Name of the team
+	**/
+	function CreateTeam($teamname)
+	{
+		$q="INSERT INTO ".$this->DESK->Database->Table("team")."(".$this->DESK->Database->Field("teamname").") VALUES(".
+		$q.=$this->DESK->Database->SafeQuote($teamname).")";
+		$this->DESK->Database->Query($q);
+	}
+	
+	/**
+	 * Update a team name
+	 * @param int $teamid ID
+	 * @param string $teamname Team name
+	**/
+	function UpdateTeam($teamid, $teamname)
+	{
+		$q="UPDATE ".$this->DESK->Database->Table("team")." SET ".$this->DESK->Database->Field("teamname")."=".$this->DESK->Database->SafeQuote($teamname);
+		$q.=" WHERE ".$this->DESK->Database->Field("teamid")."=".$this->DESK->Database->Safe($teamid);
+		$this->DESK->Database->Query($q);
+	}
+	
+	/**
+	 * Delete a team
+	 * @param int $teamid ID
+	**/
+	function DeleteTeam($teamid)
+	{
+		$q="DELETE FROM ".$this->DESK->Database->Table("teamuserlink")." WHERE ".$this->DESK->Database->Field("teamid")."=".$this->DESK->Database->Safe($teamid);
+		$this->DESK->Database->Query($q);
+		
+		$q="DELETE FROM ".$this->DESK->Database->Table("team")." WHERE ".$this->DESK->Database->Field("teamid")."=".$this->DESK->Database->Safe($teamid);
+		$this->DESK->Database->Query($q);
+	}
+	
 }
 ?>

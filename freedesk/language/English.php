@@ -80,6 +80,9 @@ $i['allowed'] = "Allowed";
 $i['delete'] = "Delete";
 
 $i['user_create'] = "Create User";
+
+$i['teams'] = "Teams";
+$i['request_status'] = "Request Status";
 }
 
 }

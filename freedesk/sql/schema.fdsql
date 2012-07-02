@@ -152,7 +152,7 @@ CREATE TABLE `%%$%%syslog` (
   `event_type` varchar(128) NOT NULL,
   `event_level` int(11) NOT NULL,
   PRIMARY KEY (`event_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6544 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6645 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -165,7 +165,7 @@ CREATE TABLE `%%$%%team` (
   `teamid` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `teamname` varchar(254) NOT NULL,
   PRIMARY KEY (`teamid`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -237,4 +237,4 @@ CREATE TABLE `%%$%%user` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-07-01 17:17:26
+-- Dump completed on 2012-07-02 15:40:08
