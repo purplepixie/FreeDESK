@@ -136,10 +136,11 @@ function FreeDESK_Search()
 		var start = parseInt(meta.getElementsByTagName("start")[0].firstChild.nodeValue);
 		var limit = parseInt(meta.getElementsByTagName("limit")[0].firstChild.nodeValue);
 		var count = parseInt(meta.getElementsByTagName("count")[0].firstChild.nodeValue);
+		var results = xml.getElementsByTagName("entity").length;
 		var keyfield = (meta.getElementsByTagName("keyfield")[0].textContent==undefined) ?
 			meta.getElementsByTagName("keyfield")[0].firstChild.nodeValue : meta.getElementsByTagName("keyfield")[0].textContent ;
 		
-		var display = "Displaying results "+(start+1)+" to "+(start+limit)+" of "+count;
+		var display = "Displaying results "+(start+1)+" to "+(start+results)+" of "+count;
 		var dispdivtop = document.createElement("div");
 		var dispdivbot = document.createElement("div");
 		dispdivtop.innerHTML = display;
