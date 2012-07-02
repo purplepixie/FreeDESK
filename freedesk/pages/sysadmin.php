@@ -409,6 +409,41 @@ else if ($mode == "teams")
 	echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("save")."\" onclick=\"DESK.formAPI('team_create',false,false,DESK.refreshSubpage);\" />\n";
 	echo "</form>\n";
 }
+else if ($mode == "status")
+{
+	echo "<br />".sa_link("&lt;&lt; ".$DESK->Lang->Get("system_admin"))."<br />\n";
+	$status = $DESK->RequestManager->StatusList();
+	echo "<table>";
+	foreach($status as $id => $name)
+	{
+		echo "<tr><td>";
+		if ($id>0)
+		{
+			echo "<form id=\"status_delete_".$id."\" onsubmit=\"return false;\">\n";
+			echo "<input type=\"hidden\" name=\"mode\" value=\"status_delete\" />\n";
+			echo "<input type=\"hidden\" name=\"id\" value=\"".$id."\" />\n";
+			echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("delete")."\" onclick=\"if(confirm('Delete ".$name."')) DESK.formAPI('status_delete_".$id."',false,false,DESK.refreshSubpage);\" />\n";
+			echo "</form>";
+		}
+		else
+			echo "  ";
+		echo "</td><td>\n";
+		echo "<form id=\"status_update_".$id."\" onsubmit=\"return false;\">\n";
+		echo "<input type=\"hidden\" name=\"mode\" value=\"status_update\" />\n";
+		echo "<input type=\"hidden\" name=\"id\" value=\"".$id."\" />\n";
+		echo "<input type=\"text\" name=\"name\" value=\"".$name."\" /> \n";
+		echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("save")."\" onclick=\"DESK.formAPI('status_update_".$id."',false,false,DESK.refreshSubpage);\" />\n";
+		echo "</form>\n";
+		echo "</td></tr>\n";
+	}
+	echo "</table>\n";
+	echo "<br /><br />";
+	echo "<form id=\"status_create\" onsubmit=\"return false;\">\n";
+	echo "<input type=\"hidden\" name=\"mode\" value=\"status_create\" />\n";
+	echo "<input type=\"text\" name=\"name\" value=\"\" /> \n";
+	echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("save")."\" onclick=\"DESK.formAPI('status_create',false,false,DESK.refreshSubpage);\" />\n";
+	echo "</form>\n";
+}
 else
 {
 	echo "<h3>".$DESK->Lang->Get("system_admin")."</h3>\n";

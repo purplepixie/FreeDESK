@@ -419,5 +419,46 @@ class RequestManager
 		$this->DESK->Database->Query($q);
 	}
 	
+	/**
+	 * Create a new status
+	 * @param string $name Status name
+	**/
+	function CreateStatus($name)
+	{
+		$current = $this->StatusList();
+		$high = 0;
+		foreach($current as $id => $curname)
+			if ($id > $high)
+				$high = $id;
+		$newid = $high+1;
+		
+		$q="INSERT INTO ".$this->DESK->Database->Table("status")."(".$this->DESK->Database->Field("status").",".$this->DESK->Database->Field("description").") ";
+		$q.="VALUES(".$this->DESK->Database->Safe($newid).",".$this->DESK->Database->SafeQuote($name).")";
+		
+		$this->DESK->Database->Query($q);
+	}
+	
+	/**
+	 * Update a status description
+	 * @param int $id Status ID
+	 * @param string $name New Name
+	**/
+	function UpdateStatus($id, $name)
+	{
+		$q="UPDATE ".$this->DESK->Database->Table("status")." SET ".$this->DESK->Database->Field("description")."=".$this->DESK->Database->SafeQuote($name);
+		$q.=" WHERE ".$this->DESK->Database->Field("status")."=".$this->DESK->Database->Safe($id);
+		$this->DESK->Database->Query($q);
+	}
+	
+	/**
+	 * Delete a status
+	 * @param int $id Status ID
+	**/
+	function DeleteStatus($id)
+	{
+		$q="DELETE FROM ".$this->DESK->Database->Table("status")." WHERE ".$this->DESK->Database->Field("status")."=".$this->DESK->Database->Safe($id);
+		$this->DESK->Database->Query($q);
+	}
+	
 }
 ?>

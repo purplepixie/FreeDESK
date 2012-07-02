@@ -611,6 +611,61 @@ else if ($_REQUEST['mode'] == "team_delete")
 	exit();	
 }
 
+else if ($_REQUEST['mode'] == "status_create")
+{
+	$name=$_REQUEST['name'];
+	if (!$DESK->ContextManager->Permission("user_admin"))
+	{
+		$error = new FreeDESK_Error(ErrorCode::Forbidden, "Permission Denied");
+		echo $error->XML(true);
+		exit();
+	}
+	
+	$DESK->RequestManager->CreateStatus($name);
+	
+	$xml = new xmlCreate();
+	$xml->charElement("operation","1");
+	echo $xml->getXML(true);
+	exit();	
+}
+
+else if ($_REQUEST['mode'] == "status_delete")
+{
+	$id=$_REQUEST['id'];
+	if (!$DESK->ContextManager->Permission("user_admin"))
+	{
+		$error = new FreeDESK_Error(ErrorCode::Forbidden, "Permission Denied");
+		echo $error->XML(true);
+		exit();
+	}
+	
+	$DESK->RequestManager->DeleteStatus($id);
+	
+	$xml = new xmlCreate();
+	$xml->charElement("operation","1");
+	echo $xml->getXML(true);
+	exit();	
+}
+
+else if ($_REQUEST['mode'] == "status_update")
+{
+	$id=$_REQUEST['id'];
+	$name=$_REQUEST['name'];
+	if (!$DESK->ContextManager->Permission("user_admin"))
+	{
+		$error = new FreeDESK_Error(ErrorCode::Forbidden, "Permission Denied");
+		echo $error->XML(true);
+		exit();
+	}
+	
+	$DESK->RequestManager->UpdateStatus($id,$name);
+	
+	$xml = new xmlCreate();
+	$xml->charElement("operation","1");
+	echo $xml->getXML(true);
+	exit();	
+}
+
 $error = new FreeDESK_Error(ErrorCode::UnknownMode, "Unknown Mode ".$_REQUEST['mode']);
 echo $error->XML(true);
 exit();
