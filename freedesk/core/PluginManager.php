@@ -94,6 +94,11 @@ class PluginManager
 	private $pages = array();
 	
 	/**
+	 * Array of PIM pages
+	**/
+	private $pim_pages = array();
+	
+	/**
 	 * Array of scripts
 	**/
 	private $scripts = array();
@@ -141,6 +146,16 @@ class PluginManager
 	}
 	
 	/**
+	 * Register a PIM page for use in a PIM
+	 * @param string $page Page identifier
+	 * @param int $id PIM internal ID
+	**/
+	function RegisterPIMPage($page, $id)
+	{
+		$this->pim_pages[$page] = $id;
+	}
+	
+	/**
 	 * Register a script for inclusion
 	 * @param string $script Web path to script
 	**/
@@ -154,7 +169,7 @@ class PluginManager
 	 * @param string $mode API Mode
 	 * @param int $id Plugin ID
 	**/
-	function RegisterAPI($mode, $id)
+	function RegisterPIMAPI($mode, $id)
 	{
 		$this->pim_api[$mode] = $id;
 	}
@@ -193,6 +208,25 @@ class PluginManager
 	{
 		if (isset($this->pages[$id]))
 			return $this->pages[$id];
+		return false;
+	}
+	
+	/**
+	 * Call a PIM Page
+	 * @param $id Page identifier
+	 * @return bool true if exists and called or false if not
+	**/
+	function PIMPage($id)
+	{
+		if (isset($this->pim_pages[$id]))
+		{
+			$pimid = $this->pim_pages[$id];
+			if (isset($this->pims[$pimid]))
+			{
+				$this->pims[$pimid]->Page($id);
+				return true;
+			}
+		}
 		return false;
 	}
 	

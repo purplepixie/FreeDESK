@@ -57,7 +57,7 @@ abstract class FreeDESK_PIM
 		$this->DESK = &$freeDESK;
 		$this->filepath = $filepath;
 		$this->webpath = $webpath;
-		$this->ID = $ID;
+		$this->ID = $id;
 	}
 	
 	/**
@@ -123,6 +123,15 @@ abstract class FreeDESK_PIM
 	 * Build any menu items needed - to be overriden
 	**/
 	function BuildMenu()
+	{
+		//
+	}
+	
+	/**
+	 * Page has been called for this plugin - to be overriden
+	 * @param string $page Page identifier
+	**/
+	function Page($page)
 	{
 		//
 	}

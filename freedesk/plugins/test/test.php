@@ -29,6 +29,12 @@ class test extends FreeDESK_PIM
 		$jspath = $this->webpath . "test.js";
 		// Then register it for inclusion
 		$this->DESK->PluginManager->RegisterScript($jspath);
+		
+		// We also want to register our page
+		$this->DESK->PluginManager->RegisterPIMPage("testpage", $this->ID);
+		
+		// And our API call
+		$this->DESK->PluginManager->RegisterPIMAPI("my_test_api_call", $this->ID);
 	}
 	
 	function BuildMenu()
@@ -69,6 +75,42 @@ class test extends FreeDESK_PIM
 		$this->DESK->ContextManager->AddMenuItem("testmenu",$goodbye);
 		// because we used a pre-existing tag "testmenu" it will be appended
 		
+		// And now let's put a link in to our page called testpage
+		$page = new MenuItem();
+		$page->tag="testpage";
+		$page->display="Test PIM Page";
+		$page->onclick="DESK.loadSubpage('testpage');";
+		$this->DESK->ContextManager->AddMenuItem("testmenu",$page);
+		
+	}
+	
+	function Page($page)
+	{
+		if ($page == "testpage")
+		{
+			echo "<h3>This is our page created by the test PIM</h3>\n";
+			
+			echo "<a href=\"#\" onclick=\"PIMTest.say('hello');\">Say Hello</a><br /><br />\n";
+			
+			// Let's show an API example
+			echo "<form id=\"my_test_api_form\" onsubmit=\"return false;\">\n";
+			echo "<input type=\"hidden\" name=\"mode\" value=\"my_test_api_call\" />\n";
+			$onclick="DESK.formAPI('my_test_api_form');";
+			echo "<input type=\"submit\" value=\"Make a call to the API with my_test_api_call\" onclick=\"".$onclick."\" />\n";
+			echo "</form><br /><br />\n";
+		}
+	}
+	
+	function API($mode)
+	{
+		if ($mode == "my_test_api_call")
+		{
+			// Do nothing just return XML for a successful operation!
+			$xml = new xmlCreate();
+			$xml->charElement("operation","1");
+			echo $xml->getXML(true);
+			exit();
+		}
 	}
 
 }

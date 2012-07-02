@@ -43,7 +43,10 @@ $page = $DESK->PluginManager->GetPage($_REQUEST['page']);
 
 if ($page === false)
 {
-	echo "404: ".$DESK->Lang->Get("not_found");
+	if ($DESK->PluginManager->PIMPage($_REQUEST['page']))
+		exit();
+		
+	echo "404: ".$DESK->Lang->Get("not_found")." ".$_REQUEST['page'];
 	exit();
 }
 
