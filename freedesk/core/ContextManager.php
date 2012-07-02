@@ -95,6 +95,10 @@ class ContextManager
 	**/
 	var $Session = null;
 	
+	/**
+	 * Menu Items
+	**/
+	var $MenuItems = array();
 	
 	/**
 	 * Session Manager
@@ -191,6 +195,7 @@ class ContextManager
 					$this->type = $type;
 					$this->open = true;
 					$this->Session=$session;
+					$this->BuildMenuItems();
 					return true;
 				}
 			}
@@ -208,6 +213,7 @@ class ContextManager
 					$this->type = $type;
 					$this->open = true;
 					$this->Session=$session;
+					$this->BuildMenuItems();
 					return true;
 				}
 			}
@@ -248,7 +254,26 @@ class ContextManager
 		if (!$this->open)
 			return false;
 	
-		$menu=array();
+		return $this->MenuItems;
+	}
+	
+	
+	/**
+	 * Add a menu item (if tag exists will append otherwise will create as new)
+	**/
+	function AddMenuItem($tag, $item)
+	{
+		if (isset($this->MenuItems[$tag]))
+			$this->MenuItems[$tag]->submenu[] = $item;
+		else
+			$this->MenuItems[$tag] = $item;
+	}
+	
+	/**
+	 * Build menu items list
+	**/
+	function BuildMenuItems()
+	{
 		
 		$home = new MenuItem();
 		$home->tag="home";
@@ -261,7 +286,7 @@ class ContextManager
 		$myreq->display="My Requests";
 		$home->submenu[]=$myreq;
 		
-		$menu[]=$home;
+		$this->AddMenuItem("home", $home);
 		
 		$user = new MenuItem();
 		$user->tag="request";
@@ -270,11 +295,10 @@ class ContextManager
 		$req = new MenuItem();
 		$req->tag="newrequest";
 		$req->display="New Request";
-		//$req->link="request.php?sid=".$this->Session->sid;
 		$req->onclick="DESK.createRequest();";
 		$user->submenu[]=$req;
 		
-		$menu[]=$user;
+		$this->AddMenuItem("request", $user);
 		
 		$entity = new MenuItem();
 		$entity->tag="entity";
@@ -299,7 +323,7 @@ class ContextManager
 			}
 		}
 		
-		$menu[]=$entity;
+		$this->AddMenuItem("entity", $entity);
 		
 		$sys = new MenuItem();
 		$sys->tag="system";
@@ -323,7 +347,7 @@ class ContextManager
 		$logout->onclick="DESK.logout_click();";
 		$sys->submenu[]=$logout;
 		
-		$menu[]=$sys;
+		$this->AddMenuItem("system", $sys);
 				
 		$pages = new MenuItem();
 		$pages->tag="pages";
@@ -335,9 +359,9 @@ class ContextManager
 		$debug->onclick="DESK.loadSubpage('debug');";
 		$pages->submenu[]=$debug;
 		
-		$menu[]=$pages;
+		$this->AddMenuItem("pages", $pages);
 				
-		return $menu;
+		$this->DESK->PluginManager->BuildMenu();
 	}
 	
 }

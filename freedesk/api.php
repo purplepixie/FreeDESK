@@ -666,6 +666,85 @@ else if ($_REQUEST['mode'] == "status_update")
 	exit();	
 }
 
+else if ($_REQUEST['mode'] == "plugin_install")
+{
+	if (!$DESK->ContextManager->Permission("sysadmin_plugins"))
+	{
+		$error = new FreeDESK_Error(ErrorCode::Forbidden, "Permission Denied");
+		echo $error->XML(true);
+		exit();
+	}
+	
+	$plugin=$_REQUEST['plugin'];
+	
+	$DESK->PluginManager->InstallPIM($plugin);
+	
+	$xml = new xmlCreate();
+	$xml->charElement("operation","1");
+	echo $xml->getXML(true);
+	exit();
+}
+
+else if ($_REQUEST['mode'] == "plugin_activate")
+{
+	if (!$DESK->ContextManager->Permission("sysadmin_plugins"))
+	{
+		$error = new FreeDESK_Error(ErrorCode::Forbidden, "Permission Denied");
+		echo $error->XML(true);
+		exit();
+	}
+	
+	$id=$_REQUEST['id'];
+	
+	$DESK->PluginManager->ActivatePIM($id, true);
+	
+	$xml = new xmlCreate();
+	$xml->charElement("operation","1");
+	echo $xml->getXML(true);
+	exit();
+}
+
+else if ($_REQUEST['mode'] == "plugin_deactivate")
+{
+	if (!$DESK->ContextManager->Permission("sysadmin_plugins"))
+	{
+		$error = new FreeDESK_Error(ErrorCode::Forbidden, "Permission Denied");
+		echo $error->XML(true);
+		exit();
+	}
+	
+	$id=$_REQUEST['id'];
+	
+	$DESK->PluginManager->ActivatePIM($id, false);
+	
+	$xml = new xmlCreate();
+	$xml->charElement("operation","1");
+	echo $xml->getXML(true);
+	exit();
+}
+
+else if ($_REQUEST['mode'] == "plugin_uninstall")
+{
+	if (!$DESK->ContextManager->Permission("sysadmin_plugins"))
+	{
+		$error = new FreeDESK_Error(ErrorCode::Forbidden, "Permission Denied");
+		echo $error->XML(true);
+		exit();
+	}
+	
+	$id=$_REQUEST['id'];
+	
+	$DESK->PluginManager->UninstallPIM($id);
+	
+	$xml = new xmlCreate();
+	$xml->charElement("operation","1");
+	echo $xml->getXML(true);
+	exit();
+}
+
+if ($DESK->PluginManager->API($_REQUEST['mode']))
+	exit();
+
 $error = new FreeDESK_Error(ErrorCode::UnknownMode, "Unknown Mode ".$_REQUEST['mode']);
 echo $error->XML(true);
 exit();

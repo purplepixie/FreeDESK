@@ -136,13 +136,19 @@ class Skin
 	**/
 	function CommonHeader()
 	{
-		$scripts = array("freedesk.js","ajax.js","alerts.js","search.js","request.js");
+		$scripts = array("js/freedesk.js","js/ajax.js","js/alerts.js","js/search.js","js/request.js");
+		
+		$pim_scripts = $this->DESK->PluginManager->GetScripts();
+		
+		foreach($pim_scripts as $scr)
+			$scripts[]=$scr;
+		
 		$mode = 1; // 0 - standard, 1 std with no cache, 2 include inline
 	
 		if ($mode==0)
 		{
 			foreach($scripts as $script)
-				echo "<script type=\"text/javascript\" src=\"js/".$script."\"></script>\n";
+				echo "<script type=\"text/javascript\" src=\"".$script."\"></script>\n";
 		}
 		else if ($mode==1)
 		{
@@ -157,7 +163,7 @@ class Skin
 				{
 					$nc.=$chars[mt_rand(0,$clen-1)];
 				}
-				echo "<script type=\"text/javascript\" src=\"js/".$script."?nc=".$nc."\"></script>\n";
+				echo "<script type=\"text/javascript\" src=\"".$script."?nc=".$nc."\"></script>\n";
 			}
 		}
 		else
@@ -165,7 +171,7 @@ class Skin
 			echo "<script type=\"text/javascript\">\n";
 			foreach($scripts as $script)
 			{
-				echo file_get_contents("js/".$script);
+				echo file_get_contents($script);
 				echo "\n";
 			}
 			echo "\n</script>\n";

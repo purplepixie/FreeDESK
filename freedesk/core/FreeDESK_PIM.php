@@ -41,16 +41,31 @@ abstract class FreeDESK_PIM
 	protected $webpath = "";
 	
 	/**
+	 * ID for PIM
+	**/
+	protected $ID = 0;
+	
+	/**
 	 * Main Constructor
 	 * @param mixed $freeDESK FreeDESK instance
 	 * @param string $filepath Path to plugin directory (filebase)
 	 * @param string $webpath Path to plugin directory (webpath)
+	 * @param int $id Internal FreeDESK ID for PIM
 	**/
-	function FreeDESK_PIM(&$freeDESK, $filepath, $webpath)
+	function FreeDESK_PIM(&$freeDESK, $filepath, $webpath, $id)
 	{
 		$this->DESK = &$freeDESK;
 		$this->filepath = $filepath;
 		$this->webpath = $webpath;
+		$this->ID = $ID;
+	}
+	
+	/**
+	 * Start (when an instance is started from within the system and is installed - to be overriden
+	**/
+	function Start()
+	{
+		//
 	}
 	
 	/**
@@ -100,6 +115,14 @@ abstract class FreeDESK_PIM
 	 * @param mixed &$data Event data (dependent on the event)
 	**/
 	function Event($event, &$data)
+	{
+		//
+	}
+	
+	/**
+	 * Build any menu items needed - to be overriden
+	**/
+	function BuildMenu()
 	{
 		//
 	}

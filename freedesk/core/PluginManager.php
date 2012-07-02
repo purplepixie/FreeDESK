@@ -84,6 +84,11 @@ class PluginManager
 	private $pims = array();
 	
 	/**
+	 * PIM Counter
+	**/
+	private $pim_counter = 0;
+	
+	/**
 	 * Array of simple pages
 	**/
 	private $pages = array();
@@ -94,12 +99,23 @@ class PluginManager
 	private $scripts = array();
 	
 	/**
+	 * Array of API modes for PIMS
+	**/
+	private $pim_api = array();
+	
+	/**
+	 * Installed PIM List
+	**/
+	private $installed_pims = null;
+	
+	/**
 	 * Constructor
 	 * @param mixed $freeDESK FreeDESK instance
 	**/
 	function PluginManager(&$freeDESK)
 	{
 		$this->DESK = &$freeDESK;
+		$this->DESK->PermissionManager->Register("sysadmin_plugins",false);
 	}
 	
 	/**
@@ -131,6 +147,32 @@ class PluginManager
 	function RegisterScript($script)
 	{
 		$this->scripts[] = $script;
+	}
+	
+	/**
+	 * Register an API call for inclusion
+	 * @param string $mode API Mode
+	 * @param int $id Plugin ID
+	**/
+	function RegisterAPI($mode, $id)
+	{
+		$this->pim_api[$mode] = $id;
+	}
+	
+	/**
+	 * Perform an API call
+	 * @param string $mode API Call
+	 * @return bool False if no API call made true if called
+	**/
+	function API($mode)
+	{
+		if (isset($this->pim_api[$mode]))
+			if (isset($this->pims[$this->pim_api[$mode]]))
+			{
+				$this->pims[$this->pim_api[$mode]]->API($mode);
+				return true;
+			}
+		return false;
 	}
 	
 	/**
@@ -177,6 +219,189 @@ class PluginManager
 				$output[]=$plugin;
 		}
 		return $output;
+	}
+	
+	/**
+	 * Load a PIM
+	 * @param string $pim Plugin Module Directory
+	**/
+	function LoadPIM($pim)
+	{
+		$filepath = "plugins/".$pim."/";
+		$webpath = "plugins/".$pim."/";
+		$id = $this->pim_counter++;
+		
+		include($filepath.$pim.".php");
+		
+		$this->pims[$id] = new $pim($this->DESK, $filepath, $webpath, $id);
+		$this->pims[$id]->Start();
+	}
+	
+	/**
+	 * Load installed PIM list
+	**/
+	private function LoadInstalledPIMS()
+	{
+		$q="SELECT * FROM ".$this->DESK->Database->Table("plugins");
+		$r=$this->DESK->Database->Query($q);
+		
+		$this->installed_pims = array();
+		
+		while ($row = $this->DESK->Database->FetchAssoc($r))
+		{
+			$this->installed_pims[$row['plugin']] = array(
+				"plugin" => $row['plugin'],
+				"id" => $row['pluginid'],
+				"active" => ($row['active'] == 1) ? true : false );
+		}
+		
+		$this->DESK->Database->Free($r);
+	}
+	
+	/**
+	 * Load PIMs (load and start activated PIMs)
+	**/
+	function LoadPIMS()
+	{
+		if ($this->installed_pims == null)
+			$this->LoadInstalledPIMS();
+		foreach($this->installed_pims as $plugin => $data)
+		{
+			if ($data['active'])
+				$this->LoadPIM($plugin);
+		}
+	}
+	
+	/**
+	 * Get a list of PIMS
+	 * @return array list of PIMS
+	**/
+	function ListPIMS()
+	{
+		if ($this->installed_pims == null)
+			$this->LoadInstalledPIMS();
+		
+		$out = array();
+			
+		$handle = opendir("plugins/");
+		
+		if ($handle !== false)
+		{
+			while(false !== ($file = readdir($handle)))
+			{
+				if ($file != "." && $file != ".." && is_dir("plugins/".$file))
+				{
+				
+					if (file_exists("plugins/".$file."/".$file.".php"))
+					{
+						$out[$file] = array(
+							"installed" => isset($this->installed_pims[$file]) ? true : false,
+							"data" => isset($this->installed_pims[$file]) ? $this->installed_pims[$file] : array()
+							);
+					}
+				}
+			}
+		
+			closedir($handle);
+		}
+		return $out;
+	}
+	
+	/**
+	 * Install PIM
+	 * @param string $plugin Plugin Name
+	**/
+	function InstallPIM($plugin)
+	{
+		$path = "plugins/".$plugin."/";
+		$file = $path.$plugin.".php";
+		include_once($file);
+		
+		$inst = new $plugin($this->DESK, $path, $path, 9999);
+		
+		$inst->Install();
+		
+		$q="INSERT INTO ".$this->DESK->Database->Table("plugins")."(".$this->DESK->Database->Field("plugin").",".$this->DESK->Database->Field("active").")";
+		$q.=" VALUES(".$this->DESK->Database->SafeQuote($plugin).",".$this->DESK->Database->Safe("0").")";
+		
+		$this->DESK->Database->Query($q);
+	}
+	
+	/**
+	 * Set a PIM as active or not
+	 * @param int $id ID (pluginid in database)
+	 * @param bool $active Active flag
+	**/
+	function ActivatePIM($id, $active)
+	{
+	
+		$q="SELECT * FROM ".$this->DESK->Database->Table("plugins")." WHERE ".$this->DESK->Database->Field("pluginid")."=".$this->DESK->Database->Safe($id);
+		$r=$this->DESK->Database->Query($q);
+		
+		if ($row=$this->DESK->Database->FetchAssoc($r))
+		{
+			$plugin = $row['plugin'];
+			$path = "plugins/".$plugin."/";
+			$file = $path.$plugin.".php";
+			include_once($file);
+		
+			$inst = new $plugin($this->DESK, $path, $path, 9999);
+			
+			if ($active)
+				$inst->Activate();
+			else
+				$inst->Deactivate();
+		
+			$q="UPDATE ".$this->DESK->Database->Table("plugins")." SET ".$this->DESK->Database->Field("active")."=";
+			if ($active)
+				$q.="1";
+			else
+				$q.="0";
+			$q.=" WHERE ".$this->DESK->Database->Field("pluginid")."=".$this->DESK->Database->Safe($id);
+		
+			$this->DESK->Database->Query($q);
+		}
+		
+		$this->DESK->Database->Free($r);
+	}
+		
+		
+	/**
+	 * Uninstall a PIM
+	 * @param int $id ID (pluginid in database)
+	**/
+	function UninstallPIM($id)
+	{
+	
+		$q="SELECT * FROM ".$this->DESK->Database->Table("plugins")." WHERE ".$this->DESK->Database->Field("pluginid")."=".$this->DESK->Database->Safe($id);
+		$r=$this->DESK->Database->Query($q);
+		
+		if ($row=$this->DESK->Database->FetchAssoc($r))
+		{
+			$plugin = $row['plugin'];
+			$path = "plugins/".$plugin."/";
+			$file = $path.$plugin.".php";
+			include_once($file);
+		
+			$inst = new $plugin($this->DESK, $path, $path, 9999);
+			
+			$inst->Uninstall();
+		
+			$q="DELETE FROM ".$this->DESK->Database->Table("plugins")." WHERE ".$this->DESK->Database->Field("pluginid")."=".$this->DESK->Database->Safe($id);
+		
+			$this->DESK->Database->Query($q);
+		}
+		
+		$this->DESK->Database->Free($r);
+	}
+	
+	/**
+	 * Call BuildMenu on all PIMs
+	**/
+	function BuildMenu()
+	{
+		foreach($this->pims as $id => $pim)
+			$pim->BuildMenu();
 	}
 	
 }

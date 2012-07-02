@@ -77,6 +77,8 @@ if ($mode == "")
 		echo sa_link($DESK->Lang->Get("admin_group"), array("mode"=>"group"))."<br /><br />\n";
 		echo sa_link($DESK->Lang->Get("teams"), array("mode"=>"teams"))."<br /><br />\n";
 		echo sa_link($DESK->Lang->Get("request_status"), array("mode"=>"status"))."<br /><br />\n";
+		if ($DESK->ContextManager->Permission("sysadmin_plugins"))
+			echo sa_link($DESK->Lang->Get("plugin_manager"), array("mode"=>"plugins"))."<br /><br />\n";
 	}
 	
 }
@@ -443,6 +445,72 @@ else if ($mode == "status")
 	echo "<input type=\"text\" name=\"name\" value=\"\" /> \n";
 	echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("save")."\" onclick=\"DESK.formAPI('status_create',false,false,DESK.refreshSubpage);\" />\n";
 	echo "</form>\n";
+}
+else if ($mode == "plugins")
+{
+	echo "<br />".sa_link("&lt;&lt; ".$DESK->Lang->Get("system_admin"))."<br />\n";
+	echo "<h3>".$DESK->Lang->Get("plugin_manager")."</h3>\n";
+	
+	$pims = $DESK->PluginManager->ListPIMS();
+	
+	echo "<table>";
+	
+	foreach($pims as $id => $data)
+	{
+		echo "<tr>\n";
+		echo "<td>\n";
+		echo $id."\n";
+		echo "</td>\n";
+		
+		if ($data['installed'])
+		{
+			if ($data['data']['active'])
+			{
+				echo "<td>\n";
+				echo "<form id=\"deact_".$id."\" onsubmit=\"return false;\">\n";
+				echo "<input type=\"hidden\" name=\"mode\" value=\"plugin_deactivate\" />\n";
+				echo "<input type=\"hidden\" name=\"id\" value=\"".$data['data']['id']."\" />\n";
+				echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("deactivate")."\" onclick=\"DESK.formAPI('deact_".$id."',false,false,DESK.refreshSubpage);\" />\n";
+				echo "</form>\n";
+				echo "</td>";
+			}
+			else
+			{
+				echo "<td>\n";
+				echo "<form id=\"act_".$id."\" onsubmit=\"return false;\">\n";
+				echo "<input type=\"hidden\" name=\"mode\" value=\"plugin_activate\" />\n";
+				echo "<input type=\"hidden\" name=\"id\" value=\"".$data['data']['id']."\" />\n";
+				echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("activate")."\" onclick=\"DESK.formAPI('act_".$id."',false,false,DESK.refreshSubpage);\" />\n";
+				echo "</form>\n";
+				echo "<td>\n";
+				
+				echo "<td>\n";
+				echo "<form id=\"uninst_".$id."\" onsubmit=\"return false;\">\n";
+				echo "<input type=\"hidden\" name=\"mode\" value=\"plugin_uninstall\" />\n";
+				echo "<input type=\"hidden\" name=\"id\" value=\"".$data['data']['id']."\" />\n";
+				echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("uninstall")."\" onclick=\"DESK.formAPI('uninst_".$id."',false,false,DESK.refreshSubpage);\" />\n";
+				echo "</form>\n";
+				echo "<td>\n";
+			}
+		}
+		else
+		{
+			echo "<td>\n";
+			echo "<form id=\"inst_".$id."\" onsubmit=\"return false;\">\n";
+			echo "<input type=\"hidden\" name=\"mode\" value=\"plugin_install\" />\n";
+			echo "<input type=\"hidden\" name=\"plugin\" value=\"".$id."\" />\n";
+			echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("install")."\" onclick=\"DESK.formAPI('inst_".$id."',false,false,DESK.refreshSubpage);\" />\n";
+			echo "</form>\n";
+			echo "<td>\n";
+		}
+		
+		
+		
+		
+		echo "</tr>";
+	}
+	
+	echo "</table>";
 }
 else
 {

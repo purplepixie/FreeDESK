@@ -147,6 +147,9 @@ class FreeDESK
 		// Now the basic configuration
 		$this->BaseConfig = $this->Include->IncludeInstance("config/Config.php","FreeDESK_Configuration",false);
 		
+		// Permission Manager
+		$this->PermissionManager = $this->Include->IncludeInstance("core/PermissionManager.php", "PermissionManager");
+		
 		// Plugin Manager
 		$this->PluginManager = $this->Include->IncludeInstance("core/PluginManager.php","PluginManager");
 		// And the PIM Base
@@ -168,9 +171,6 @@ class FreeDESK
 		// Now the concrete class
 		$this->Database = $this->Include->IncludeInstance("core/database/".$this->BaseConfig->db_System.".php",
 			$this->BaseConfig->db_System);
-		
-		// Permission Manager
-		$this->PermissionManager = $this->Include->IncludeInstance("core/PermissionManager.php", "PermissionManager");
 		
 		// Configuration Manager
 		$this->Configuration = $this->Include->IncludeInstance("core/Configuration.php","Configuration");
@@ -232,6 +232,9 @@ class FreeDESK
 		// Register System Pages
 		$this->PluginManager->RegisterPage("debug","pages/debug.php",false);
 		$this->PluginManager->RegisterPage("sysadmin","pages/sysadmin.php",true);
+		
+		// Load the PIMs
+		$this->PluginManager->LoadPIMS();
 		
 		return true;
 	}

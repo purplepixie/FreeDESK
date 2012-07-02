@@ -83,6 +83,13 @@ $i['user_create'] = "Create User";
 
 $i['teams'] = "Teams";
 $i['request_status'] = "Request Status";
+
+$i['plugin_manager'] = "Plugin Manager";
+$i['activate'] = "Activate";
+$i['deactivate'] = "Deactivate";
+$i['install'] = "Install";
+$i['uninstall'] = "Uninstall";
+
 }
 
 }

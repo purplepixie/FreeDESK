@@ -36,6 +36,17 @@ ALTER TABLE `%%$%%permissions` ADD `usergroupid` varchar(254) NOT NULL;
 ALTER TABLE `%%$%%permissions` CHANGE `allowed` `allowed` tinyint(4) NOT NULL;
 ALTER TABLE `%%$%%permissions` ADD `allowed` tinyint(4) NOT NULL;
 -- 
+-- Table: plugins
+-- DESCRIBE `plugins`
+ALTER TABLE `%%$%%plugins` CHANGE `pluginid` `pluginid` bigint(20) NOT NULL auto_increment;
+ALTER TABLE `%%$%%plugins` ADD `pluginid` bigint(20) NOT NULL auto_increment;
+ALTER TABLE `%%$%%plugins` ADD PRIMARY KEY( `pluginid` );
+ALTER TABLE `%%$%%plugins` CHANGE `plugin` `plugin` varchar(254) NOT NULL;
+ALTER TABLE `%%$%%plugins` ADD `plugin` varchar(254) NOT NULL;
+ALTER TABLE `%%$%%plugins` CHANGE `active` `active` int(11) NOT NULL DEFAULT '0';
+ALTER TABLE `%%$%%plugins` ADD `active` int(11) NOT NULL DEFAULT '0';
+CREATE INDEX `active` ON `plugins` ( `active` );
+-- 
 -- Table: request
 -- DESCRIBE `request`
 ALTER TABLE `%%$%%request` CHANGE `requestid` `requestid` bigint(20) NOT NULL auto_increment;
