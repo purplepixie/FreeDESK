@@ -119,6 +119,7 @@ class ContextManager
 		
 		// Our permissions
 		$this->DESK->PermissionManager->Register("user_admin",false);
+		$this->DESK->PermissionManager->Register("sysadmin_advanced",false);
 	}
 	
 	/**

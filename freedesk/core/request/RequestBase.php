@@ -115,6 +115,20 @@ abstract class RequestBase
 	}
 	
 	/**
+	 * Get an entity value
+	 * @param string $field Field ID
+	 * @return mixed Value
+	**/
+	function Get($field)
+	{
+		$data = $this->Entity->GetData();
+		if (isset($data[$field]))
+			return $data[$field];
+		else
+			return false;
+	}
+	
+	/**
 	 * Load updates for our ID
 	**/
 	function LoadUpdates()

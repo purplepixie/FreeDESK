@@ -46,6 +46,9 @@ function FreeDESK()
 	// Sort Criteria
 	this.sortField = "requestid";
 	this.sortOrder = "D";
+	
+	// Refresh Event
+	this.refreshEvent = null;
 
 	// Login Support
 	this.login_action = function(responseXML)
@@ -632,6 +635,24 @@ function FreeDESK()
 	{
 		document.forms['login_sid_form'].elements['sid'].value = DESK.sid;
 		document.forms['login_sid_form'].submit();
+	}
+	
+	// Start Auto-refreshing
+	this.startRefresh = function(interval)
+	{
+		if (interval == undefined)
+			var interval = 30;
+		interval = interval * 1000;
+		
+		DESK.refreshEvent = setInterval(
+			function(){ DESK.mainPaneRefresh(); },
+			interval );
+	}
+	
+	// Stop Auto-refreshing
+	this.stopRefresh = function()
+	{
+		clearInterval(DESK.refreshEvent);
 	}
 		
 }

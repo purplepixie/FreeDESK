@@ -78,6 +78,15 @@ class Configuration
 	}
 	
 	/**
+	 * Get all configuration items
+	 * @return array Array of all CIs
+	**/
+	function GetAll()
+	{
+		return $this->items;
+	}
+	
+	/**
 	 * Set a configuration item (no security check in here)
 	 * @param string $name Configuration option
 	 * @param string $value Option value
@@ -123,8 +132,9 @@ class Configuration
 	function Delete($name)
 	{
 		$q="DELETE FROM ".$this->DESK->Database->Table("sysconfig")." WHERE ".$this->DESK->Database->Field("sc_option")."=\"";
-		$q.=$this->DESK->Database->Safe($name)."\" LIMIT 0,1";
+		$q.=$this->DESK->Database->Safe($name)."\"";
 		$this->DESK->Database->Query($q);
+		unset($this->items[$name]);
 	}
 	
 

@@ -79,6 +79,8 @@ if ($mode == "")
 		echo sa_link($DESK->Lang->Get("request_status"), array("mode"=>"status"))."<br /><br />\n";
 		if ($DESK->ContextManager->Permission("sysadmin_plugins"))
 			echo sa_link($DESK->Lang->Get("plugin_manager"), array("mode"=>"plugins"))."<br /><br />\n";
+		if ($DESK->ContextManager->Permission("sysadmin_advanced"))
+			echo sa_link($DESK->Lang->Get("system_vars"), array("mode"=>"sysvars"))."<br /><br />\n";
 	}
 	
 }
@@ -511,6 +513,54 @@ else if ($mode == "plugins")
 	}
 	
 	echo "</table>";
+}
+else if ($mode == "sysvars")
+{
+	echo "<br />".sa_link("&lt;&lt; ".$DESK->Lang->Get("system_admin"))."<br />\n";
+	echo "<h3>".$DESK->Lang->Get("system_vars")."</h3>\n";
+	
+	if ($DESK->ContextManager->Permission("sysadmin_advanced"))
+	{
+		$items = $DESK->Configuration->GetAll();
+	
+		echo "<table>\n";
+	
+		foreach($items as $id => $val)
+		{
+			echo "<tr>\n";
+			echo "<td>".$id."</td>\n";
+			echo "<td>\n";
+			echo "<form id=\"save_".$id."\" onsubmit=\"return false;\">\n";
+			echo "<input type=\"hidden\" name=\"mode\" value=\"sysvar_save\" />\n";
+			echo "<input type=\"hidden\" name=\"id\" value=\"".$id."\" />\n";
+			echo "<input type=\"text\" name=\"value\" value=\"".$val."\" />\n";
+			echo "</td>\n";
+			echo "<td>\n";
+			echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("save")."\" onclick=\"DESK.formAPI('save_".$id."',false,false,DESK.refreshSubpage);\" />\n";
+			echo "</form>\n";
+			echo "</td>";
+			echo "<td>\n";
+			echo "<form id=\"delete_".$id."\" onsubmit=\"return false;\">\n";
+			echo "<input type=\"hidden\" name=\"mode\" value=\"sysvar_delete\" />\n";
+			echo "<input type=\"hidden\" name=\"id\" value=\"".$id."\" />\n";
+			echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("delete")."\" onclick=\"if(confirm('".$DESK->Lang->Get("delete")."?')) DESK.formAPI('delete_".$id."',false,false,DESK.refreshSubpage);\" />\n";
+			echo "</form>\n";
+			echo "</td></tr>\n";
+		}
+	
+		echo "<tr><td colspan=\"2\">\n";
+		echo "<form id=\"create_sysvar\" onsubmit=\"return false;\">";
+		echo "<input type=\"hidden\" name=\"mode\" value=\"sysvar_create\" />\n";
+		echo "<input type=\"text\" name=\"id\" value=\"\" /> \n";
+		//echo "</td><td>\n";
+		echo "<input type=\"text\" name=\"value\" value=\"\" />\n";
+		echo "</td><td>\n";
+		echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("save")."\" onclick=\"DESK.formAPI('create_sysvar',false,false,DESK.refreshSubpage);\" />\n";
+		echo "</td></tr>\n";
+		echo "</form>\n";
+	
+		echo "</table>";
+	}
 }
 else
 {

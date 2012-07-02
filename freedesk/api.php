@@ -742,6 +742,67 @@ else if ($_REQUEST['mode'] == "plugin_uninstall")
 	exit();
 }
 
+else if ($_REQUEST['mode'] == "sysvar_save")
+{
+	if (!$DESK->ContextManager->Permission("sysadmin_advanced"))
+	{
+		$error = new FreeDESK_Error(ErrorCode::Forbidden, "Permission Denied");
+		echo $error->XML(true);
+		exit();
+	}
+	
+	$id = $_REQUEST['id'];
+	$value = $_REQUEST['value'];
+	
+	$DESK->Configuration->Set($id, $value, true);
+	
+	$xml = new xmlCreate();
+	$xml->charElement("operation","1");
+	echo $xml->getXML(true);
+	exit();
+}
+
+else if ($_REQUEST['mode'] == "sysvar_create")
+{
+	if (!$DESK->ContextManager->Permission("sysadmin_advanced"))
+	{
+		$error = new FreeDESK_Error(ErrorCode::Forbidden, "Permission Denied");
+		echo $error->XML(true);
+		exit();
+	}
+	
+	$id = $_REQUEST['id'];
+	$value = $_REQUEST['value'];
+	
+	$DESK->Configuration->Set($id, $value, true);
+	
+	$xml = new xmlCreate();
+	$xml->charElement("operation","1");
+	echo $xml->getXML(true);
+	exit();
+}
+
+else if ($_REQUEST['mode'] == "sysvar_delete")
+{
+	if (!$DESK->ContextManager->Permission("sysadmin_advanced"))
+	{
+		$error = new FreeDESK_Error(ErrorCode::Forbidden, "Permission Denied");
+		echo $error->XML(true);
+		exit();
+	}
+	
+	$id = $_REQUEST['id'];
+	$value = $_REQUEST['value'];
+	
+	$DESK->Configuration->Delete($id);
+	
+	$xml = new xmlCreate();
+	$xml->charElement("operation","1");
+	echo $xml->getXML(true);
+	exit();
+}
+
+
 if ($DESK->PluginManager->API($_REQUEST['mode']))
 	exit();
 

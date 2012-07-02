@@ -90,6 +90,8 @@ $i['deactivate'] = "Deactivate";
 $i['install'] = "Install";
 $i['uninstall'] = "Uninstall";
 
+$i['status'] = "Status";
+$i['system_vars'] = "System Variables (Advanced)";
 }
 
 }

@@ -77,6 +77,8 @@ $DESK->Skin->IncludeFile("main_finish.php");
 
 echo "<script type=\"text/javascript\">\n";
 echo "DESK.mainPane(0,'".$DESK->ContextManager->Session->username."');\n";
+if ($DESK->Configuration->Get("refresh.disable",0) != 1)
+	echo "DESK.startRefresh(".$DESK->Configuration->Get("refresh",30).");\n";
 echo "</script>\n";
 
 ?>

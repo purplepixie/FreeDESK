@@ -68,14 +68,23 @@ if ($request === false)
 }
 
 echo "<div id=\"request_header\">\n";
-echo "<b>".$DESK->Lang->Get("request")." ".$id."</b>\n";
+echo "<b>".$DESK->Lang->Get("request")." ".$id.": ";
+
+$q="SELECT * FROM ".$DESK->Database->Table("customer")." WHERE ".$DESK->Database->Field("customerid")."=".$DESK->Database->Safe($request->Get("customerid"))." LIMIT 0,1";
+$r=$DESK->Database->Query($q);
+$cust = $DESK->Database->FetchAssoc($r);
+$DESK->Database->Free($r);
+
+echo $cust['firstname']." ".$cust['lastname'];
+
+echo "</b>\n";
 echo "</div>";
 
 $request->LoadUpdates();
 
 $panes = array(
 	"log" => array( "title" => "Request History" ),
-	"details" => array( "title" => "Details" ),
+	//"details" => array( "title" => "Details" ),
 	"update" => array( "title" => "Update Request" ) );
 
 $data = array( "id" => "request", "panes" => $panes );
