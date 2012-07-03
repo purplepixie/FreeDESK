@@ -1,0 +1,17 @@
+-- FreeDESK System Defaults
+
+-- Admin User
+INSERT INTO `user`(`username`, `realname`) VALUES("admin", "Administrator");
+INSERT INTO `permissions`(`permissiontype`, `permission`, `usergroupid`, `allowed`) VALUES("user", "default", "admin", 1);
+
+-- System Defaults
+INSERT INTO `sysconfig`(`sc_option`,`sc_value`) VALUES("system.live", "1");
+INSERT INTO `sysconfig`(`sc_option`,`sc_value`) VALUES("auth.default", "standard");
+
+-- Requests
+INSERT INTO `requestclass` (`classid`, `classname`, `classclass`) VALUES(1, 'Standard Request', '');
+
+-- Statuses
+INSERT INTO `status` (`status`, `description`) VALUES(0, 'Closed');
+INSERT INTO `status` (`status`, `description`) VALUES(1, 'Open - Standard');
+
