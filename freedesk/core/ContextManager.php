@@ -293,11 +293,16 @@ class ContextManager
 		$user->tag="request";
 		$user->display="Requests";
 		
-		$req = new MenuItem();
-		$req->tag="newrequest";
-		$req->display="New Request";
-		$req->onclick="DESK.createRequest();";
-		$user->submenu[]=$req;
+		$classes = $this->DESK->RequestManager->GetRequestClasses();
+		
+		foreach($classes as $id => $class)
+		{
+			$req = new MenuItem();
+			$req->tag="newrequest_".$id;
+			$req->display="New ".$class['classname'];
+			$req->onclick="DESK.createRequest(".$id.");";
+			$user->submenu[]=$req;
+		}
 		
 		$this->AddMenuItem("request", $user);
 		

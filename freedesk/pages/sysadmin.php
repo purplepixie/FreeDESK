@@ -78,6 +78,7 @@ if ($mode == "")
 		echo sa_link($DESK->Lang->Get("teams"), array("mode"=>"teams"))."<br /><br />\n";
 		echo sa_link($DESK->Lang->Get("request_status"), array("mode"=>"status"))."<br /><br />\n";
 		echo sa_link($DESK->Lang->Get("request_class"), array("mode"=>"requestclass"))."<br /><br />\n";
+		echo sa_link($DESK->Lang->Get("request_priority"), array("mode"=>"priorities"))."<br /><br />\n";
 		if ($DESK->ContextManager->Permission("sysadmin_plugins"))
 			echo sa_link($DESK->Lang->Get("plugin_manager"), array("mode"=>"plugins"))."<br /><br />\n";
 		if ($DESK->ContextManager->Permission("sysadmin_advanced"))
@@ -627,6 +628,11 @@ else if ($mode == "requestclass")
 		
 	echo "</table>\n";
 }
+else if ($mode=="priorities")
+{
+
+}
+
 else
 {
 	echo "<h3>".$DESK->Lang->Get("system_admin")."</h3>\n";

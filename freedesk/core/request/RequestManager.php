@@ -512,5 +512,62 @@ class RequestManager
 		$this->DESK->Database->Query($q);
 	}
 	
+	/**
+	 * Get a priority list
+	 * @return array Priorities
+	**/
+	function GetPriorityList()
+	{
+		$q="SELECT * FROM ".$this->DESK->Database->Table("priorities");
+		$r=$this->DESK->Database->Query($q);
+		$out=array();
+		while ($row=$this->DESK->Database->FetchAssoc($r))
+		{
+			$out[$row['priorityid']]=$row;
+		}
+		$this->DESK->Database->Free($r);
+		return $out;
+	}
+	
+	/**
+	 * Save/Create a Request Priority
+	 * @param string $priorityname Name
+	 * @param int $resolutionsla Resolution SLA (seconds)
+	 * @param int $schedule Schedule ID for SLA
+	 * @param int $priorityid Priority ID (optional)
+	**/
+	function SavePriority($priorityname, $resolutionsla, $schedule, $priorityid=0)
+	{
+		if ($id == 0)
+		{
+			$q="INSERT INTO ".$this->DESK->Database->Table("priority")." (";
+			$q.=$this->DESK->Database->Field("priorityname").",".$this->DESK->Database->Field("resolutionsla").",";
+			$q.=$this->DESK->Database->Field("schedule")." VALUES(";
+			$q.=$this->DESK->Database->SafeQuote($priorityname).",".$this->DESK->Database->Safe($resolutionsla).",".$this->DESK->Database->Safe($schedule).")";
+			$this->DESK->Database->Query($q);
+		}
+		else
+		{
+			$q="UPDATE ".$this->DESK->Database->Table("priority")." SET ";
+			$q.=$this->DESK->Database->Field("priorityname")."=".$this->DESK->Database->SafeQuote($priorityname).",";
+			$q.=$this->DESK->Database->Field("resolutionsla")."=".$this->DESK->Database->Safe($resolutionsla).",";
+			$q.=$this->DESK->Database->Field("schedule")."=".$this->DESK->Database->Safe($schedule)." ";
+			$q.="WHERE ".$this->DESK->Database->Field("priorityid")."=".$this->DESK->Database->Safe($priorityid);
+			$this->DESK->Database->Query($q);
+		}
+	}
+	
+	/**
+	 * Delete a priority
+	 * @param int $priorityid Priority ID
+	**/
+	function DeletePriority($priorityid)
+	{
+		$q="DELETE FROM ".$this->DESK->Database->Table("priority")." WHERE ".$this->DESK->Database->Field("priorityid")."=".$this->DESK->Database->Safe($priorityid);
+		$this->DESK->Database->Query($q);
+	}
+	
+	
+	
 }
 ?>

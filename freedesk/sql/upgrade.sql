@@ -47,6 +47,18 @@ ALTER TABLE `plugins` CHANGE `active` `active` int(11) NOT NULL DEFAULT '0';
 ALTER TABLE `plugins` ADD `active` int(11) NOT NULL DEFAULT '0';
 CREATE INDEX `active` ON `plugins` ( `active` );
 -- 
+-- Table: priority
+-- DESCRIBE `priority`
+ALTER TABLE `priority` CHANGE `priorityid` `priorityid` bigint(20) unsigned NOT NULL auto_increment;
+ALTER TABLE `priority` ADD `priorityid` bigint(20) unsigned NOT NULL auto_increment;
+ALTER TABLE `priority` ADD PRIMARY KEY( `priorityid` );
+ALTER TABLE `priority` CHANGE `priorityname` `priorityname` varchar(128) NOT NULL;
+ALTER TABLE `priority` ADD `priorityname` varchar(128) NOT NULL;
+ALTER TABLE `priority` CHANGE `resolutionsla` `resolutionsla` bigint(20) NOT NULL;
+ALTER TABLE `priority` ADD `resolutionsla` bigint(20) NOT NULL;
+ALTER TABLE `priority` CHANGE `schedule` `schedule` int(11) NOT NULL;
+ALTER TABLE `priority` ADD `schedule` int(11) NOT NULL;
+-- 
 -- Table: request
 -- DESCRIBE `request`
 ALTER TABLE `request` CHANGE `requestid` `requestid` bigint(20) NOT NULL auto_increment;
