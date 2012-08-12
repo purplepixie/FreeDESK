@@ -24,7 +24,7 @@ For more information see www.purplepixie.org/freedesk/
  * Builds a release and pushes to purplepixie.org
 **/
 
-$url = "http://127.0.0.1/~dcutting/freedesk-site/";
+$url = "http://freedesk.purplepixie.org/";
 $handle = fopen("php://stdin", "r");
 
 ob_start();

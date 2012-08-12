@@ -802,6 +802,65 @@ else if ($_REQUEST['mode'] == "sysvar_delete")
 	exit();
 }
 
+else if ($_REQUEST['mode'] == "reqclass_save")
+{
+	if (!$DESK->ContextManager->Permission("sysadmin_advanced"))
+	{
+		$error = new FreeDESK_Error(ErrorCode::Forbidden, "Permission Denied");
+		echo $error->XML(true);
+		exit();
+	}
+	
+	$id = $_REQUEST['id'];
+	$classname = isset($_REQUEST['classname']) ? $_REQUEST['classname'] : "";
+	$classclass = isset($_REQUEST['classclass']) ? $_REQUEST['classclass'] : "";
+	
+	$DESK->RequestManager->SaveRequestClass($classname, $classclass, $id);
+	
+	$xml = new xmlCreate();
+	$xml->charElement("operation","1");
+	echo $xml->getXML(true);
+	exit();
+}
+
+else if ($_REQUEST['mode'] == "reqclass_create")
+{
+	if (!$DESK->ContextManager->Permission("sysadmin_advanced"))
+	{
+		$error = new FreeDESK_Error(ErrorCode::Forbidden, "Permission Denied");
+		echo $error->XML(true);
+		exit();
+	}
+	
+	$classname = isset($_REQUEST['classname']) ? $_REQUEST['classname'] : "";
+	$classclass = isset($_REQUEST['classclass']) ? $_REQUEST['classclass'] : "";
+	
+	$DESK->RequestManager->SaveRequestClass($classname, $classclass);
+	
+	$xml = new xmlCreate();
+	$xml->charElement("operation","1");
+	echo $xml->getXML(true);
+	exit();
+}
+
+else if ($_REQUEST['mode'] == "reqclass_delete")
+{
+	if (!$DESK->ContextManager->Permission("sysadmin_advanced"))
+	{
+		$error = new FreeDESK_Error(ErrorCode::Forbidden, "Permission Denied");
+		echo $error->XML(true);
+		exit();
+	}
+	
+	$id = isset($_REQUEST['id']) ? $_REQUEST['id'] : 0;
+	
+	$DESK->RequestManager->DeleteRequestClass($id);
+	
+	$xml = new xmlCreate();
+	$xml->charElement("operation","1");
+	echo $xml->getXML(true);
+	exit();
+}
 
 if ($DESK->PluginManager->API($_REQUEST['mode']))
 	exit();

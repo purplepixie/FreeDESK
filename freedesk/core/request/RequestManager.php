@@ -460,5 +460,57 @@ class RequestManager
 		$this->DESK->Database->Query($q);
 	}
 	
+	/**
+	 * Get a list of all request classes
+	 * @return array Request class data
+	**/
+	function GetRequestClasses()
+	{
+		$q="SELECT * FROM ".$this->DESK->Database->Table("requestclass");
+		$r=$this->DESK->Database->Query($q);
+		$out=array();
+		while ($row=$this->DESK->Database->FetchAssoc($r))
+			$out[$row['classid']]=$row;
+		$this->DESK->Database->Free($r);
+		return $out;
+	}
+	
+	/**
+	 * Save/Create a Request Class
+	 * @param string $classname Name
+	 * @param string $classclass Class class (concrete request class)
+	 * @param int $id (optional, if present will save otherwise create)
+	**/
+	function SaveRequestClass($classname, $classclass, $id=0)
+	{
+		if ($id == 0)
+		{
+			$q="INSERT INTO ".$this->DESK->Database->Table("requestclass")."(";
+			$q.=$this->DESK->Database->Field("classname").",".$this->DESK->Database->Field("classclass").") ";
+			$q.="VALUES(";
+			$q.=$this->DESK->Database->SafeQuote($classname).",".$this->DESK->Database->SafeQuote($classclas).")";
+			$this->DESK->Database->Query($q);
+		}
+		else
+		{
+			$q="UPDATE ".$this->DESK->Database->Table("requestclass")." SET ";
+			$q.=$this->DESK->Database->Field("classname")."=".$this->DESK->Database->SafeQuote($classname).",";
+			$q.=$this->DESK->Database->Field("classclass")."=".$this->DESK->Database->SafeQuote($classclass)." ";
+			$q.="WHERE ".$this->DESK->Database->Field("classid")."=".$this->DESK->Database->Safe($id);
+			$this->DESK->Database->Query($q);
+		}
+	}
+	
+	/**
+	 * Delete a request class
+	 * @param int $id Request Class ID
+	**/
+	function DeleteRequestClass($id)
+	{
+		$q="DELETE FROM ".$this->DESK->Database->Table("requestclass")." WHERE ";
+		$q.=$this->DESK->Database->Field("classid")."=".$this->DESK->Database->Safe($id);
+		$this->DESK->Database->Query($q);
+	}
+	
 }
 ?>

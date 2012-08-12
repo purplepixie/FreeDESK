@@ -77,6 +77,7 @@ if ($mode == "")
 		echo sa_link($DESK->Lang->Get("admin_group"), array("mode"=>"group"))."<br /><br />\n";
 		echo sa_link($DESK->Lang->Get("teams"), array("mode"=>"teams"))."<br /><br />\n";
 		echo sa_link($DESK->Lang->Get("request_status"), array("mode"=>"status"))."<br /><br />\n";
+		echo sa_link($DESK->Lang->Get("request_class"), array("mode"=>"requestclass"))."<br /><br />\n";
 		if ($DESK->ContextManager->Permission("sysadmin_plugins"))
 			echo sa_link($DESK->Lang->Get("plugin_manager"), array("mode"=>"plugins"))."<br /><br />\n";
 		if ($DESK->ContextManager->Permission("sysadmin_advanced"))
@@ -561,6 +562,70 @@ else if ($mode == "sysvars")
 	
 		echo "</table>";
 	}
+}
+else if ($mode == "requestclass")
+{
+	echo "<br />".sa_link("&lt;&lt; ".$DESK->Lang->Get("system_admin"))."<br />\n";
+	echo "<h3>".$DESK->Lang->Get("request_class")."</h3>\n";
+
+	$classes = $DESK->RequestManager->GetRequestClasses();
+	echo "<table>\n";
+	
+	$reqs = $DESK->PluginManager->GetType("request");
+		$classnames = array("");
+		foreach($reqs as $req)
+			if ($req['classname']!="")
+				$classnames[]=$req['classname'];
+	
+	foreach($classes as $id => $class)
+	{
+		echo "<tr>\n";
+		echo "<form id=\"save_".$id."\" onsubmit=\"return false;\">\n";
+		echo "<td>".$id."</td>\n";
+		echo "<td><input type=\"text\" name=\"classname\" value=\"".$class['classname']."\" /></td>\n";
+	
+		
+		echo "<td><select name=\"classclass\">\n";
+		foreach($classnames as $classclass)
+		{
+			$s="";
+			if ($classclass == $row['classclass'])
+				$s=" selected";
+			echo "<option value=\"".$classclass."\"".$s.">".$classclass."</option>\n";
+		}
+		echo "</select>";
+		echo "</td>\n";
+		
+		echo "<input type=\"hidden\" name=\"id\" value=\"".$id."\" />\n";
+		echo "<input type=\"hidden\" name=\"mode\" value=\"reqclass_save\" />\n";
+		echo "<td><input type=\"submit\" value=\"".$DESK->Lang->Get("save")."\" onclick=\"DESK.formAPI('save_".$id."',false,false,DESK.refreshSubpage);\" /></td>\n";
+		echo "</form>\n";
+		
+		echo "<form id=\"delete_".$id."\" onsubmit=\"return false;\">\n";
+		echo "<input type=\"hidden\" name=\"id\" value=\"".$id."\" />\n";
+		echo "<input type=\"hidden\" name=\"mode\" value=\"reqclass_delete\" />\n";
+		echo "<td><input type=\"submit\" value=\"".$DESK->Lang->Get("delete")."\" onclick=\"if(confirm('".$DESK->Lang->Get("delete")."?')) DESK.formAPI('delete_".$id."',false,false,DESK.refreshSubpage);\" /></td>\n";
+		echo "</form>\n";
+		echo "</tr>\n";
+	}
+	
+	echo "<form id=\"create_rc\" onsubmit=\"return false;\">\n";
+	echo "<input type=\"hidden\" name=\"mode\" value=\"reqclass_create\" />\n";
+	echo "<tr><td>&nbsp;</td>\n";
+	echo "<td><input type=\"text\" name=\"classname\" /></td>\n";
+	echo "<td><select name=\"classclass\">\n";
+	foreach($classnames as $classclass)
+	{
+		echo "<option value=\"".$classclass."\">".$classclass."</option>\n";
+	}
+	echo "</select>";
+	echo "</td>\n";
+	echo "<td><input type=\"submit\" value=\"".$DESK->Lang->Get("create")."\" onclick=\"DESK.formAPI('create_rc',false,false,DESK.refreshSubpage);\" /></td>\n";
+	echo "</tr>\n";
+	echo "</form>\n";
+	
+		
+	echo "</table>\n";
 }
 else
 {

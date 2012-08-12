@@ -51,6 +51,7 @@ $i['action_invalid'] = "Sorry but this action is invalid";
 $i['search'] = "Search";
 $i['save'] = "Save";
 $i['save_close'] = "Save and Close";
+$i['create'] = "Create";
 
 $i['not_found'] = "Not Found";
 
@@ -92,6 +93,8 @@ $i['uninstall'] = "Uninstall";
 
 $i['status'] = "Status";
 $i['system_vars'] = "System Variables (Advanced)";
+
+$i['request_class'] = "Request Classes";
 }
 
 }
