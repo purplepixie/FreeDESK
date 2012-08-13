@@ -84,7 +84,7 @@ $request->LoadUpdates();
 
 $panes = array(
 	"log" => array( "title" => "Request History" ),
-	//"details" => array( "title" => "Details" ),
+	"details" => array( "title" => "Details" ),
 	"update" => array( "title" => "Update Request" ) );
 
 $data = array( "id" => "request", "panes" => $panes );
@@ -109,7 +109,34 @@ foreach($updates as $update)
 echo "</div>";
 
 echo "<div id=\"pane_request_details_content\" class=\"pane_content_hidden\">\n";
-echo "Details";
+
+echo "<table>\n";
+
+$statuses = $DESK->RequestManager->StatusList();
+$priorities = $DESK->RequestManager->GetPriorityList();
+
+echo "<tr>\n";
+echo "<td>".$DESK->Lang->Get("status").": </td>\n";
+echo "<td>";
+if (isset($statuses[$request->Get("status")]))
+	echo $statuses[$request->Get("status")];
+else
+	echo $DESK->Lang->Get("unknown");
+echo "</td>\n";
+echo "</tr>\n";
+
+echo "<tr>\n";
+echo "<td>".$DESK->Lang->Get("priority").": </td>\n";
+echo "<td>";
+if (isset($priorities[$request->Get("priority")]))
+	echo $priorities[$request->Get("priority")]['priorityname'];
+else
+	echo $DESK->Lang->Get("unknown");
+echo "</td>\n";
+echo "</tr>\n";
+
+echo "</table>\n";
+
 echo "</div>";
 
 echo "<div id=\"pane_request_update_content\" class=\"pane_content_hidden\">\n";

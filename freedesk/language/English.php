@@ -97,6 +97,8 @@ $i['system_vars'] = "System Variables (Advanced)";
 $i['request_class'] = "Request Classes";
 $i['request_priority'] = "Request Priority";
 $i['priority'] = "Priority";
+
+$i['unknown'] = "Unknown";
 }
 
 }
