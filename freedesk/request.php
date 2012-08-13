@@ -290,6 +290,22 @@ foreach($statuses as $code => $desc)
 	echo "<option value=\"".$code."\">".$desc."</option>\n";
 
 echo "</select>\n";
+
+echo "</td></tr>\n";
+
+echo "<tr><td>\n";
+
+echo $DESK->Lang->Get("priority");
+
+echo "</td><td>";
+
+$priorities = $DESK->RequestManager->GetPriorityList();
+
+echo "<select name=\"priority\">\n";
+
+foreach($priorities as $code => $priority)
+	echo "<option value=\"".$code."\">".$priority['priorityname']."</option>\n";
+
 echo "</td></tr>\n";
 
 echo "<tr><td>\n";

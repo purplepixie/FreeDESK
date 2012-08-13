@@ -41,11 +41,12 @@ class Request extends RequestBase
 	 * @param string $update Initial Update
 	 * @param int $class Request Class
 	 * @param int $status Initial request status
+	 * @param int $priority Priority code (optional, default 0)
 	 * @param int $group Request Group (optional, default 0)
 	 * @param string $assign Assigned user (optional, default "")
 	 * @return string Request ID
 	**/
-	function Create($customer, $update, $class, $status, $group=0, $assign="")
+	function Create($customer, $update, $class, $status, $priority=0, $group=0, $assign="")
 	{
 		if (!is_numeric($class))
 			$class=1;
@@ -55,6 +56,7 @@ class Request extends RequestBase
 		$q.=$this->DESK->Database->Field("assignuser").",";
 		$q.=$this->DESK->Database->Field("class").",";
 		$q.=$this->DESK->Database->Field("openeddt").",";
+		$q.=$this->DESK->Database->Field("priority").",";
 		$q.=$this->DESK->Database->Field("status").") ";
 		$q.="VALUES(";
 		$q.=$this->DESK->Database->Safe($customer).",";
@@ -62,6 +64,7 @@ class Request extends RequestBase
 		$q.=$this->DESK->Database->SafeQuote($assign).",";
 		$q.=$this->DESK->Database->SafeQuote($class).",";
 		$q.="NOW(),";
+		$q.=$this->DESK->Database->Safe($priority).",";
 		$q.=$this->DESK->Database->Safe($status).")";
 		
 		$this->DESK->Database->Query($q);
@@ -117,8 +120,10 @@ class Request extends RequestBase
 		if (isset($list[$status]))
 		{
 			$q="UPDATE ".$this->DESK->Database->Table("request")." SET ";
-			$q.=$this->DESK->Database->Field("status")."=".$this->DESK->Database->Safe($status)." ";
-			$q.="WHERE ".$this->DESK->Database->Field("requestid")."=".$this->DESK->Database->Safe($this->ID);
+			$q.=$this->DESK->Database->Field("status")."=".$this->DESK->Database->Safe($status);
+			if ($status == 0)
+				$q.=",".$this->DESK->Database->Field("closeddt")."=NOW()";
+			$q.=" WHERE ".$this->DESK->Database->Field("requestid")."=".$this->DESK->Database->Safe($this->ID);
 			$this->DESK->Database->Query($q);
 			
 			$update="Status changed to ".$list[$status];

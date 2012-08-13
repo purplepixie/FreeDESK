@@ -189,6 +189,13 @@ class Skin
 				echo "DESK.requestStatus[".$key."]=\"".$val."\";\n";
 			}
 			
+			$priorities = $this->DESK->RequestManager->GetPriorityList();
+			echo "DESK.requestPriority[0]=\"None\";\n";
+			foreach($priorities as $key => $val)
+			{
+				echo "DESK.requestPriority[".$key."]=\"".$val['priorityname']."\";\n";
+			}
+			
 			// Request list display fields
 			$fields = $this->DESK->RequestManager->FetchFields();
 			$a=0;

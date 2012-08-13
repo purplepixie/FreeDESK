@@ -60,11 +60,12 @@ abstract class RequestBase
 	 * @param string $update Initial Update
 	 * @param int $class Request Class
 	 * @param int $status Request status
+	 * @param int $priority Priority Code (optional, default 0)
 	 * @param int $group Request Group (optional, default 0)
 	 * @param string $assign Assigned user (optional, default "")
 	 * @return string Request ID
 	**/
-	abstract function Create($customer, $update, $class, $status, $group=0, $assign="");
+	abstract function Create($customer, $update, $class, $status, $priority=0, $group=0, $assign="");
 	
 	/**
 	 * Update a request

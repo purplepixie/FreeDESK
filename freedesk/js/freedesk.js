@@ -29,6 +29,8 @@ function FreeDESK()
 	
 	// Statuses of requests (text)
 	this.requestStatus = new Array();
+	// Priorities of requests (text)
+	this.requestPriority = new Array();
 	// List of display fields for request list
 	this.fieldList = new Array();
 
@@ -199,6 +201,7 @@ function FreeDESK()
 		if (opts != "")
 			sr.url += "&"+opts;
 		sr.url += "&sid="+this.sid;
+		
 		sr.callback = DESK.displaySubpage;
 		sr.Get();
 	}
@@ -312,6 +315,8 @@ function FreeDESK()
 						contents = (data.textContent == undefined) ? data.firstChild.nodeValue : data.textContent;
 						if (field[2]=="status")
 							contents = DESK.requestStatus[contents];
+						else if (field[2]=="priority")
+							contents = DESK.requestPriority[contents];
 						else if (field[2]=="requestid")
 						{
 							var id = contents;
@@ -654,7 +659,62 @@ function FreeDESK()
 	{
 		clearInterval(DESK.refreshEvent);
 	}
+	
+	this.toSeconds = function(hours, minutes, seconds)
+	{
+		var totalSeconds = (hours * 60 * 60);
+		totalSeconds += (minutes * 60);
+		totalSeconds += (seconds);
+		return totalSeconds;
+	}
+	
+	this.toHMS = function(totalSeconds)
+	{
+		var hours = 0;
+		var minutes = 0;
+		var seconds = 0;
 		
+		if (totalSeconds >= 60*60)
+		{
+			hours = (totalSeconds/(60*60));
+			totalSeconds -= (hours*60*60);
+		}
+		
+		if (totalSeconds >= 60)
+		{
+			minutes = (totalSeconds/60);
+			totalSeconds -= (minutes*60);
+		}
+		
+		seconds = totalSeconds;
+		
+		var out = new Array();
+		
+		out[0] = hours;
+		out[1] = minutes;
+		out[2] = seconds;
+		
+		return out;
+	}
+		
+	
+	// Convert Form H:M:S fields to seconds field
+	this.formToSeconds = function(formid, hField, mField, sField, secondsField)
+	{
+		var hours = (document.forms[formid][hField].value == "") ? 0 : parseInt(document.forms[formid][hField].value);
+		var minutes = (document.forms[formid][mField].value == "") ? 0 : parseInt(document.forms[formid][mField].value);
+		var seconds = (document.forms[formid][sField].value == "") ? 0 : parseInt(document.forms[formid][sField].value);
+		document.forms[formid][secondsField].value = this.toSeconds(hours, minutes, seconds);
+	}
+	
+	// Convert Form Seconds to H:M:S
+	this.formToHMS = function(formid, hField, mField, sField, secondsField)
+	{
+		var hms = this.toHMS(parseInt(document.forms[formid][secondsField].value));
+		document.forms[formid][hField].value = hms[0];
+		document.forms[formid][mField].value = hms[1];
+		document.forms[formid][sField].value = hms[2];
+	}
 }
 
 var DESK = new FreeDESK();

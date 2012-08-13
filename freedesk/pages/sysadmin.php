@@ -581,12 +581,13 @@ else if ($mode == "requestclass")
 	foreach($classes as $id => $class)
 	{
 		echo "<tr>\n";
+		echo "<td>\n";
 		echo "<form id=\"save_".$id."\" onsubmit=\"return false;\">\n";
-		echo "<td>".$id."</td>\n";
-		echo "<td><input type=\"text\" name=\"classname\" value=\"".$class['classname']."\" /></td>\n";
+		echo $id."\n";
+		echo " <input type=\"text\" name=\"classname\" value=\"".$class['classname']."\" />\n";
 	
 		
-		echo "<td><select name=\"classclass\">\n";
+		echo " <select name=\"classclass\">\n";
 		foreach($classnames as $classclass)
 		{
 			$s="";
@@ -595,23 +596,27 @@ else if ($mode == "requestclass")
 			echo "<option value=\"".$classclass."\"".$s.">".$classclass."</option>\n";
 		}
 		echo "</select>";
-		echo "</td>\n";
+		echo "\n";
 		
 		echo "<input type=\"hidden\" name=\"id\" value=\"".$id."\" />\n";
 		echo "<input type=\"hidden\" name=\"mode\" value=\"reqclass_save\" />\n";
-		echo "<td><input type=\"submit\" value=\"".$DESK->Lang->Get("save")."\" onclick=\"DESK.formAPI('save_".$id."',false,false,DESK.refreshSubpage);\" /></td>\n";
-		echo "</form>\n";
+		echo " <input type=\"submit\" value=\"".$DESK->Lang->Get("save")."\" onclick=\"DESK.formAPI('save_".$id."',false,false,DESK.refreshSubpage);\" />\n";
+		echo "</form></td>\n";
 		
+		echo "<td>\n";
 		echo "<form id=\"delete_".$id."\" onsubmit=\"return false;\">\n";
 		echo "<input type=\"hidden\" name=\"id\" value=\"".$id."\" />\n";
 		echo "<input type=\"hidden\" name=\"mode\" value=\"reqclass_delete\" />\n";
-		echo "<td><input type=\"submit\" value=\"".$DESK->Lang->Get("delete")."\" onclick=\"if(confirm('".$DESK->Lang->Get("delete")."?')) DESK.formAPI('delete_".$id."',false,false,DESK.refreshSubpage);\" /></td>\n";
+		echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("delete")."\" onclick=\"if(confirm('".$DESK->Lang->Get("delete")."?')) DESK.formAPI('delete_".$id."',false,false,DESK.refreshSubpage);\" />\n";
 		echo "</form>\n";
+		echo "</td>\n";
 		echo "</tr>\n";
 	}
+	echo "</table>\n";
 	
 	echo "<form id=\"create_rc\" onsubmit=\"return false;\">\n";
 	echo "<input type=\"hidden\" name=\"mode\" value=\"reqclass_create\" />\n";
+	echo "<table>\n";
 	echo "<tr><td>&nbsp;</td>\n";
 	echo "<td><input type=\"text\" name=\"classname\" /></td>\n";
 	echo "<td><select name=\"classclass\">\n";
@@ -623,14 +628,80 @@ else if ($mode == "requestclass")
 	echo "</td>\n";
 	echo "<td><input type=\"submit\" value=\"".$DESK->Lang->Get("create")."\" onclick=\"DESK.formAPI('create_rc',false,false,DESK.refreshSubpage);\" /></td>\n";
 	echo "</tr>\n";
-	echo "</form>\n";
 	
-		
 	echo "</table>\n";
+	echo "</form>\n";
 }
 else if ($mode=="priorities")
 {
+	echo "<br />".sa_link("&lt;&lt; ".$DESK->Lang->Get("system_admin"))."<br />\n";
+	echo "<h3>".$DESK->Lang->Get("request_priority")."</h3>\n";
 
+	$priorities = $DESK->RequestManager->GetPriorityList();
+	echo "<table>\n";
+	
+	foreach($priorities as $id => $priority)
+	{
+		$seconds = $priority['resolutionsla'];
+		$hours = 0;
+		$mins = 0;
+		$secs = 0;
+		
+		if ($seconds>=3600)
+		{
+			$hours = (int)($seconds/3600);
+			$seconds -= ($hours*3600);
+		}
+		if ($seconds>=60)
+		{
+			$minutes = (int)($seconds/60);
+			$seconds -= ($minutes*60);
+		}
+		$secs = $seconds;
+		
+		echo "<tr>\n";
+		echo "<td><form id=\"save_".$id."\" onsubmit=\"return false;\">\n";
+		echo "<input type=\"hidden\" name=\"id\" value=\"".$id."\" />\n";
+		echo "<input type=\"hidden\" name=\"mode\" value=\"priority_save\" />\n";
+		echo $id."\n";
+		echo " <input type=\"text\" name=\"name\" value=\"".$priority['priorityname']."\" />\n";
+		
+		echo " <input type=\"text\" name=\"hours\" size=\"3\" onchange=\"DESK.formToSeconds('save_".$id."','hours','minutes','seconds','sla');\" value=\"".$hours."\" />:\n";
+		echo " <input type=\"text\" name=\"minutes\" size=\"3\" onchange=\"DESK.formToSeconds('save_".$id."','hours','minutes','seconds','sla');\" value=\"".$minutes."\" />:\n";
+		echo " <input type=\"text\" name=\"seconds\" size=\"3\" onchange=\"DESK.formToSeconds('save_".$id."','hours','minutes','seconds','sla');\" value=\"".$secs."\" />:\n";
+		
+		echo " <input type=\"text\" name=\"sla\" size=\"5\" value=\"".$priority['resolutionsla']."\" readonly=\"1\"/>\n";
+		echo " <input type=\"submit\" value=\"".$DESK->Lang->Get("save")."\" onclick=\"DESK.formAPI('save_".$id."',false,false,DESK.refreshSubpage);\" />\n";
+		echo "</form></td>\n";
+		echo "<td><form id=\"delete_".$id."\" onsubmit=\"return false;\">\n";
+		echo "<input type=\"hidden\" name=\"id\" value=\"".$id."\" />\n";
+		echo "<input type=\"hidden\" name=\"mode\" value=\"priority_delete\" />\n";
+		echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("delete")."\" onclick=\"if(confirm('".$DESK->Lang->Get("delete")."?')) DESK.formAPI('delete_".$id."',false,false,DESK.refreshSubpage);\" />\n";
+		echo "</form></td>\n";
+		echo "</tr>\n";
+	}
+	echo "</table>\n";
+	
+	echo "<form id=\"create_priority\" onsubmit=\"return false;\">\n";
+	echo "<input type=\"hidden\" name=\"mode\" value=\"priority_create\" />\n";
+	echo "<table>\n";
+	echo "<tr>\n";
+	
+	echo "<td>&nbsp;";
+	echo "</td>\n";
+	echo "<td><input type=\"text\" name=\"name\" /></td>\n";
+	echo "<td><input type=\"text\" name=\"hours\" size=\"3\" onchange=\"DESK.formToSeconds('create_priority','hours','minutes','seconds','sla');\" value=\"0\" />:</td>\n";
+	echo "<td><input type=\"text\" name=\"minutes\" size=\"3\" onchange=\"DESK.formToSeconds('create_priority','hours','minutes','seconds','sla');\" value=\"00\" />:</td>\n";
+	echo "<td><input type=\"text\" name=\"seconds\" size=\"3\" onchange=\"DESK.formToSeconds('create_priority','hours','minutes','seconds','sla');\" value=\"00\" />=</td>\n";
+	echo "<td><input type=\"text\" name=\"sla\" size=\"5\" readonly=\"1\" value=\"0\" /></td>\n";
+	echo "<td><input type=\"submit\" value=\"".$DESK->Lang->Get("create")."\" onclick=\"DESK.formAPI('create_priority',false,false,DESK.refreshSubpage);\" /></td>\n";
+	
+	echo "</tr>\n";
+	
+	echo "</table>\n";
+	
+	echo "</form>\n";
+		
 }
 
 else

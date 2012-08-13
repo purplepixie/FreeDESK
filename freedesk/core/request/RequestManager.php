@@ -300,6 +300,7 @@ class RequestManager
 			"assigned" => array("Assigned To", 1),
 			"openeddt" => array("Opened", 0),
 			"class" => array("Class", 0),
+			"priority" => array("Priority", 1),
 			"status" => array("Status", 1) );
 		return $out;
 	}
@@ -518,7 +519,7 @@ class RequestManager
 	**/
 	function GetPriorityList()
 	{
-		$q="SELECT * FROM ".$this->DESK->Database->Table("priorities");
+		$q="SELECT * FROM ".$this->DESK->Database->Table("priority");
 		$r=$this->DESK->Database->Query($q);
 		$out=array();
 		while ($row=$this->DESK->Database->FetchAssoc($r))
@@ -538,11 +539,11 @@ class RequestManager
 	**/
 	function SavePriority($priorityname, $resolutionsla, $schedule, $priorityid=0)
 	{
-		if ($id == 0)
+		if ($priorityid == 0)
 		{
 			$q="INSERT INTO ".$this->DESK->Database->Table("priority")." (";
 			$q.=$this->DESK->Database->Field("priorityname").",".$this->DESK->Database->Field("resolutionsla").",";
-			$q.=$this->DESK->Database->Field("schedule")." VALUES(";
+			$q.=$this->DESK->Database->Field("schedule").") VALUES(";
 			$q.=$this->DESK->Database->SafeQuote($priorityname).",".$this->DESK->Database->Safe($resolutionsla).",".$this->DESK->Database->Safe($schedule).")";
 			$this->DESK->Database->Query($q);
 		}

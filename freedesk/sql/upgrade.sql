@@ -77,6 +77,10 @@ ALTER TABLE `request` CHANGE `openeddt` `openeddt` datetime NOT NULL;
 ALTER TABLE `request` ADD `openeddt` datetime NOT NULL;
 ALTER TABLE `request` CHANGE `status` `status` int(11) NOT NULL;
 ALTER TABLE `request` ADD `status` int(11) NOT NULL;
+ALTER TABLE `request` CHANGE `priority` `priority` int(11) NOT NULL;
+ALTER TABLE `request` ADD `priority` int(11) NOT NULL;
+ALTER TABLE `request` CHANGE `closeddt` `closeddt` datetime NOT NULL;
+ALTER TABLE `request` ADD `closeddt` datetime NOT NULL;
 -- 
 -- Table: requestclass
 -- DESCRIBE `requestclass`

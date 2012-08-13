@@ -402,7 +402,7 @@ else if ($_REQUEST['mode'] == 'request_create')
 		}
 	}
 	
-	$id = $req->Create($_REQUEST['customer'], $_REQUEST['update'], $class, $_REQUEST['status'], 
+	$id = $req->Create($_REQUEST['customer'], $_REQUEST['update'], $class, $_REQUEST['status'], $_REQUEST['priority'], 
 		$team, $user);
 	
 	$xml = new xmlCreate();
@@ -855,6 +855,49 @@ else if ($_REQUEST['mode'] == "reqclass_delete")
 	$id = isset($_REQUEST['id']) ? $_REQUEST['id'] : 0;
 	
 	$DESK->RequestManager->DeleteRequestClass($id);
+	
+	$xml = new xmlCreate();
+	$xml->charElement("operation","1");
+	echo $xml->getXML(true);
+	exit();
+}
+
+else if ($_REQUEST['mode'] == "priority_save" || $_REQUEST['mode'] == "priority_create")
+{
+	if (!$DESK->ContextManager->Permission("sysadmin_advanced"))
+	{
+		$error = new FreeDESK_Error(ErrorCode::Forbidden, "Permission Denied");
+		echo $error->XML(true);
+		exit();
+	}
+	
+	// name SLA schedule [id]
+	$id = isset($_REQUEST['id']) ? $_REQUEST['id'] : 0;
+	$name = isset($_REQUEST['name']) ? $_REQUEST['name'] : "";
+	$sla = isset($_REQUEST['sla']) ? $_REQUEST['sla'] : 0;
+	$schedule = isset($_REQUEST['schedule']) ? $_REQUEST['schedule'] : 0;
+	
+	$DESK->RequestManager->SavePriority($name, $sla, $schedule, $id);
+	
+	$xml = new xmlCreate();
+	$xml->charElement("operation","1");
+	echo $xml->getXML(true);
+	exit();
+}
+
+else if ($_REQUEST['mode'] == "priority_delete")
+{
+	if (!$DESK->ContextManager->Permission("sysadmin_advanced"))
+	{
+		$error = new FreeDESK_Error(ErrorCode::Forbidden, "Permission Denied");
+		echo $error->XML(true);
+		exit();
+	}
+	
+	
+	$id = isset($_REQUEST['id']) ? $_REQUEST['id'] : 0;
+	
+	$DESK->RequestManager->DeletePriority($id);
 	
 	$xml = new xmlCreate();
 	$xml->charElement("operation","1");
