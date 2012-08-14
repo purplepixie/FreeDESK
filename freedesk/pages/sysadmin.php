@@ -79,6 +79,10 @@ if ($mode == "")
 		echo sa_link($DESK->Lang->Get("request_status"), array("mode"=>"status"))."<br /><br />\n";
 		echo sa_link($DESK->Lang->Get("request_class"), array("mode"=>"requestclass"))."<br /><br />\n";
 		echo sa_link($DESK->Lang->Get("request_priority"), array("mode"=>"priorities"))."<br /><br />\n";
+		if ($DESK->ContextManager->Permission("email_accounts"))
+			echo sa_link($DESK->Lang->Get("email_accounts"), array("mode"=>"emailaccounts"))."<br /><br />\n";
+		if ($DESK->ContextManager->Permission("email_templates"))
+			echo sa_link($DESK->Lang->Get("email_templates"), array("mode"=>"emailtemplates"))."<br /><br />\n";
 		if ($DESK->ContextManager->Permission("sysadmin_plugins"))
 			echo sa_link($DESK->Lang->Get("plugin_manager"), array("mode"=>"plugins"))."<br /><br />\n";
 		if ($DESK->ContextManager->Permission("sysadmin_advanced"))
@@ -702,6 +706,229 @@ else if ($mode=="priorities")
 	
 	echo "</form>\n";
 		
+}
+
+else if ($mode == "emailaccounts") // p: email_accounts
+{
+	echo "<br />".sa_link("&lt;&lt; ".$DESK->Lang->Get("system_admin"))."<br />\n";
+	echo "<h3>".$DESK->Lang->Get("email_accounts")."</h3>\n";
+	
+	$accounts = $DESK->Email->GetAccounts();
+	
+	echo "<table>\n";
+	foreach($accounts as $id => $account)
+	{
+		echo "<tr>\n";
+		echo "<td>".$account['name']."</td>\n";
+		echo "<td>&lt;".$account['from']."&gt;</td>\n";
+		echo "<td>".sa_link($DESK->Lang->Get("edit"),array("mode"=>"emailaccounts","edit"=>$id))."</td>\n";
+		echo "<td>\n";
+		echo "<form id=\"delete_opt_".$id."\" onsubmit=\"return false;\">\n";
+		echo "<input type=\"hidden\" name=\"mode\" value=\"email_delete\" />\n";
+		echo "<input type=\"hidden\" name=\"id\" value=\"".$id."\" />\n";
+		echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("delete")."\" onclick=\"if(confirm('".$DESK->Lang->Get("delete")."?')) DESK.formAPI('delete_opt_".$id."',false,false,DESK.refreshSubpage);\" />\n";
+		echo "</form>\n";
+		echo "</td>\n";
+		echo "</tr>\n";
+	}
+	echo "</table>\n";
+	echo "<br />";
+	echo "<form id=\"email_create\" onsubmit=\"return false;\">\n";
+	echo "<input type=\"text\" name=\"name\" value=\"Account Name\" /> ";
+	echo "<input type=\"hidden\" name=\"mode\" value=\"email_create\" />\n";
+	echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("create")."\" onclick=\"DESK.formAPI('email_create',false,false,DESK.refreshSubpage);\" />\n";
+	echo "</form>\n";
+	echo "<br /><br />";
+	
+	if (isset($_REQUEST['edit']))
+	{
+		$id=$_REQUEST['edit'];
+		
+		if (isset($accounts[$id]))
+		{
+			$acc = $accounts[$id];
+			echo "<h3>".$DESK->Lang->Get("edit").": ".$acc['name']."</h3>\n";
+			
+			echo "<form id=\"save_email\" onsubmit=\"return false;\">\n";
+			echo "<input type=\"hidden\" name=\"mode\" value=\"email_save\" />\n";
+			echo "<input type=\"hidden\" name=\"id\" value=\"".$id."\" />\n";
+			echo "<table>\n";
+		
+			echo "<tr>\n";
+			echo "<td>".$DESK->Lang->Get("name")."</td>\n";
+			echo "<td><input type=\"text\" name=\"name\" value=\"".$acc['name']."\" /></td>\n";
+			echo "</tr>\n";
+		
+			echo "<tr>\n";
+			echo "<td>".$DESK->Lang->Get("host")."</td>\n";
+			echo "<td><input type=\"text\" name=\"host\" value=\"".$acc['host']."\" /></td>\n";
+			echo "</tr>\n";
+			echo "<tr><td colspan=\"2\">".$DESK->Lang->Get("hostdesc")."</td></tr>\n";
+			
+			echo "<tr>\n";
+			echo "<td>".$DESK->Lang->Get("from")."</td>\n";
+			echo "<td><input type=\"text\" name=\"from\" value=\"".$acc['from']."\" /></td>\n";
+			echo "</tr>\n";
+			
+			echo "<tr>\n";
+			echo "<td>".$DESK->Lang->Get("fromname")."</td>\n";
+			echo "<td><input type=\"text\" name=\"fromname\" value=\"".$acc['fromname']."\" /></td>\n";
+			echo "</tr>\n";
+			
+			echo "<tr>\n";
+			echo "<td>".$DESK->Lang->Get("wordwrap")."</td>\n";
+			echo "<td><input type=\"text\" name=\"wordwrap\" value=\"".$acc['wordwrap']."\" size=\"5\" /></td>\n";
+			echo "</tr>\n";
+			
+			echo "<tr>\n";
+			echo "<td>".$DESK->Lang->Get("auth")."</td>\n";
+			echo "<td>\n";
+			echo "<select name=\"auth\">\n";
+			$opts = array( 1 => $DESK->Lang->Get("yes"), 0 => $DESK->Lang->Get("no") );
+			foreach($opts as $key => $val)
+			{
+				if ($acc['auth'] == $key)
+					$s="selected";
+				else
+					$s="";
+				echo "<option value=\"".$key."\"".$s.">".$val."</option>\n";
+			}
+			echo "</select>\n";
+			echo "</td>\n";
+			echo "</tr>\n";
+			
+			echo "<tr>\n";
+			echo "<td>".$DESK->Lang->Get("username")."</td>\n";
+			echo "<td><input type=\"text\" name=\"username\" value=\"".$acc['username']."\" /></td>\n";
+			echo "</tr>\n";
+			
+			echo "<tr>\n";
+			echo "<td>".$DESK->Lang->Get("password")."</td>\n";
+			echo "<td><input type=\"text\" name=\"password\" value=\"".$acc['password']."\" /></td>\n";
+			echo "</tr>\n";
+			
+			echo "<tr>\n";
+			echo "<td>".$DESK->Lang->Get("smtpsec")."</td>\n";
+			echo "<td>\n";
+			echo "<select name=\"smtpsec\">\n";
+			$opts = array( "" => $DESK->Lang->Get("none"), "ssl" => "SSL", "tls" => "TLS" );
+			foreach($opts as $key => $val)
+			{
+				if ($acc['smtpsec'] == $key)
+					$s="selected";
+				else
+					$s="";
+				echo "<option value=\"".$key."\"".$s.">".$val."</option>\n";
+			}
+			echo "</select>\n";
+			echo "</td>\n";
+			echo "</tr>\n";
+			
+			echo "<tr>\n";
+			echo "<td>&nbsp;</td>\n";
+			echo "<td>\n";
+			echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("save")."\" onclick=\"DESK.formAPI('save_email',false,false,DESK.refreshSubpage);\" />\n";
+			echo "</td>\n";
+			echo "</tr>\n";
+			
+			echo "</table>\n";
+			echo "</form>\n";
+		}
+	}
+	
+	if ($DESK->Email->hasAccounts())
+	{
+		echo "<br /><h3>".$DESK->Lang->Get("test")."</h3>\n";
+	
+		echo "<form id=\"email_test\" onsubmit=\"return false;\">\n";
+		echo "<input type=\"hidden\" name=\"mode\" value=\"email_test\" />\n";
+		
+		echo "<select name=\"id\">";
+		foreach($accounts as $id => $account)
+		{
+			echo "<option value=\"".$id."\">".$account['name']." &lt;".$account['from']."&gt;</option>\n";
+		}
+		echo "</select> \n";
+		echo "<input type=\"text\" name=\"to\"> \n";
+		echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("test")."\" onclick=\"DESK.formAPI('email_test',false,false,DESK.refreshSubpage);\" />\n";
+		
+		echo "</form>\n";
+	}
+	
+}
+
+else if ($mode == "emailtemplates") // p: email_templates
+{
+	echo "<br />".sa_link("&lt;&lt; ".$DESK->Lang->Get("system_admin"))."<br />\n";
+	echo "<h3>".$DESK->Lang->Get("email_templates")."</h3>\n";
+	
+	echo $DESK->Lang->Get("available_macro").": %requestid%, %customer%, %update%<br /><br />\n";
+	
+	$id = "open";
+	echo "<h3>".$DESK->Lang->Get("template_open")."</h3>";
+	$t = $DESK->Email->GetTemplate($id);
+	if ($t === false)
+	{
+		$sub = "";
+		$body = "";
+	}
+	else
+	{
+		$sub=$t['subject'];
+		$body=$t['body'];
+	}
+	echo "<form id=\"template_".$id."\" onsubmit=\"return false;\">\n";
+	echo "<input type=\"hidden\" name=\"mode\" value=\"template_save\" />\n";
+	echo "<input type=\"hidden\" name=\"id\" value=\"".$id."\" />\n";
+	echo "<input type=\"text\" name=\"subject\" value=\"".$sub."\" size=\"50\" /><br />\n";
+	echo "<textarea name=\"body\" rows=\"10\" cols=\"50\">".$body."</textarea><br />\n";
+	echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("save")."\" onclick=\"DESK.formAPI('template_".$id."',false,false,DESK.refreshSubpage);\" />\n";
+	echo "</form><br /><br />";
+	
+	
+	$id = "update";
+	echo "<h3>".$DESK->Lang->Get("template_update")."</h3>";
+	$t = $DESK->Email->GetTemplate($id);
+	if ($t === false)
+	{
+		$sub = "";
+		$body = "";
+	}
+	else
+	{
+		$sub=$t['subject'];
+		$body=$t['body'];
+	}
+	echo "<form id=\"template_".$id."\" onsubmit=\"return false;\">\n";
+	echo "<input type=\"hidden\" name=\"mode\" value=\"template_save\" />\n";
+	echo "<input type=\"hidden\" name=\"id\" value=\"".$id."\" />\n";
+	echo "<input type=\"text\" name=\"subject\" value=\"".$sub."\" size=\"50\" /><br />\n";
+	echo "<textarea name=\"body\" rows=\"10\" cols=\"50\">".$body."</textarea><br />\n";
+	echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("save")."\" onclick=\"DESK.formAPI('template_".$id."',false,false,DESK.refreshSubpage);\" />\n";
+	echo "</form><br /><br />";
+	
+	
+	$id = "close";
+	echo "<h3>".$DESK->Lang->Get("template_close")."</h3>";
+	$t = $DESK->Email->GetTemplate($id);
+	if ($t === false)
+	{
+		$sub = "";
+		$body = "";
+	}
+	else
+	{
+		$sub=$t['subject'];
+		$body=$t['body'];
+	}
+	echo "<form id=\"template_".$id."\" onsubmit=\"return false;\">\n";
+	echo "<input type=\"hidden\" name=\"mode\" value=\"template_save\" />\n";
+	echo "<input type=\"hidden\" name=\"id\" value=\"".$id."\" />\n";
+	echo "<input type=\"text\" name=\"subject\" value=\"".$sub."\" size=\"50\" /><br />\n";
+	echo "<textarea name=\"body\" rows=\"10\" cols=\"50\">".$body."</textarea><br />\n";
+	echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("save")."\" onclick=\"DESK.formAPI('template_".$id."',false,false,DESK.refreshSubpage);\" />\n";
+	echo "</form><br /><br />";
+	
 }
 
 else

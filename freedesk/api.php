@@ -905,6 +905,155 @@ else if ($_REQUEST['mode'] == "priority_delete")
 	exit();
 }
 
+else if ($_REQUEST['mode'] == "email_create")
+{
+	if (!$DESK->ContextManager->Permission("email_accounts"))
+	{
+		$error = new FreeDESK_Error(ErrorCode::Forbidden, "Permission Denied");
+		echo $error->XML(true);
+		exit();
+	}
+	
+	
+	$name = isset($_REQUEST['name']) ? $_REQUEST['name'] : "";
+	
+	$DESK->Email->SaveAccount($name, "", "", "", 50, 0, "", "", "");
+	
+	$xml = new xmlCreate();
+	$xml->charElement("operation","1");
+	echo $xml->getXML(true);
+	exit();
+}
+
+else if ($_REQUEST['mode'] == "email_delete")
+{
+	if (!$DESK->ContextManager->Permission("email_accounts"))
+	{
+		$error = new FreeDESK_Error(ErrorCode::Forbidden, "Permission Denied");
+		echo $error->XML(true);
+		exit();
+	}
+	
+	
+	$id = isset($_REQUEST['id']) ? $_REQUEST['id'] : 0;
+	
+	$DESK->Email->DeleteAccount($id);
+	
+	$xml = new xmlCreate();
+	$xml->charElement("operation","1");
+	echo $xml->getXML(true);
+	exit();
+}
+
+else if ($_REQUEST['mode'] == "email_save")
+{
+	if (!$DESK->ContextManager->Permission("email_accounts"))
+	{
+		$error = new FreeDESK_Error(ErrorCode::Forbidden, "Permission Denied");
+		echo $error->XML(true);
+		exit();
+	}
+	
+	
+	$id = isset($_REQUEST['id']) ? $_REQUEST['id'] : 0;
+	$name = isset($_REQUEST['name']) ? $_REQUEST['name'] : "";
+	$host = isset($_REQUEST['host']) ? $_REQUEST['host'] : "";
+	$from = isset($_REQUEST['from']) ? $_REQUEST['from'] : "";
+	$fromname = isset($_REQUEST['fromname']) ? $_REQUEST['fromname'] : "";
+	$wordwrap = isset($_REQUEST['wordwrap']) ? $_REQUEST['wordwrap'] : 0;
+	$auth = isset($_REQUEST['auth']) ? $_REQUEST['auth'] : 0;
+	$username = isset($_REQUEST['username']) ? $_REQUEST['username'] : "";
+	$password = isset($_REQUEST['password']) ? $_REQUEST['password'] : "";
+	$smtpsec = isset($_REQUEST['smtpsec']) ? $_REQUEST['smtpsec'] : "";
+	
+	$DESK->Email->SaveAccount($name, $host, $from, $fromname, $wordwrap, $auth, $username, $password, $smtpsec, $id);
+	
+	$xml = new xmlCreate();
+	$xml->charElement("operation","1");
+	echo $xml->getXML(true);
+	exit();
+}
+
+else if ($_REQUEST['mode'] == "email_test")
+{
+	if (!$DESK->ContextManager->Permission("email_accounts"))
+	{
+		$error = new FreeDESK_Error(ErrorCode::Forbidden, "Permission Denied");
+		echo $error->XML(true);
+		exit();
+	}
+	
+	
+	$id = isset($_REQUEST['id']) ? $_REQUEST['id'] : 0;
+	$to = isset($_REQUEST['to']) ? $_REQUEST['to'] : "";
+	
+	$res = $DESK->Email->Send($id, $to, "FreeDESK Test", "FreeDESK Test Mail");
+	
+	if ($res)
+	{
+		$xml = new xmlCreate();
+		$xml->charElement("operation","1");
+		echo $xml->getXML(true);
+		exit();
+	}
+	else
+	{
+		$error = new FreeDESK_Error(ErrorCode::OperationFailed, "Operation Failed");
+		echo $error->XML(true);
+		exit();
+	}
+}
+
+else if ($_REQUEST['mode'] == "email_send")
+{
+	// Just standard auth required
+	
+	
+	$id = isset($_REQUEST['id']) ? $_REQUEST['id'] : 0;
+	$to = isset($_REQUEST['to']) ? $_REQUEST['to'] : "";
+	$subject = isset($_REQUEST['subject']) ? $_REQUEST['subject'] : "";
+	$body = isset($_REQUEST['body']) ? $_REQUEST['body'] : "";
+	
+	$res = $DESK->Email->Send($id, $to, $subject, $body);
+	
+	if ($res)
+	{
+		$xml = new xmlCreate();
+		$xml->charElement("operation","1");
+		echo $xml->getXML(true);
+		exit();
+	}
+	else
+	{
+		$error = new FreeDESK_Error(ErrorCode::OperationFailed, "Operation Failed");
+		echo $error->XML(true);
+		exit();
+	}
+}
+
+else if ($_REQUEST['mode'] == "template_save")
+{
+	if (!$DESK->ContextManager->Permission("email_templates"))
+	{
+		$error = new FreeDESK_Error(ErrorCode::Forbidden, "Permission Denied");
+		echo $error->XML(true);
+		exit();
+	}
+	
+	
+	$id = isset($_REQUEST['id']) ? $_REQUEST['id'] : "";
+	$subject = isset($_REQUEST['subject']) ? $_REQUEST['subject'] : "";
+	$body = isset($_REQUEST['body']) ? $_REQUEST['body'] : "";
+	
+	$DESK->Email->SaveTemplate($id, $subject, $body);
+	
+	$xml = new xmlCreate();
+	$xml->charElement("operation","1");
+	echo $xml->getXML(true);
+	exit();
+	
+}
+
 if ($DESK->PluginManager->API($_REQUEST['mode']))
 	exit();
 

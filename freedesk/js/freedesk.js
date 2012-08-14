@@ -568,14 +568,15 @@ function FreeDESK()
 			// We got this far - no DESK error or XML error so we can say success!
 			Alerts.add("Operation Successful", 0);
 			
+			if (additional[2]) // do the javascript first if there is any
+			{	
+				additional[2](xml);
+			}
+			
 			if (additional[0])
 				window.close();
 			else if (additional[1])
 				window.location.reload();
-			else if (additional[2])
-			{	
-				additional[2](xml);
-			}
 		}
 	}
 	

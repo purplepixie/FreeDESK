@@ -36,6 +36,8 @@ class ErrorCode
 	const ResourceNotFound = 404;
 	
 	const UnknownRequest = 604;
+	
+	const OperationFailed = 700;
 }
 
 /**

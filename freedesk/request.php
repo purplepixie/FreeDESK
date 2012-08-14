@@ -56,298 +56,320 @@ $DESK->Skin->IncludeFile("min_header.php",$data);
 
 if (isset($_REQUEST['id']))
 {
-$id=$_REQUEST['id'];
+	$id=$_REQUEST['id'];
 
-$request = $DESK->RequestManager->Fetch($id);
+	$request = $DESK->RequestManager->Fetch($id);
 
-if ($request === false)
-{
-	echo $DESK->Lang->Get("entity_not_found");
-	$DESK->Skin->IncludeFile("min_footer.php");
-	exit();
-}
-
-echo "<div id=\"request_header\">\n";
-echo "<b>".$DESK->Lang->Get("request")." ".$id.": ";
-
-$q="SELECT * FROM ".$DESK->Database->Table("customer")." WHERE ".$DESK->Database->Field("customerid")."=".$DESK->Database->Safe($request->Get("customerid"))." LIMIT 0,1";
-$r=$DESK->Database->Query($q);
-$cust = $DESK->Database->FetchAssoc($r);
-$DESK->Database->Free($r);
-
-echo $cust['firstname']." ".$cust['lastname'];
-
-echo "</b>\n";
-echo "</div>";
-
-$request->LoadUpdates();
-
-$panes = array(
-	"log" => array( "title" => "Request History" ),
-	"details" => array( "title" => "Details" ),
-	"update" => array( "title" => "Update Request" ) );
-
-$data = array( "id" => "request", "panes" => $panes );
-$DESK->Skin->IncludeFile("pane_start.php", $data);
-
-echo "<div id=\"pane_request_log_content\" class=\"pane_content\">\n";
-
-$updates = $request->GetUpdates();
-
-foreach($updates as $update)
-{
-	echo "<div id=\"update_".$update['updateid']."\" class=\"update\">\n";
-	echo "<div id=\"update_header_".$update['updateid']."\" class=\"update_header\">\n";
-	echo $update['updatedt']." : ".$update['updateby']."\n";
-	echo "</div>\n";
-	echo "<div id=\"update_content_".$update['updateid']."\" class=\"update_content\">";
-	echo $update['update']."\n\n";
-	echo "</div>\n";
-	echo "</div>\n";
-}
-
-echo "</div>";
-
-echo "<div id=\"pane_request_details_content\" class=\"pane_content_hidden\">\n";
-
-echo "<table>\n";
-
-$statuses = $DESK->RequestManager->StatusList();
-$priorities = $DESK->RequestManager->GetPriorityList();
-
-echo "<tr>\n";
-echo "<td>".$DESK->Lang->Get("status").": </td>\n";
-echo "<td>";
-if (isset($statuses[$request->Get("status")]))
-	echo $statuses[$request->Get("status")];
-else
-	echo $DESK->Lang->Get("unknown");
-echo "</td>\n";
-echo "</tr>\n";
-
-echo "<tr>\n";
-echo "<td>".$DESK->Lang->Get("priority").": </td>\n";
-echo "<td>";
-if (isset($priorities[$request->Get("priority")]))
-	echo $priorities[$request->Get("priority")]['priorityname'];
-else
-	echo $DESK->Lang->Get("unknown");
-echo "</td>\n";
-echo "</tr>\n";
-
-echo "</table>\n";
-
-echo "</div>";
-
-echo "<div id=\"pane_request_update_content\" class=\"pane_content_hidden\">\n";
-
-echo "<form id=\"request_update\" onsubmit=\"return false;\">";
-
-echo "<table class=\"request_update\">\n";
-
-echo "<tr><td colspan=\"2\">\n";
-
-echo "<input type=\"hidden\" name=\"mode\" value=\"request_update\">\n";
-echo "<input type=\"hidden\" name=\"requestid\" value=\"".$id."\">\n";
-echo "<textarea rows=\"10\" cols=\"50\" name=\"update\"></textarea>\n";
-
-echo "</td></tr>\n";
-echo "<tr><td>";
-
-echo $DESK->Lang->Get("assign")." ";
-
-echo "</td><td>";
-
-echo "<select name=\"assign\">\n";
-
-echo "<option value=\" \" selected>".$DESK->Lang->Get("no_change")."</option>\n";
-
-$list = $DESK->RequestManager->TeamUserList();
-
-foreach($list as $teamid => $team)
-{
-	$teamname = $team['name'];
-	if ($team['assign'])
-		echo "<option value=\"".$teamid."\">".$teamname."</option>\n";
-	if (is_array($team['items']))
+	if ($request === false)
 	{
-		foreach($team['items'] as $username => $detail)
+		echo $DESK->Lang->Get("entity_not_found");
+		$DESK->Skin->IncludeFile("min_footer.php");
+		exit();
+	}
+
+	echo "<div id=\"request_header\">\n";
+	echo "<b>".$DESK->Lang->Get("request")." ".$id.": ";
+
+	$q="SELECT * FROM ".$DESK->Database->Table("customer")." WHERE ".$DESK->Database->Field("customerid")."=".$DESK->Database->Safe($request->Get("customerid"))." LIMIT 0,1";
+	$r=$DESK->Database->Query($q);
+	$cust = $DESK->Database->FetchAssoc($r);
+	$DESK->Database->Free($r);
+
+	echo $cust['firstname']." ".$cust['lastname'];
+
+	echo "</b>\n";
+	echo "</div>";
+
+	$request->LoadUpdates();
+
+	$panes = array(
+		"log" => array( "title" => "Request History" ),
+		"details" => array( "title" => "Details" ),
+		"update" => array( "title" => "Update Request" ) );
+
+	$data = array( "id" => "request", "panes" => $panes );
+	$DESK->Skin->IncludeFile("pane_start.php", $data);
+
+	echo "<div id=\"pane_request_log_content\" class=\"pane_content\">\n";
+
+	$updates = $request->GetUpdates();
+
+	foreach($updates as $update)
+	{
+		echo "<div id=\"update_".$update['updateid']."\" class=\"update\">\n";
+		echo "<div id=\"update_header_".$update['updateid']."\" class=\"update_header\">\n";
+		echo $update['updatedt']." : ".$update['updateby']."\n";
+		echo "</div>\n";
+		echo "<div id=\"update_content_".$update['updateid']."\" class=\"update_content\">";
+		echo $update['update']."\n\n";
+		echo "</div>\n";
+		echo "</div>\n";
+	}
+
+	echo "</div>";
+
+	echo "<div id=\"pane_request_details_content\" class=\"pane_content_hidden\">\n";
+
+	echo "<table>\n";
+
+	$statuses = $DESK->RequestManager->StatusList();
+	$priorities = $DESK->RequestManager->GetPriorityList();
+
+	echo "<tr>\n";
+	echo "<td>".$DESK->Lang->Get("status").": </td>\n";
+	echo "<td>";
+	if (isset($statuses[$request->Get("status")]))
+		echo $statuses[$request->Get("status")];
+	else
+		echo $DESK->Lang->Get("unknown");
+	echo "</td>\n";
+	echo "</tr>\n";
+
+	echo "<tr>\n";
+	echo "<td>".$DESK->Lang->Get("priority").": </td>\n";
+	echo "<td>";
+	if (isset($priorities[$request->Get("priority")]))
+		echo $priorities[$request->Get("priority")]['priorityname'];
+	else
+		echo $DESK->Lang->Get("unknown");
+	echo "</td>\n";
+	echo "</tr>\n";
+
+	echo "</table>\n";
+
+	echo "</div>";
+
+	echo "<div id=\"pane_request_update_content\" class=\"pane_content_hidden\">\n";
+
+	echo "<form id=\"request_update\" onsubmit=\"return false;\">";
+
+	echo "<table class=\"request_update\">\n";
+
+	echo "<tr><td colspan=\"2\">\n";
+
+	echo "<input type=\"hidden\" name=\"mode\" value=\"request_update\">\n";
+	echo "<input type=\"hidden\" name=\"requestid\" value=\"".$id."\">\n";
+	echo "<textarea rows=\"10\" cols=\"50\" name=\"update\"></textarea>\n";
+
+	echo "</td></tr>\n";
+	echo "<tr><td>";
+
+	echo $DESK->Lang->Get("assign")." ";
+
+	echo "</td><td>";
+
+	echo "<select name=\"assign\">\n";
+
+	echo "<option value=\" \" selected>".$DESK->Lang->Get("no_change")."</option>\n";
+
+	$list = $DESK->RequestManager->TeamUserList();
+
+	foreach($list as $teamid => $team)
+	{
+		$teamname = $team['name'];
+		if ($team['assign'])
+			echo "<option value=\"".$teamid."\">".$teamname."</option>\n";
+		if (is_array($team['items']))
 		{
-			if ($team['team'])
-				$tid = $teamid;
-			else
-				$tid = 0;
-			if ($detail['assign'])
-				echo "<option value=\"".$tid."/".$username."\">".$teamname." &gt; ".$detail['realname']."</option>\n";
+			foreach($team['items'] as $username => $detail)
+			{
+				if ($team['team'])
+					$tid = $teamid;
+				else
+					$tid = 0;
+				if ($detail['assign'])
+					echo "<option value=\"".$tid."/".$username."\">".$teamname." &gt; ".$detail['realname']."</option>\n";
+			}
 		}
 	}
-}
-echo "</select>\n";
+	echo "</select>\n";
 
-echo "</td></tr>\n";
+	echo "</td></tr>\n";
 
-echo "<tr><td>\n";
+	echo "<tr><td>\n";
 
-echo $DESK->Lang->Get("status");
+	echo $DESK->Lang->Get("status");
 
-echo "</td><td>\n";
+	echo "</td><td>\n";
 
-$statuses = $DESK->RequestManager->StatusList();
+	$statuses = $DESK->RequestManager->StatusList();
 
-echo "<select name=\"status\">\n";
-echo "<option value=\" \" selected>".$DESK->Lang->Get("no_change")."</option>\n";
+	echo "<select name=\"status\">\n";
+	echo "<option value=\" \" selected>".$DESK->Lang->Get("no_change")."</option>\n";
 
-foreach($statuses as $code => $desc)
-	echo "<option value=\"".$code."\">".$desc."</option>\n";
+	foreach($statuses as $code => $desc)
+		echo "<option value=\"".$code."\">".$desc."</option>\n";
 
-echo "</select>\n";
-echo "</td></tr>\n";
+	echo "</select>\n";
+	echo "</td></tr>\n";
+	
+	if ($DESK->Email->hasAccounts())
+	{
+		echo "<tr><td>\n";
+		echo $DESK->Lang->Get("email_customer")."\n";
+		echo "</td>\n";
+		echo "<td><input type=\"checkbox\" name=\"emailflag\" checked=\"1\" /></td>\n";
+		echo "</tr>\n";
+	}
 
-echo "<tr><td>\n";
+	echo "<tr><td>\n";
 
-echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("save")."\" onclick=\"DESK.formAPI('request_update',false,true);\">";
+	echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("save")."\" onclick=\"DESK.formAPI('request_update',false,true,DESKRequest.emailUpdateCheck);\">";
 
-echo "</td><td>\n";
+	echo "</td><td>\n";
 
-echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("save_close")."\" onclick=\"DESK.formAPI('request_update',true,false);\">";
+	echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("save_close")."\" onclick=\"DESK.formAPI('request_update',true,false,DESKRequest.emailUpdateCheck);\">";
 
-echo "</td></tr>\n";
+	echo "</td></tr>\n";
 
-echo "</table>";
+	echo "</table>";
 
-echo "</form>\n";
+	echo "</form>\n";
 
-echo "</div>";
+	echo "</div>";
+	
+	echo "<script type=\"text/javascript\">\n";
+	echo "var currentRequestID = ".$_REQUEST['id'].";\n";
+	echo "</script>\n";
 
 
 
-$DESK->Skin->IncludeFile("pane_finish.php");
+	$DESK->Skin->IncludeFile("pane_finish.php");
 }
 else // new request
 {
 
-echo "<div id=\"customer_select\" class=\"customer_select\">\n";
+	echo "<div id=\"customer_select\" class=\"customer_select\">\n";
 
-echo "<form id=\"customersearch\" onsubmit=\"return false;\">\n";
-echo "<table class=\"search\">\n";
+	echo "<form id=\"customersearch\" onsubmit=\"return false;\">\n";
+	echo "<table class=\"search\">\n";
 
-$table=$DESK->DataDictionary->Tables["customer"];
+	$table=$DESK->DataDictionary->Tables["customer"];
 
-foreach($table->fields as $id => $field)
-{
-	if ($field->searchable)
+	foreach($table->fields as $id => $field)
 	{
-		echo "<tr><td>".$field->name."</td>\n";
-		$val="";
-		if (isset($_REQUEST[$field->field]))
+		if ($field->searchable)
 		{
-			$val=$_REQUEST[$field->field];
-			$searchnow=true;
-		}
-		echo "<td><input type=\"text\" name=\"".$field->field."\" value=\"".$val."\" /></td></tr>\n";
-	}
-}
-echo "<tr><td> </td>\n";
-echo "<td><input type=\"submit\" value=\"".$DESK->Lang->Get("search")."\" onclick=\"DESKRequest.searchCustomer();\" /></td>\n";
-echo "</tr>";
-echo "</table>\n";
-echo "</form>\n";
-
-
-echo "</div>";
-echo "<div id=\"customer_details\" class=\"customer_details\">\n";
-echo "<br /><b>".$DESK->Lang->Get("customer")." : </b><span id=\"customer_id\"></span> \n";
-echo "<a href=\"#\" onclick=\"DESKRequest.searchCustomerAgain();\">Change</a>";
-echo "</div>";
-
-echo "<hr class=\"request\" />\n";
-
-echo "<form id=\"request_create\" onsubmit=\"return false;\">";
-
-echo "<table class=\"request_update\">\n";
-
-echo "<tr><td colspan=\"2\">\n";
-
-echo "<textarea rows=\"10\" cols=\"50\" name=\"update\"></textarea>\n";
-
-echo "</td></tr>\n";
-echo "<tr><td>";
-
-echo $DESK->Lang->Get("assign")." ";
-
-echo "</td><td>";
-
-echo "<select name=\"assign\">\n";
-
-$list = $DESK->RequestManager->TeamUserList();
-
-foreach($list as $teamid => $team)
-{
-	$teamname = $team['name'];
-	if ($team['assign'])
-		echo "<option value=\"".$teamid."\">".$teamname."</option>\n";
-	if (is_array($team['items']))
-	{
-		foreach($team['items'] as $username => $detail)
-		{
-			if ($team['team'])
-				$tid = $teamid;
-			else
-				$tid = 0;
-			if ($detail['assign'])
-				echo "<option value=\"".$tid."/".$username."\">".$teamname." &gt; ".$detail['realname']."</option>\n";
+			echo "<tr><td>".$field->name."</td>\n";
+			$val="";
+			if (isset($_REQUEST[$field->field]))
+			{
+				$val=$_REQUEST[$field->field];
+				$searchnow=true;
+			}
+			echo "<td><input type=\"text\" name=\"".$field->field."\" value=\"".$val."\" /></td></tr>\n";
 		}
 	}
-}
-echo "</select>\n";
+	echo "<tr><td> </td>\n";
+	echo "<td><input type=\"submit\" value=\"".$DESK->Lang->Get("search")."\" onclick=\"DESKRequest.searchCustomer();\" /></td>\n";
+	echo "</tr>";
+	echo "</table>\n";
+	echo "</form>\n";
 
-echo "</td></tr>\n";
 
-echo "<tr><td>\n";
+	echo "</div>";
+	echo "<div id=\"customer_details\" class=\"customer_details\">\n";
+	echo "<br /><b>".$DESK->Lang->Get("customer")." : </b><span id=\"customer_id\"></span> \n";
+	echo "<a href=\"#\" onclick=\"DESKRequest.searchCustomerAgain();\">Change</a>";
+	echo "</div>";
 
-echo $DESK->Lang->Get("status");
+	echo "<hr class=\"request\" />\n";
 
-echo "</td><td>\n";
+	echo "<form id=\"request_create\" onsubmit=\"return false;\">";
 
-$statuses = $DESK->RequestManager->StatusList();
+	echo "<table class=\"request_update\">\n";
 
-echo "<select name=\"status\">\n";
+	echo "<tr><td colspan=\"2\">\n";
 
-foreach($statuses as $code => $desc)
-	echo "<option value=\"".$code."\">".$desc."</option>\n";
+	echo "<textarea rows=\"10\" cols=\"50\" name=\"update\"></textarea>\n";
 
-echo "</select>\n";
+	echo "</td></tr>\n";
+	echo "<tr><td>";
 
-echo "</td></tr>\n";
+	echo $DESK->Lang->Get("assign")." ";
 
-echo "<tr><td>\n";
+	echo "</td><td>";
 
-echo $DESK->Lang->Get("priority");
+	echo "<select name=\"assign\">\n";
 
-echo "</td><td>";
+	$list = $DESK->RequestManager->TeamUserList();
 
-$priorities = $DESK->RequestManager->GetPriorityList();
+	foreach($list as $teamid => $team)
+	{
+		$teamname = $team['name'];
+		if ($team['assign'])
+			echo "<option value=\"".$teamid."\">".$teamname."</option>\n";
+		if (is_array($team['items']))
+		{
+			foreach($team['items'] as $username => $detail)
+			{
+				if ($team['team'])
+					$tid = $teamid;
+				else
+					$tid = 0;
+				if ($detail['assign'])
+					echo "<option value=\"".$tid."/".$username."\">".$teamname." &gt; ".$detail['realname']."</option>\n";
+			}
+		}
+	}
+	echo "</select>\n";
 
-echo "<select name=\"priority\">\n";
+	echo "</td></tr>\n";
 
-foreach($priorities as $code => $priority)
-	echo "<option value=\"".$code."\">".$priority['priorityname']."</option>\n";
+	echo "<tr><td>\n";
 
-echo "</td></tr>\n";
+	echo $DESK->Lang->Get("status");
 
-echo "<tr><td>\n";
+	echo "</td><td>\n";
 
-echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("save")."\" onclick=\"DESKRequest.Create();\" />";
+	$statuses = $DESK->RequestManager->StatusList();
 
-echo "</td><td>\n";
+	echo "<select name=\"status\">\n";
 
-echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("save_close")."\" onclick=\"DESKRequest.Create(true);\" />";
+	foreach($statuses as $code => $desc)
+		echo "<option value=\"".$code."\">".$desc."</option>\n";
 
-echo "</td></tr>\n";
+	echo "</select>\n";
 
-echo "</table>";
+	echo "</td></tr>\n";
 
-echo "</form>";
+	echo "<tr><td>\n";
+
+	echo $DESK->Lang->Get("priority");
+
+	echo "</td><td>";
+
+	$priorities = $DESK->RequestManager->GetPriorityList();
+
+	echo "<select name=\"priority\">\n";
+
+	foreach($priorities as $code => $priority)
+		echo "<option value=\"".$code."\">".$priority['priorityname']."</option>\n";
+
+	echo "</td></tr>\n";
+	
+	if ($DESK->Email->hasAccounts())
+	{
+		echo "<tr><td>\n";
+		echo $DESK->Lang->Get("email_customer")."\n";
+		echo "</td>\n";
+		echo "<td><input type=\"checkbox\" name=\"emailflag\" checked=\"1\" /></td>\n";
+		echo "</tr>\n";
+	}
+
+	echo "<tr><td>\n";
+
+	echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("save")."\" onclick=\"DESKRequest.Create();\" />";
+
+	echo "</td><td>\n";
+
+	echo "<input type=\"submit\" value=\"".$DESK->Lang->Get("save_close")."\" onclick=\"DESKRequest.Create(true);\" />";
+
+	echo "</td></tr>\n";
+
+	echo "</table>";
+
+	echo "</form>";
 
 }
 

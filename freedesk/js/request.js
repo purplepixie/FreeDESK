@@ -101,10 +101,33 @@ function FreeDESK_Request()
 			var req = xml.getElementsByTagName("request")[0];
 			var id = (req.textContent == undefined) ? req.firstChild.nodeValue : req.textContent;
 			var url = "request.php?id="+id+"&sid="+DESK.sid;
+			
+			if (document.forms["request_create"]["emailflag"].checked) // email customer
+			{
+				var update = document.forms["request_create"]["update"].value;
+				var emailurl = "email.php?template=open&request="+id+"&update="+encodeURI(update)+"&sid="+DESK.sid;
+				DESK.openWindow("Email", emailurl);
+			}
+			
 			if (add[0] == 1)
 				window.close();
 			else
 				window.location.href = url;
+		}
+	}
+	
+	this.emailUpdateCheck = function()
+	{
+		if (document.forms["request_update"]["emailflag"].checked) // email customer
+		{
+			var req = currentRequestID;
+			var update = document.forms["request_update"]["update"].value;
+			var template = "update";
+			if (document.forms["request_update"]["status"].value == "0")
+				template = "close";
+				
+			var emailurl = "email.php?template="+template+"&request="+req+"&update="+encodeURI(update)+"&sid="+DESK.sid;
+			DESK.openWindow("Email", emailurl);
 		}
 	}
 	

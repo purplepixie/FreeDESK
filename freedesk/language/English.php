@@ -99,6 +99,39 @@ $i['request_priority'] = "Request Priority";
 $i['priority'] = "Priority";
 
 $i['unknown'] = "Unknown";
+
+$i['email_accounts'] = "Email Accounts";
+$i['email_templates'] = "Email Templates";
+
+$i['edit'] = "Edit";
+
+$i['name'] = "Name";
+$i['host'] = "Host";
+$i['hostdesc'] = "SMTP Hostname (or blank for local)";
+$i['email'] = "Email Address";
+$i['from'] = "From Address";
+$i['fromname'] = "From Name";
+$i['wordwrap'] = "Word Wrap";
+$i['auth'] = "Use Authentication";
+$i['username'] = "Username";
+$i['password'] = "Password";
+$i['smtpsec'] = "SMTP Security Mode";
+
+$i['yes'] = "Yes";
+$i['no'] = "No";
+$i['none'] = "None";
+$i['test'] = "Test";
+
+$i['template_open'] = "Open Request Template";
+$i['template_close'] = "Close Request Template";
+$i['template_update'] = "Update Request Template";
+$i['available_macro'] = "Available Macros";
+
+$i['email_customer'] = "Email Customer";
+
+$i['to'] = "To";
+$i['subject'] = "Subject";
+$i['send'] = "Send";
 }
 
 }

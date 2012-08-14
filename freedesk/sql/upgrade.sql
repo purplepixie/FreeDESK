@@ -13,6 +13,30 @@ ALTER TABLE `customer` ADD `lastname` varchar(254) NOT NULL;
 ALTER TABLE `customer` CHANGE `email` `email` varchar(254) NOT NULL;
 ALTER TABLE `customer` ADD `email` varchar(254) NOT NULL;
 -- 
+-- Table: email
+-- DESCRIBE `email`
+ALTER TABLE `email` CHANGE `accountid` `accountid` mediumint(9) NOT NULL auto_increment;
+ALTER TABLE `email` ADD `accountid` mediumint(9) NOT NULL auto_increment;
+ALTER TABLE `email` ADD PRIMARY KEY( `accountid` );
+ALTER TABLE `email` CHANGE `name` `name` varchar(254) NOT NULL;
+ALTER TABLE `email` ADD `name` varchar(254) NOT NULL;
+ALTER TABLE `email` CHANGE `host` `host` varchar(254) NOT NULL;
+ALTER TABLE `email` ADD `host` varchar(254) NOT NULL;
+ALTER TABLE `email` CHANGE `from` `from` varchar(254) NOT NULL;
+ALTER TABLE `email` ADD `from` varchar(254) NOT NULL;
+ALTER TABLE `email` CHANGE `fromname` `fromname` varchar(254) NOT NULL;
+ALTER TABLE `email` ADD `fromname` varchar(254) NOT NULL;
+ALTER TABLE `email` CHANGE `wordwrap` `wordwrap` int(11) NOT NULL;
+ALTER TABLE `email` ADD `wordwrap` int(11) NOT NULL;
+ALTER TABLE `email` CHANGE `auth` `auth` int(11) NOT NULL;
+ALTER TABLE `email` ADD `auth` int(11) NOT NULL;
+ALTER TABLE `email` CHANGE `username` `username` varchar(254) NOT NULL;
+ALTER TABLE `email` ADD `username` varchar(254) NOT NULL;
+ALTER TABLE `email` CHANGE `password` `password` varchar(254) NOT NULL;
+ALTER TABLE `email` ADD `password` varchar(254) NOT NULL;
+ALTER TABLE `email` CHANGE `smtpsec` `smtpsec` varchar(128) NOT NULL;
+ALTER TABLE `email` ADD `smtpsec` varchar(128) NOT NULL;
+-- 
 -- Table: permgroup
 -- DESCRIBE `permgroup`
 ALTER TABLE `permgroup` CHANGE `permgroupid` `permgroupid` bigint(20) unsigned NOT NULL auto_increment;
@@ -160,6 +184,16 @@ ALTER TABLE `teamuserlink` ADD `teamid` bigint(20) unsigned NOT NULL;
 CREATE INDEX `teamid` ON `teamuserlink` ( `teamid` );
 ALTER TABLE `teamuserlink` CHANGE `username` `username` varchar(254) NOT NULL;
 ALTER TABLE `teamuserlink` ADD `username` varchar(254) NOT NULL;
+-- 
+-- Table: templates
+-- DESCRIBE `templates`
+ALTER TABLE `templates` CHANGE `templateid` `templateid` varchar(128) NOT NULL;
+ALTER TABLE `templates` ADD `templateid` varchar(128) NOT NULL;
+ALTER TABLE `templates` ADD PRIMARY KEY( `templateid` );
+ALTER TABLE `templates` CHANGE `subject` `subject` text NOT NULL;
+ALTER TABLE `templates` ADD `subject` text NOT NULL;
+ALTER TABLE `templates` CHANGE `body` `body` text NOT NULL;
+ALTER TABLE `templates` ADD `body` text NOT NULL;
 -- 
 -- Table: update
 -- DESCRIBE `update`
