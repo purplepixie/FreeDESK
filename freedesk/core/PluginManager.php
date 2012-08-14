@@ -104,6 +104,11 @@ class PluginManager
 	private $scripts = array();
 	
 	/**
+	 * Array of CSS
+	**/
+	private $css = array();
+	
+	/**
 	 * Array of API modes for PIMS
 	**/
 	private $pim_api = array();
@@ -165,6 +170,15 @@ class PluginManager
 	}
 	
 	/**
+	 * Register CSS for inclusion (after Skin CSS)
+	 * @param string $css Web path to CSS
+	**/
+	function RegisterCSS($css)
+	{
+		$this->css[]=$css;
+	}
+	
+	/**
 	 * Register an API call for inclusion
 	 * @param string $mode API Mode
 	 * @param int $id Plugin ID
@@ -197,6 +211,15 @@ class PluginManager
 	function GetScripts()
 	{
 		return $this->scripts;
+	}
+	
+	/**
+	 * Get list of CSS
+	 * @return array List of CSS
+	**/
+	function GetCSS()
+	{
+		return $this->css;
 	}
 	
 	/**

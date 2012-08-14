@@ -142,6 +142,8 @@ class Skin
 		
 		foreach($pim_scripts as $scr)
 			$scripts[]=$scr;
+			
+		$css = $this->DESK->PluginManager->GetCSS();
 		
 		$mode = 1; // 0 - standard, 1 std with no cache, 2 include inline
 	
@@ -149,6 +151,8 @@ class Skin
 		{
 			foreach($scripts as $script)
 				echo "<script type=\"text/javascript\" src=\"".$script."\"></script>\n";
+			foreach($css as $stylesheet)
+				echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"".$stylesheet."\" />\n";
 		}
 		else if ($mode==1)
 		{
@@ -165,6 +169,16 @@ class Skin
 				}
 				echo "<script type=\"text/javascript\" src=\"".$script."?nc=".$nc."\"></script>\n";
 			}
+			foreach($css as $stylesheet)
+			{
+				$nc="";
+				for($a=0; $a<$len; ++$a)
+				{
+					$nc.=$chars[mt_rand(0,$clen-1)];
+				}
+				echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"".$stylesheet."?nc=".$nc."\" />\n";
+			}
+				
 		}
 		else
 		{
@@ -175,6 +189,14 @@ class Skin
 				echo "\n";
 			}
 			echo "\n</script>\n";
+			
+			echo "\n<style type=\"text/css\">\n";
+			foreach($css as $stylesheet)
+			{
+				echo file_get_contents($stylesheet);
+				echo "\n";
+			}
+			echo "\n</style>\n";
 		}
 		
 		if ($this->DESK->ContextManager->IsOpen())

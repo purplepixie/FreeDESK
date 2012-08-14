@@ -179,8 +179,77 @@ class simplereporting extends FreeDESK_PIM
 			
 			if (isset($_REQUEST['runreport']))
 			{
+				$priorities = $this->DESK->RequestManager->GetPriorityList();
+				$data = array();
+			
 				echo "<br /><br />";
 				echo "<h3>Report for ".$sYear."-".$sMonth."-".$sDay." to ".$fYear."-".$fMonth."-".$fDay."</h3>\n";
+				
+				$start=$sYear."-".$sMonth."-".$sDay." 00:00:00";
+				$finish=$fYear."-".$fMonth."-".$fDay." 00:00:00";
+				
+				$q="SELECT ".$this->DESK->Database->Field("openeddt").",".$this->DESK->Database->Field("closeddt").",".$this->DESK->Database->Field("priority").",";
+				$q.="TIMESTAMPDIFF(SECOND,".$this->DESK->Database->Field("openeddt").",".$this->DESK->Database->Field("closeddt").") AS diff ";
+				$q.="FROM ".$this->DESK->Database->Table("request")." WHERE ".$this->DESK->Database->Field("closeddt").">=".$this->DESK->Database->SafeQuote($start)." AND ";
+				$q.=$this->DESK->Database->Field("closeddt")."<=".$this->DESK->Database->SafeQuote($finish);
+				
+				$r=$this->DESK->Database->Query($q);
+				
+				//print_r($priorities);
+				echo "Found: ".$this->DESK->Database->NumRows($r);
+				echo "<br /><br />\n";
+				
+				while($row = $this->DESK->Database->FetchAssoc($r))
+				{
+					$diff = $row['diff'];
+					//echo $diff."<br />";
+					$pri = $row['priority'];
+					//echo $pri."<br />";
+					//echo $priorities[$pri]['resolutionsla']."<br />";
+					if (!isset($priorities[$pri]))
+						$pri = 0;
+					if (!isset($out[$pri]))
+						$out[$pri]=array( "count" => 0, "within" => 0 );
+					$out[$pri]["count"]++;
+					//echo $pri."<br />";
+					if ($pri != 0)
+					{
+						if ($diff <= $priorities[$pri]['resolutionsla'])
+							$out[$pri]["within"]++;
+						//echo "(".$diff.") (".$priorities[$pri]['resolutionsla'].")<br />\n";
+					}
+				}
+				
+				echo "<table>\n";
+				echo "<tr>\n";
+				echo "<th>Priority</th>\n";
+				echo "<th>Count</th>\n";
+				echo "<th>Within (n)</th>\n";
+				echo "<th>Within %</th>\n";
+				echo "</tr>\n";
+				
+				foreach($out as $pri => $detail)
+				{
+					echo "<tr>\n";
+					echo "<td>\n";
+					if (!isset($priorities[$pri]))
+						echo "Unknown";
+					else
+						echo $priorities[$pri]['priorityname'];
+					echo "</td>\n";
+					echo "<td>".$detail['count']."</td>\n";
+					echo "<td>".$detail['within']."</td>\n";
+					if ($detail['count']>0 && $detail['within']>0)
+						$perc = ($detail['within']/$detail['count'])*100;
+					else
+						$perc = "0.00";
+					echo "<td>".$perc." %</td>\n";
+					echo "</tr>";
+				}
+				
+				echo "</table>\n";
+				
+				$this->DESK->Database->Free($r);
 			}
 		}
 	}

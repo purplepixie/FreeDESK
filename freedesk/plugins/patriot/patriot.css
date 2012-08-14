@@ -1,0 +1,109 @@
+/* -------------------------------------------------------------
+This file is part of FreeDESK
+
+FreeDESK is (C) Copyright 2012 David Cutting
+
+FreeDESK is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+FreeDESK is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with FreeDESK.  If not, see www.gnu.org/licenses
+
+For more information see www.purplepixie.org/freedesk/
+-------------------------------------------------------------- */
+
+
+div.header1
+{
+	background: red;
+	-moz-border-radius-topleft: 1em;
+	-webkit-border-top-left-radius: 1em;
+	-moz-border-radius-topright: 1em;
+	-webkit-border-top-right-radius: 1em;
+	border-top-left-radius: 1em;
+	border-top-right-radius: 1em;
+	padding: 0.3em;
+	padding-left: 1.0em;
+}
+
+
+div.footer1
+{
+	background: red;
+	-moz-border-radius-bottomleft: 1em;
+	-webkit-border-bottom-left-radius: 1em;
+	-moz-border-radius-bottomright: 1em;
+	-webkit-border-bottom-right-radius: 1em;
+	border-bottom-left-radius: 1em;
+	border-bottom-right-radius: 1em;
+	padding: 0.5em;
+	color: white;
+	clear: both;
+	margin-top: 1em;
+}
+
+div.header2
+{
+	background: white;
+	-moz-border-radius-topleft: 1em;
+	-webkit-border-top-left-radius: 1em;
+	-moz-border-radius-topright: 1em;
+	-webkit-border-top-right-radius: 1em;
+	border-top-left-radius: 1em;
+	border-top-right-radius: 1em;
+	padding: 0.3em;
+	padding-left: 1.0em;
+}
+
+
+div.footer2
+{
+	background: white;
+	-moz-border-radius-bottomleft: 1em;
+	-webkit-border-bottom-left-radius: 1em;
+	-moz-border-radius-bottomright: 1em;
+	-webkit-border-bottom-right-radius: 1em;
+	border-bottom-left-radius: 1em;
+	border-bottom-right-radius: 1em;
+	padding: 0.5em;
+	color: white;
+	clear: both;
+	margin-top: 1em;
+}
+
+div.header3
+{
+	background: blue;
+	-moz-border-radius-topleft: 1em;
+	-webkit-border-top-left-radius: 1em;
+	-moz-border-radius-topright: 1em;
+	-webkit-border-top-right-radius: 1em;
+	border-top-left-radius: 1em;
+	border-top-right-radius: 1em;
+	padding: 0.3em;
+	padding-left: 1.0em;
+}
+
+
+div.footer3
+{
+	background: blue;
+	-moz-border-radius-bottomleft: 1em;
+	-webkit-border-bottom-left-radius: 1em;
+	-moz-border-radius-bottomright: 1em;
+	-webkit-border-bottom-right-radius: 1em;
+	border-bottom-left-radius: 1em;
+	border-bottom-right-radius: 1em;
+	padding: 0.5em;
+	color: white;
+	clear: both;
+	margin-top: 1em;
+}
+
