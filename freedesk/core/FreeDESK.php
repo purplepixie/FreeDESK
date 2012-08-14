@@ -127,6 +127,11 @@ class FreeDESK
 	**/
 	var $Lang = null;
 	
+	/**
+	 * Email System
+	**/
+	var $Email = null;
+	
 	// Methods and Processes in Main FreeDESK class
 	
 	/**
@@ -210,6 +215,9 @@ class FreeDESK
 		
 		// Language
 		$this->Lang = $this->Include->IncludeInstance("core/Language.php", "Language");
+		
+		// Email
+		$this->Email = $this->Include->IncludeInstance("core/Email.php", "Email");
 		
 	}
 	
