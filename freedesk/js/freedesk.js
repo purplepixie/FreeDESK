@@ -430,7 +430,7 @@ function FreeDESK()
 		
 		var windowopts = "location=0,status=0,scrollbars=1,toolbar=0,width="+xsize+",height="+ysize+",resizeable="+resizeable;
 		
-		window.open(url, windowname, windowopts);
+		window.open(url, '', windowopts);
 	}
 	
 	// Perform an entity search
