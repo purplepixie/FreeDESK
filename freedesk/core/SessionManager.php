@@ -81,8 +81,8 @@ class Session
 	{
 		$name = "";
 		if ($this->type == ContextType::Customer)
-			$name.="CUSTOMER: ";
-		if ($this->realname != "")
+			$name.="CUSTOMER";
+		else if ($this->realname != "")
 			$name.=$this->realname;
 		else
 			$name.=$this->username;
@@ -121,44 +121,90 @@ class SessionManager
 	function Create($type, $username, $password)
 	{	// TODO: Customer
 		$expiry = $this->DESK->Configuration->Get("session.expire","15");
-		// Fetch user auth type
-		$q="SELECT ".$this->DESK->Database->Field("authtype").",".$this->DESK->Database->Field("realname")." FROM ".$this->DESK->Database->Table("user")." ";
-		$q.="WHERE ".$this->DESK->Database->Field("username")."=\"".$this->DESK->Database->Safe($username)."\" LIMIT 0,1";
-		$r=$this->DESK->Database->Query($q);
-		$user=$this->DESK->Database->FetchAssoc($r);
-		$this->DESK->Database->Free($r);
-		if ($user)
+		
+		if ($type == ContextType::User)
 		{
-			$authtype=$user['authtype'];
-			if ($authtype=="")
-				$authtype=$this->DESK->Configuration->Get("auth.default","standard");
-			$authmethod=AuthenticationFactory::Create($this->DESK, $authtype);
-			if (!$authmethod)
-				return false;
-			if ($authmethod->Authenticate($type, $username, $password))
+		
+			// Fetch user auth type
+		
+			$q="SELECT ".$this->DESK->Database->Field("authtype").",".$this->DESK->Database->Field("realname")." FROM ".$this->DESK->Database->Table("user")." ";
+			$q.="WHERE ".$this->DESK->Database->Field("username")."=\"".$this->DESK->Database->Safe($username)."\" LIMIT 0,1";
+		
+			
+			$r=$this->DESK->Database->Query($q);
+			$user=$this->DESK->Database->FetchAssoc($r);
+			$this->DESK->Database->Free($r);
+			if ($user)
 			{
+				$authtype=$user['authtype'];
+				if ($authtype=="")
+					$authtype=$this->DESK->Configuration->Get("auth.default","standard");
+				$authmethod=AuthenticationFactory::Create($this->DESK, $authtype);
+				if (!$authmethod)
+					return false;
+				if ($authmethod->Authenticate($type, $username, $password))
+				{
+					// Successful Login
+					$session = new Session();
+					$session->type = $type;
+					$session->username = $username;
+					$session->realname = $user['realname'];
+					$session->CreateSID();
+				
+					// Create the session in the DB
+					$q="INSERT INTO ".$this->DESK->Database->Table("session")."(".$this->DESK->Database->Field("username").",";
+					$q.=$this->DESK->Database->Field("session_id").",".$this->DESK->Database->Field("sessiontype").",";
+					$q.=$this->DESK->Database->Field("created_dt").",".$this->DESK->Database->Field("updated_dt").",";
+					$q.=$this->DESK->Database->Field("expires_dt").",".$this->DESK->Database->Field("realname").") VALUES(";
+					$q.="\"".$this->DESK->Database->Safe($username)."\",";
+					$q.="\"".$this->DESK->Database->Safe($session->sid)."\",";
+					$q.=$this->DESK->Database->Safe($type).",";
+					$q.="NOW(),NOW(),DATE_ADD(NOW(), INTERVAL ".$this->DESK->Database->Safe($expiry)." MINUTE),";
+					$q.=$this->DESK->Database->SafeQuote($user['realname']).")";
+				
+					$this->DESK->Database->Query($q);
+				
+					return $session;
+				}
+			}
+			return false; // failure
+		}
+		else if ($type == ContextType::Customer && $username!="" && $password!="")
+		{
+			$q="SELECT * FROM ".$this->DESK->Database->Table("customer")." WHERE ";
+			$q.="(".$this->DESK->Database->Field("username")."=".$this->DESK->Database->SafeQuote($username)." OR ";
+			$q.=$this->DESK->Database->Field("email")."=".$this->DESK->Database->SafeQuote($username).") AND ";
+			$q.=$this->DESK->Database->Field("password")."=".$this->DESK->Database->SafeQuote($password);
+			$q.=" LIMIT 0,1";
+			
+			$r=$this->DESK->Database->Query($q);
+			if ($user=$this->DESK->Database->FetchAssoc($r))
+			{
+				$this->DESK->Database->Free($r);
 				// Successful Login
 				$session = new Session();
 				$session->type = $type;
-				$session->username = $username;
-				$session->realname = $user['realname'];
+				$session->username = $user['customerid'];
+				$session->realname = "CUSTOMER:".$user['firstname']." ".$user['lastname'];
 				$session->CreateSID();
-				
+			
 				// Create the session in the DB
 				$q="INSERT INTO ".$this->DESK->Database->Table("session")."(".$this->DESK->Database->Field("username").",";
 				$q.=$this->DESK->Database->Field("session_id").",".$this->DESK->Database->Field("sessiontype").",";
 				$q.=$this->DESK->Database->Field("created_dt").",".$this->DESK->Database->Field("updated_dt").",";
 				$q.=$this->DESK->Database->Field("expires_dt").",".$this->DESK->Database->Field("realname").") VALUES(";
-				$q.="\"".$this->DESK->Database->Safe($username)."\",";
+				$q.="\"".$this->DESK->Database->Safe($session->username)."\",";
 				$q.="\"".$this->DESK->Database->Safe($session->sid)."\",";
 				$q.=$this->DESK->Database->Safe($type).",";
 				$q.="NOW(),NOW(),DATE_ADD(NOW(), INTERVAL ".$this->DESK->Database->Safe($expiry)." MINUTE),";
 				$q.=$this->DESK->Database->SafeQuote($user['realname']).")";
-				
+			
 				$this->DESK->Database->Query($q);
-				
+			
 				return $session;
 			}
+			else
+				return false; // failed login
 		}
 		return false; // default failure
 	}

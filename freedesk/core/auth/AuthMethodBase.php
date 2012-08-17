@@ -31,7 +31,7 @@ abstract class AuthMethodBase extends FreeDESK_PIM
 	**/
 	function AuthMethodBase(&$freeDESK)
 	{
-		parent::FreeDESK_PIM($freeDESK);
+		parent::FreeDESK_PIM(&$freeDESK, "", "", 0);
 	}
 	
 	/**

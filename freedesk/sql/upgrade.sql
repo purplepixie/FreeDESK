@@ -12,6 +12,10 @@ ALTER TABLE `customer` CHANGE `lastname` `lastname` varchar(254) NOT NULL;
 ALTER TABLE `customer` ADD `lastname` varchar(254) NOT NULL;
 ALTER TABLE `customer` CHANGE `email` `email` varchar(254) NOT NULL;
 ALTER TABLE `customer` ADD `email` varchar(254) NOT NULL;
+ALTER TABLE `customer` CHANGE `username` `username` varchar(254) NOT NULL;
+ALTER TABLE `customer` ADD `username` varchar(254) NOT NULL;
+ALTER TABLE `customer` CHANGE `password` `password` varchar(254) NOT NULL;
+ALTER TABLE `customer` ADD `password` varchar(254) NOT NULL;
 -- 
 -- Table: email
 -- DESCRIBE `email`

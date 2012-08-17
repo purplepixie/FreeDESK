@@ -137,8 +137,12 @@ else if ($mode == "edit")
 			echo "<tr>\n";
 			echo "<td>".$field->name."</td>\n";
 			echo "<td>\n";
-			// TODO: Different field types
-			$i="<input type=\"text\" name=\"".$id."\" value=\"".$data[$id]."\"";
+			// TODO: Different field types in full
+			if ($field->type == DD_FieldType::Password)
+				$t="password";
+			else
+				$t="text";
+			$i="<input type=\"".$t."\" name=\"".$id."\" value=\"".$data[$id]."\"";
 			if ($field->readonly)
 				$i.=" readonly";
 			$i.=">";
@@ -172,8 +176,12 @@ else if ($mode == "create")
 		echo "<tr>\n";
 		echo "<td>".$field->name."</td>\n";
 		echo "<td>\n";
-		// TODO: Different field types
-		echo "<input type=\"text\" name=\"".$id."\" value=\"\">\n";
+		// TODO: Different field types in full
+		if ($field->type == DD_FieldType::Password)
+				$t="password";
+			else
+				$t="text";
+		echo "<input type=\"".$t."\" name=\"".$id."\" value=\"\">\n";
 		echo "</td></tr>";
 	}
 	echo "<tr><td>\n";

@@ -305,6 +305,24 @@ static function Exec(&$DESK)
 	$f->display=true;
 	$customer->Add($f);
 	
+	$f = new DD_Field();
+	$f->name="Username";
+	$f->field="username";
+	$f->type=DD_FieldType::Char;
+	$f->size=254;
+	$f->searchable=true;
+	$f->display=true;
+	$customer->Add($f);
+	
+	$f = new DD_Field();
+	$f->name="Password";
+	$f->field="password";
+	$f->type=DD_FieldType::Password;
+	$f->size=254;
+	$f->searchable=true;
+	$f->display=true;
+	$customer->Add($f);
+	
 	$DESK->DataDictionary->AddTable($customer);
 }
 

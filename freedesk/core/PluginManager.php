@@ -284,8 +284,8 @@ class PluginManager
 	**/
 	function LoadPIM($pim)
 	{
-		$filepath = "plugins/".$pim."/";
-		$webpath = "plugins/".$pim."/";
+		$filepath = $this->DESK->BaseDir."plugins/".$pim."/";
+		$webpath = $this->DESK->BaseDir."plugins/".$pim."/";
 		$id = $this->pim_counter++;
 		
 		include($filepath.$pim.".php");

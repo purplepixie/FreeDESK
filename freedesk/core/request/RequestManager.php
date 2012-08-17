@@ -568,6 +568,44 @@ class RequestManager
 		$this->DESK->Database->Query($q);
 	}
 	
+	/**
+	 * Search requests against parameters - no filtering
+	 * @param array Search parameters (in form "field" "value" opt "match" [LIKE or =, default to =])
+	 * @return array Request list with all raw data (no class instances)
+	**/
+	function SearchRequests($parameters)
+	{
+		$q="SELECT * FROM ".$this->DESK->Database->Table("request");
+		if (sizeof($parameters)>0)
+		{
+			$q.=" WHERE ";
+			$first=true;
+			foreach($parameters as $param)
+			{
+				if ($first)
+					$first=false;
+				else
+					$q.=" AND ";
+				$w=$this->DESK->Database->Field($param["field"]);
+				if (isset($param["match"]))
+					$w.=" ".$param["match"]." ";
+				else
+					$w.="=";
+				$w.=$this->DESK->Database->SafeQuote($param["value"]);
+				$q.=$w;
+			}
+		}
+		//echo $q;
+		$r=$this->DESK->Database->Query($q);
+		$out = array();
+		while ($row=$this->DESK->Database->FetchAssoc($r))
+		{
+			$out[]=$row;
+		}
+		$this->DESK->Database->Free($r);
+		return $out;
+	}
+	
 	
 	
 }

@@ -221,7 +221,42 @@ class ContextManager
 		}
 		else if ($type == ContextType::Customer)
 		{
-			//
+			if ($sid=="")
+			{
+				$session=$this->SessionManager->Create($type, $username, $password);
+				if (!$session) // session creation failed
+				{
+					$this->DESK->LoggingEngine->Log("Session Creation Failed for Customer ".$username, "Context", "Fail", 4);
+					return false;
+				}
+				else
+				{
+					$this->DESK->LoggingEngine->Log("Session Created for Customer ".$username, "Context", "Open", 9);
+					$this->type = $type;
+					$this->open = true;
+					$this->Session=$session;
+					$this->BuildMenuItems();
+					return true;
+				}
+			}
+			else // pre-existing session
+			{
+				$session=$this->SessionManager->Check($sid);
+				if (!$session)
+				{
+					$this->DESK->LoggingEngine->Log("Session Check Failed for SID ".$sid, "Context", "Fail", 9);
+					return false;
+				}
+				else
+				{
+					$this->DESK->LoggingEngine->Log("Session Check for Customer ".$session->username, "Context", "Check", 9);
+					$this->type = $type;
+					$this->open = true;
+					$this->Session=$session;
+					$this->BuildMenuItems();
+					return true;
+				}
+			}
 		}
 		return false;
 	}

@@ -49,6 +49,10 @@ abstract class DD_FieldType
 	 * Text (large multi-line block)
 	**/
 	const Text = 5;
+	/**
+	 * Password (textual)
+	**/
+	const Password = 6;
 }
 
 /**
