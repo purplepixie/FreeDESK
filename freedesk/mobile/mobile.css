@@ -1,0 +1,133 @@
+/* -------------------------------------------------------------
+This file is part of FreeDESK
+
+FreeDESK is (C) Copyright 2012 David Cutting
+
+FreeDESK is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+FreeDESK is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with FreeDESK.  If not, see www.gnu.org/licenses
+
+For more information see www.purplepixie.org/freedesk/
+-------------------------------------------------------------- */
+
+body
+{
+	font-family: Verdana, sans-serif;
+	font-size: 12pt;
+	margin: 0px;
+}
+
+div.header
+{
+	background-color: black;
+	color: white;
+	font-weight: bold;
+	padding: 0.5em 0.5em 0.5em 1.0em;
+	-moz-border-radius-bottomright: 1em;
+	border-bottom-right-radius: 1em;
+	-moz-border-radius-bottomleft: 1em;
+	border-bottom-left-radius: 1em;
+}
+
+div.container
+{
+	padding: 0.5em;
+}
+
+input.mobLogin
+{
+	width: 95%;
+	background-color: #f9f9f9;
+	border: solid 1px black;
+	font-size: 14pt;
+}
+
+
+table.reqList
+{
+	width: 95%;
+}
+
+table.reqList tr.row0
+{
+	/* */
+}
+
+input.openButton
+{
+	background-color: white;
+	border: solid 1px #909090;
+	padding: 0.5em;
+}
+
+table.reqList tr.row1
+{
+	background-color: #f0f0f0;
+}
+
+table.reqList tr.row1 input.openButton
+{
+	background-color: #f0f0f0;
+	border: solid 1px #909090;
+	padding: 0.5em;
+}
+
+table.reqList tr.row0:hover
+{
+	background-color: #f0fff0;
+}
+
+table.reqList tr.row1:hover
+{
+	background-color: #e0f0e0;
+}
+
+table.reqList td
+{
+	padding: 0.5em 0.1em 0.5em 0.1em;
+}
+
+a
+{
+	text-decoration: none;
+}
+
+div.update
+{
+	/* */
+}
+
+div.update_header
+{
+	background-color: #e0e0e0;
+	font-weight: bold;
+	font-size: 10pt;
+	width: 95%;
+}
+
+div.update_content
+{
+	margin-bottom: 1em;
+	width: 95%;
+}
+
+textarea.update
+{
+	width: 95%;
+	height: 5em;
+}
+
+select.update
+{
+	width: 95%;
+}
+
