@@ -716,6 +716,12 @@ function FreeDESK()
 		document.forms[formid][mField].value = hms[1];
 		document.forms[formid][sField].value = hms[2];
 	}
+	
+	// Go to the mobile interface
+	this.goMobile = function()
+	{
+		window.location.href = "mobile/?sid="+DESK.sid;
+	}
 }
 
 var DESK = new FreeDESK();

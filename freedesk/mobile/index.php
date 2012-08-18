@@ -39,23 +39,37 @@ if (isset($_REQUEST['action']))
 {
 	if ($_REQUEST['action'] == "updaterequest")
 	{
-		$rid = $_REQUEST['requestid'];
-		$req = $DESK->RequestManager->Fetch($rid);
-		if ($rid !== false && $req->Get("customerid")==$DESK->ContextManager->Session->username)
+		$req = $DESK->RequestManager->Fetch($_REQUEST['requestid']);
+		if ($req->Get("assignuser") == $DESK->ContextManager->Session->username)
 		{
-			$req->Update($_REQUEST['update']);
+			if ($_REQUEST['update'] != "")
+				$req->Update($_REQUEST['update'], true);
+			if ($_REQUEST['status'] != "")
+				$req->Status($_REQUEST['status'], true);
+			if ($_REQUEST['assign'] != "")
+			{
+				$team = 0;
+				$user = "";
+				$assign = $_REQUEST['assign'];
+				
+				if (is_numeric($assign))
+					$team = $assign;
+				else
+				{
+					$parts = explode("/",$assign);
+					$team = $parts[0];
+					if (isset($parts[1]))
+						$user=$parts[1];
+				}
+				$req->Assign($team, $user, true);
+				// If now assigned to someone else we can't view it so redirect
+				if ($user != $DESK->ContextManager->Session->username)
+				{
+					header("Location: ./?sid=".$_REQUEST['sid']);
+					exit();
+				}
+			}
 		}
-	}
-	else if ($_REQUEST['action'] == "createrequest")
-	{
-		$req = $DESK->RequestManager->CreateById("");
-		$rid=$req->Create($DESK->ContextManager->Session->username,
-			$_REQUEST['update'],
-			"",
-			1 );
-		$loc="./?mode=request&requestid=".$rid."&sid=".$_REQUEST['sid'];
-		header("Location: ".$loc);
-		exit();
 	}
 }
 
@@ -106,7 +120,7 @@ if (isset($_REQUEST['mode']) && $_REQUEST['mode']=="request")
 		
 		echo "<h3>Update Request</h3>\n";
 		echo "<form id=\"update_form\" action=\"./\" method=\"post\">\n";
-		echo "<input type=\"hidden\" name=\"action\" value=\"update\" />\n";
+		echo "<input type=\"hidden\" name=\"action\" value=\"updaterequest\" />\n";
 		echo "<input type=\"hidden\" name=\"mode\" value=\"request\" />\n";
 		echo "<input type=\"hidden\" name=\"requestid\" value=\"".$_REQUEST['requestid']."\" />\n";
 		echo "<input type=\"hidden\" name=\"sid\" value=\"".$_REQUEST['sid']."\" />\n";

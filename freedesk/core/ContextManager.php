@@ -382,6 +382,12 @@ class ContextManager
 		$relogin->onclick="DESK.relogin();";
 		$sys->submenu[]=$relogin;
 		
+		$mobile = new MenuItem();
+		$mobile->tag="mobile";
+		$mobile->display="Mobile Interface";
+		$mobile->onclick="DESK.goMobile();";
+		$sys->submenu[]=$mobile;
+		
 		$logout = new MenuItem();
 		$logout->tag="logout";
 		$logout->display="Logout";

@@ -41,6 +41,14 @@ ob_end_clean();
 
 if (!isset($_REQUEST['sid']))
 {
+	if (!isset($_REQUEST['mobileoverride']))
+	{
+		if (BrowserDetect::isMobile())
+		{
+			header("Location: mobile/");
+			exit();
+		}
+	}
 	$data=array("title"=>$DESK->Lang->Get("welcome"));
 	$DESK->Skin->IncludeFile("header.php",$data);
 

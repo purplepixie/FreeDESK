@@ -219,6 +219,9 @@ class FreeDESK
 		// Email
 		$this->Email = $this->Include->IncludeInstance("core/Email.php", "Email");
 		
+		// Browser Detection
+		$this->Include->IncludeFile("core/BrowserDetect.php");
+		
 	}
 	
 	/**
