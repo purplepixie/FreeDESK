@@ -114,6 +114,11 @@ class PluginManager
 	private $pim_api = array();
 	
 	/**
+	 * Array of events registered for PIMS
+	**/
+	private $pim_events = array();
+	
+	/**
 	 * Installed PIM List
 	**/
 	private $installed_pims = null;
@@ -202,6 +207,34 @@ class PluginManager
 				return true;
 			}
 		return false;
+	}
+	
+	/**
+	 * Register an event call to a PIM for calling
+	 * @param string $event Event call
+	 * @param int $id Plugin ID
+	**/
+	function RegisterPIMEvent($event, $id)
+	{
+		if (!isset($this->pim_events[$event]))
+			$this->pim_events[$event]=array();
+		$this->pim_events[$event][] = $id;
+	}
+	
+	/**
+	 * Call an event
+	 * @param string $event Event Call
+	 * @param array &$data Event data
+	**/
+	function Event($event, &$data)
+	{
+		if (isset($this->pim_events[$event]))
+		{
+			foreach($this->pim_events[$event] as $id)
+			{
+				$this->pims[$id]->Event($event, &$data);
+			}
+		}
 	}
 	
 	/**
