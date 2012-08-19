@@ -265,6 +265,8 @@ class DataDictionary
 	function AddTable($table)
 	{
 		$this->Tables[$table->entity] = $table;
+		$perm = "entity_".$table->entity;
+		$this->DESK->PermissionManager->Register($perm, false);
 	}
 	
 	/**

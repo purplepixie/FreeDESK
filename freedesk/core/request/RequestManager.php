@@ -107,22 +107,38 @@ class RequestManager
 				$teamlink[$row['teamid']]=array( $row['username'] );
 		}
 
+
+		$pRvOtherTeam = $this->DESK->ContextManager->Permission("request_view_otherteam");
+		$pRvOtherTeamUser = $this->DESK->ContextManager->Permission("request_view_otherteamuser");
+		$pRvOtherUser = $this->DESK->ContextManager->Permission("request_view_otheruser");
+		$pRvUnassigned = $this->DESK->ContextManager->Permission("request_view_unassigned");
+		
+		$pRaOtherTeam = $this->DESK->ContextManager->Permission("request_assign_otherteam");
+		$pRaOtherTeamUser = $this->DESK->ContextManager->Permission("request_assign_otherteamuser");
+		$pRaOtherUser = $this->DESK->ContextManager->Permission("request_assign_otheruser");
+		$pRaUnassigned = $this->DESK->ContextManager->Permission("request_assign_unassigned");
+
 		$out[0]=array(
 			"name" => "Unassigned",
 			"id" => 0,
 			"team" => true,
-			"assign" => true,
-			"view" => true,
+			"assign" => $pRaUnassigned,
+			"view" => $pRvUnassigned,
 			"items" => array() );
 
 		foreach($team as $teamid => $teamname)
 		{
+			$userInTeam = $this->IsUserInTeam($this->DESK->ContextManager->Session->username, $teamid);
+			
+			$assign = ($userInTeam || $pRaOtherTeam) ? true : false;
+			$view = ($userInTeam || $pRvOtherTeam) ? true : false;
+			
 			$out[$teamid]=array(
 				"name" => $teamname,
 				"id" => $teamid,
 				"team" => true,
-				"assign" => true,
-				"view" => true,
+				"assign" => $assign,
+				"view" => $view,
 				"items" => array() );
 				
 			if (isset($teamlink[$teamid]))
@@ -130,11 +146,14 @@ class RequestManager
 					
 				foreach($teamlink[$teamid] as $username)
 				{
+					$assign = ($userInTeam || $pRaOtherTeamUser) ? true : false;
+					$view = ($userInTeam || $pRvOtherTeamUser) ? true : false;
+					
 					$out[$teamid]["items"][$username] = array (
 						"username" => $username,
 						"realname" => $users[$username],
-						"assign" => true,
-						"view" => true );
+						"assign" => $assign,
+						"view" => $view );
 				}
 			}
 		}
@@ -148,11 +167,14 @@ class RequestManager
 			"items" => array() );
 		foreach($users as $username => $realname)
 		{
+			$assign = ($this->DESK->ContextManager->Session->username == $username || $pRaOtherUser) ? true : false;
+			$view = ($this->DESK->ContextManager->Session->username == $username || $pRvOtherUser) ? true : false;
+			
 			$out['allusers']['items'][$username] = array(
 				"username" => $username,
 				"realname" => $realname,
-				"assign" => true,
-				"view" => true );
+				"assign" => $assign,
+				"view" => $view );
 		}
 		
 		return $out;
@@ -341,14 +363,14 @@ class RequestManager
 		$q.=$this->DESK->Database->Field("username")."=".$this->DESK->Database->SafeQuote($username);
 		$q.=" LIMIT 0,1";
 		
-		$r=$DESK->Database->Query($q);
+		$r=$this->DESK->Database->Query($q);
 		
 		$inteam=false;
 		
-		if ($row=$DESK->Database->FetchAssoc($r))
+		if ($row=$this->DESK->Database->FetchAssoc($r))
 			$inteam=true;
 			
-		$DESK->Database->Free($r);
+		$this->DESK->Database->Free($r);
 		
 		return $inteam;
 	}

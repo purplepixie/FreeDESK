@@ -347,7 +347,7 @@ class ContextManager
 		
 		foreach($this->DESK->DataDictionary->Tables as $table)
 		{
-			if ($table->editable)
+			if ($table->editable && $this->DESK->ContextManager->Permission("entity_".$table->entity))
 			{
 				$add = new MenuItem();
 				$add->tag=$table->entity."_create";
@@ -370,11 +370,14 @@ class ContextManager
 		$sys->tag="system";
 		$sys->display="System";
 		
-		$i = new MenuItem();
-		$i->tag="sysadmin";
-		$i->display="System Settings";
-		$i->onclick="DESK.loadSubpage('sysadmin');";
-		$sys->submenu[]=$i;
+		if ($this->DESK->ContextManager->Permission("page.sysadmin"))
+		{
+			$i = new MenuItem();
+			$i->tag="sysadmin";
+			$i->display="System Settings";
+			$i->onclick="DESK.loadSubpage('sysadmin');";
+			$sys->submenu[]=$i;
+		}
 		
 		$relogin = new MenuItem();
 		$relogin->tag="relogin";

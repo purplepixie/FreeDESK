@@ -32,7 +32,7 @@ class FreeDESK
 	/**
 	 * Patch Level
 	**/
-	private $patchVersion = 0;
+	private $patchVersion = 2;
 	/**
 	 * Release level flag (a b or blank)
 	**/

@@ -69,7 +69,7 @@ if ( ($table === false) || (!$table->editable) )
 {
 	echo "<h3>".$DESK->Lang->Get("entity_not_found")."</h3>";
 }
-else if (!$DESK->ContextManager->Permission("entity_view.".$entity))
+else if (!$DESK->ContextManager->Permission("entity_".$entity))
 {
 	echo "<h3>".$DESK->Lang->Get("permission_denied")."</h3>";
 }
