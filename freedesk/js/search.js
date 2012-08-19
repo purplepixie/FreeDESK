@@ -180,7 +180,7 @@ function FreeDESK_Search()
 					keyfieldval = data;
 					if (DESKSearch.callback != null)
 					{
-						data = "<a href=\"#\" onclick=\"DESKSearch.callback('"+keyfieldval+"');\">"+keyfieldval+"</a>";
+						data = "<a href=\"#\" onclick=\"DESKSearch.callback('"+keyfieldval+"'); window.close();\">"+keyfieldval+"</a>";
 						if (callbacknow)
 						{
 							DESKSearch.callback(keyfieldval);

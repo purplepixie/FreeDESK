@@ -416,6 +416,7 @@ function FreeDESK()
 	// Open a Window
 	this.openWindow = function(windowname, url, xsize, ysize, resizeable)
 	{
+		//alert(url);
 		if (xsize == undefined)
 			var xsize = 700;
 		if (ysize == undefined)
