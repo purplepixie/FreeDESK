@@ -42,6 +42,7 @@ function Start()
   $table = new DD_Table();
   $table->name = "Locations";
   $table->entity = "vis_country";
+  //$table->keyfield = "country";
   $table->editable = true;
   
 	$f = new DD_Field();
@@ -51,6 +52,7 @@ function Start()
 	$f->size=254;
 	$f->searchable=true;
 	$f->display=true;
+	$f->keyfield=true;
 	$table->Add($f);
 	
 	$f = new DD_Field();

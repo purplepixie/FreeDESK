@@ -67,11 +67,14 @@ class EntityManager
 		if ($keyfield == "")
 			return false; // no keyfield defined in DD
 			
-		$qb = new QueryBuilder();
-		$qb->Add($keyfield, QueryType::Equal, $value);
+		//$qb = new QueryBuilder();
+		//$qb->Add($keyfield, QueryType::Equal, $value);
 		
 		$q="SELECT * FROM ".$this->DESK->Database->Table($table->entity);
-		$q.=" WHERE ".$this->DESK->Database->Clause($qb);
+		//$q.=" WHERE ".$this->DESK->Database->Clause($qb);
+		$q.=" WHERE ".$this->DESK->Database->Field($keyfield)."=".$this->DESK->Database->SafeQuote($value);
+		
+		//echo $q;
 		
 		$r=$this->DESK->Database->Query($q);
 		

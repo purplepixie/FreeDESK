@@ -72,7 +72,8 @@ if (isset($_REQUEST['action']))
 <div class="header">FreeDESK Customer Interface</div>
 <div class="menu">
 <a href="./?mode=new&sid=<?php echo $_REQUEST['sid']; ?>">New Request</a> | 
-<a href="./?mode=myrequests&sid=<?php echo $_REQUEST['sid']; ?>">My Requests</a>
+<a href="./?mode=myrequests&sid=<?php echo $_REQUEST['sid']; ?>">My Requests</a> | 
+<a href="../">Logout</a>
 </div>
 <?php
 if (!isset($_REQUEST['mode']))
