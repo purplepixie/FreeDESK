@@ -252,3 +252,16 @@ ALTER TABLE `%%$%%user` ADD `sparefield8` varchar(254) NOT NULL;
 ALTER TABLE `%%$%%user` CHANGE `sparefield9` `sparefield9` varchar(254) NOT NULL;
 ALTER TABLE `%%$%%user` ADD `sparefield9` varchar(254) NOT NULL;
 -- 
+-- Table: vis_country
+-- DESCRIBE `vis_country`
+ALTER TABLE `%%$%%vis_country` CHANGE `country` `country` char(2) NOT NULL;
+ALTER TABLE `%%$%%vis_country` ADD `country` char(2) NOT NULL;
+CREATE INDEX `country` ON `vis_country` ( `country` );
+ALTER TABLE `%%$%%vis_country` CHANGE `country_desc` `country_desc` varchar(120) NOT NULL;
+ALTER TABLE `%%$%%vis_country` ADD `country_desc` varchar(120) NOT NULL;
+CREATE INDEX `country_desc` ON `vis_country` ( `country_desc` );
+ALTER TABLE `%%$%%vis_country` CHANGE `lat` `lat` float;
+ALTER TABLE `%%$%%vis_country` ADD `lat` float;
+ALTER TABLE `%%$%%vis_country` CHANGE `long` `long` float;
+ALTER TABLE `%%$%%vis_country` ADD `long` float;
+-- 

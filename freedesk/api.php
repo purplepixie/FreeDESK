@@ -95,12 +95,16 @@ if ($_REQUEST['mode']=="entity_search")
 	
 	if ($entity === false || !$entity->editable)
 	{
-		//
+		$err = new FreeDESK_Error(ErrorCode::EntityError, "Entity Error");
+		echo $err->XML(true);
+		exit();
 	}
 	
 	if (!$DESK->ContextManager->Permission("entity_view.".$_REQUEST['entity']))
 	{
-		//
+		$err = new FreeDESK_error(ErrorCode::PermissionDenied, "Permission Denied to Entity");
+		echo $err->XML(true);
+		exit();
 	}
 
 	// ENTITY MANAGER

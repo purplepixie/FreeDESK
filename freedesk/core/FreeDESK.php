@@ -28,11 +28,11 @@ class FreeDESK
 	/**
 	 * Major and Minor Version
 	**/
-	private $majorVersion = "0.00";
+	private $majorVersion = "0.01";
 	/**
 	 * Patch Level
 	**/
-	private $patchVersion = 3;
+	private $patchVersion = 0;
 	/**
 	 * Release level flag (a b or blank)
 	**/
